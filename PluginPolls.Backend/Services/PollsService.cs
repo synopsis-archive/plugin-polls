@@ -1,12 +1,10 @@
-﻿using System;
-namespace PluginPolls.Backend.Services
+﻿using PluginPolls.PollsDb;
+
+namespace PluginPolls.Backend.Services;
+
+public class PollsService
 {
-	public class PollsService
-	{
-		public PollsService()
-		{
-
-		}
-	}
+	private PollsContext _pollsContext;
+	
+	public PollsService(PollsContext pollsContext) => _pollsContext = pollsContext;
 }
-
