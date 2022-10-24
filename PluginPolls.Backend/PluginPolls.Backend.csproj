@@ -5,19 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="../core/Core.Plugin.Interface/Core.Plugin.Interface.csproj" />
         <ProjectReference Include="..\PluginPolls.PollsDb\PluginPolls.PollsDb.csproj" />
     </ItemGroup>
     
     <ItemGroup>
-      <None Remove="Microsoft.AspNetCore, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" />
-      <None Remove="Services\" />
-    </ItemGroup>
-    <ItemGroup>
       <Reference Include="Microsoft.AspNetCore, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" />
-    </ItemGroup>
-    <ItemGroup>
       <Folder Include="Services\" />
     </ItemGroup>
 </Project>
