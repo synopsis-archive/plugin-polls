@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace PluginPolls.PollsDb;
+namespace CorePlugin.PollsDb;
 
 public class PollsContext: DbContext
 {
