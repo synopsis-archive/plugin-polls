@@ -1,6 +1,6 @@
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PluginPolls.PollsDb;
+namespace CorePlugin.PollsDb;
 
 public class Poll
 {

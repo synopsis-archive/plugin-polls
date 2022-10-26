@@ -1,14 +1,14 @@
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PluginPolls.PollsDb;
+namespace CorePlugin.PollsDb;
 
 public class SubmittedVote
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long VoteId { get; set; }
+    public long SubmittedVoteId { get; set; }
 
     public long SelectedOptionId { get; set; }
     public PollOption SelectedPollOption { get; set; } = null!;
     
-    public Guid UserId { get; set; } 
+    public Guid UserId { get; set; }
 }
