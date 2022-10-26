@@ -4,12 +4,10 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>PluginPolls.PollsDb</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CorePlugin.PollsDb\CorePlugin.PollsDb.csproj" />
-      <ProjectReference Include="..\core\Core.Plugin.Interface\Core.Plugin.Interface.csproj" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
     </ItemGroup>
 
 </Project>

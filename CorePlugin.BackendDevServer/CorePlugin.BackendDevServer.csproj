@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CorePlugin.Plugin\CorePlugin.Plugin.csproj" />
+      <ProjectReference Include="..\CorePlugin.PollsDb\CorePlugin.PollsDb.csproj" />
     </ItemGroup>
 
 </Project>
