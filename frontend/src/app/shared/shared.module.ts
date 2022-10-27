@@ -5,7 +5,6 @@ import { GraphAuswertungComponent } from './graph-auswertung/graph-auswertung.co
 
 @NgModule({
   declarations: [
-  
     GraphAuswertungComponent
   ],
   imports: [

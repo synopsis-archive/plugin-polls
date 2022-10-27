@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace PluginPolls.PollsDb.Services;
 
-public class DatabaseBackgroundService: BackgroundService
+public class DatabaseBackgroundService : BackgroundService
 {
     private readonly IServiceProvider _serviceProvider;
 

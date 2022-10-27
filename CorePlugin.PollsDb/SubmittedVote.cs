@@ -9,6 +9,6 @@ public class SubmittedVote
 
     public long SelectedOptionId { get; set; }
     public PollOption SelectedPollOption { get; set; } = null!;
-    
+
     public Guid UserId { get; set; }
 }

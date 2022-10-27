@@ -15,5 +15,5 @@ public class PollsController : ControllerBase
     public async Task<ActionResult<string>> Test()
     {
         return Ok(await _pollsService.GetTestValue());
-    }  
+    }
 }

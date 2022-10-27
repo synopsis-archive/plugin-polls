@@ -10,7 +10,7 @@ public class Poll
     public string PollCode { get; set; } = null!;
     public string PollName { get; set; } = null!;
     public string PollQuestion { get; set; } = null!;
-    public Guid CreatedBy { get; set; } 
+    public Guid CreatedBy { get; set; }
     public DateTime StartTime { get; set; } = DateTime.Now;
     public DateTime EndTime { get; set; } = DateTime.Now.AddDays(7);
     public bool IsMultipleChoice { get; set; }
