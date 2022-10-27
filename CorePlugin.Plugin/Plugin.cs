@@ -1,11 +1,11 @@
 ﻿using Core.Plugin.Interface;
+using CorePlugin.Plugin.Services;
 using CorePlugin.PollsDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PluginPolls.PollsDb.Services;
 
-namespace PluginPolls.PollsDb;
+namespace CorePlugin.Plugin;
 
 public class Plugin : ICorePlugin
 {

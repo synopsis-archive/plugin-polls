@@ -1,8 +1,8 @@
-﻿using CorePlugin.PollsDb;
+﻿using CorePlugin.Plugin.Dtos;
+using CorePlugin.PollsDb;
 using Microsoft.EntityFrameworkCore;
-using PluginPolls.PollsDb.Dtos;
 
-namespace PluginPolls.PollsDb.Services;
+namespace CorePlugin.Plugin.Services;
 
 public class PollsService : IPollsService
 {

@@ -1,4 +1,4 @@
-﻿namespace PluginPolls.PollsDb.Dtos;
+﻿namespace CorePlugin.Plugin.Dtos;
 
 public class ReceivedVotesDto
 {

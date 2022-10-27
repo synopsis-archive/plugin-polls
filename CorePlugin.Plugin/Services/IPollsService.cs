@@ -1,6 +1,6 @@
-﻿using PluginPolls.PollsDb.Dtos;
+﻿using CorePlugin.Plugin.Dtos;
 
-namespace PluginPolls.PollsDb.Services;
+namespace CorePlugin.Plugin.Services;
 
 public interface IPollsService
 {
