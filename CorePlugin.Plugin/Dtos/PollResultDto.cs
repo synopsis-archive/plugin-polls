@@ -4,5 +4,6 @@ namespace PluginPolls.PollsDb.Dtos;
 
 public class PollResultDto : PollDto
 {
-    [Required] public Dictionary<PollOptionDto, byte> Results { get; set; } = null!;
+    [Required] public int ReceivedAnswers { get; set; }
+    [Required] public Dictionary<PollOptionDto, ReceivedVotesDto> Results { get; set; } = null!;
 }

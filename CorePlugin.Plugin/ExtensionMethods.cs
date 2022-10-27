@@ -24,6 +24,7 @@ public static class ExtensionMethods
             EndTime = poll.EndTime,
             IsMultipleChoice = poll.IsMultipleChoice,
             PollOptions = poll.PollOptions.Select(x => new PollOptionDto().CopyPropertiesFrom(x)).ToList(),
+            ReceivedAnswers = poll.SubmittedVotes.Count,
             Results = ConvertPollToResultDictionary(poll)
         };
     }
@@ -61,7 +62,7 @@ public static class ExtensionMethods
         return target;
     }
     
-    private static Dictionary<PollOptionDto, byte> ConvertPollToResultDictionary(Poll poll)
+    private static Dictionary<PollOptionDto, ReceivedVotesDto> ConvertPollToResultDictionary(Poll poll)
     {
         var submittedVotesCount = poll.SubmittedVotes.Count;
         
@@ -70,7 +71,11 @@ public static class ExtensionMethods
             var votesForOption = poll.SubmittedVotes.Count(x => x.SelectedOptionId == pollOption.PollOptionId);
             var percentage = (byte)Math.Round((double)votesForOption / submittedVotesCount * 100, 0);
             
-            return percentage;
+            return new ReceivedVotesDto
+            {
+                Percentage = percentage,
+                ReceivedVotes = votesForOption
+            };
         });
     }
     #endregion
