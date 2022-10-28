@@ -18,6 +18,20 @@ public class PollsController : ControllerBase
         return Ok(await _pollsService.GetTestValue());
     }
     
+    [HttpPost("Vote/{pollCode}")]
+    public async Task<ActionResult<PollResultDto>> SubmitVote(string pollCode, [FromBody] List<VoteReplayDto> voteReplayDto)
+    {
+        try
+        {
+            return Ok(await _pollsService.SubmitVotesAsync(pollCode, voteReplayDto));
+        }
+        catch (Exception exception)
+        {
+            exception.Message.LogError();
+            return BadRequest(exception.Message);
+        }
+    }
+    
     [HttpPut("Close/{pollCode}")]
     public async Task<ActionResult<PollResultDto>> ClosePoll(string pollCode, [FromBody] Guid teacherGuid)
     {
