@@ -37,9 +37,33 @@ public class PollsService : IPollsService
         throw new NotImplementedException();
     }
 
-    public Task<PollResultDto> SubmitVotesAsync(string code, List<VoteReplayDto> voteReplayDtos)
+    /// <summary>
+    /// Method <c>SubmitVotes</c> submits all given votes to the database.
+    /// </summary>
+    /// <param name="pollCode">The code of the poll to which a vote should be added</param>
+    /// <param name="voteReplayDtos">Information regarding the vote</param>
+    /// <returns>True if the operation succeeds</returns>
+    /// <exception cref="InvalidPollIdException">Is thrown if the poll with id <para>pollId</para> is not present in the database</exception>
+    /// <exception cref="PollClosedException">Is thrown if the poll is already closed.</exception>
+    /// <exception cref="NotMultipleChoiceException">Is thrown if more than one voteReplay is sent and the poll is not multiple choice.</exception>
+    /// <exception cref="NoVoteSubmittedException">Is thrown if <para>voteReplayDtos</para> is empty.</exception>
+    /// <exception cref="InconsistentUserException">Is thrown if <para>voteReplayDtos</para> contains more than one userId.</exception>
+    /// <exception cref="AlreadyVotedException">Is thrown if the user already voted for this poll.</exception>
+    public async Task<PollResultDto> SubmitVotesAsync(string pollCode, List<VoteReplayDto> voteReplayDtos)
     {
-        throw new NotImplementedException();
+        var poll = await _pollsContext.Polls
+            .Include(x => x.SubmittedVotes)
+            .Include(x => x.PollOptions)
+            .SingleOrDefaultAsync(p => p.PollCode == pollCode);
+
+        CheckPoll(pollCode, poll);
+        CheckVoteDtos(voteReplayDtos, poll);
+        
+        Poll pollToReturn = null!;
+        foreach (var voteReplayDto in voteReplayDtos) 
+            pollToReturn = await AddVoteToPoll(poll!, voteReplayDto);
+
+        return pollToReturn.ToPollResultDto();
     }
 
     /// <summary>
@@ -67,4 +91,47 @@ public class PollsService : IPollsService
     {
         throw new NotImplementedException();
     }
+    
+    #region Private Helper Methods
+    private static void CheckPoll(string pollCode, Poll? poll)
+    {
+        if (poll == null)
+            throw new InvalidPollIdException($"Poll with id {pollCode} not found!");
+
+        if (poll.EndTime < DateTime.Now)
+            throw new PollClosedException($"Poll with id {pollCode} is already closed!");
+    }
+    
+    private static void CheckVoteDtos(IReadOnlyList<VoteReplayDto> voteReplayDtos, Poll? poll)
+    {
+        if (voteReplayDtos.Count == 0)
+            throw new NoVoteSubmittedException("No votes given!");
+
+        if (voteReplayDtos.Count != 1 && !poll!.IsMultipleChoice)
+            throw new NotMultipleChoiceException($"Poll with {poll.PollId} is not a multiple choice poll!");
+
+        if (voteReplayDtos.Any(x => x.SubmittedBy != voteReplayDtos[0].SubmittedBy))
+            throw new InconsistentUserException("All votes must be submitted by the same user!");
+
+        if (poll!.SubmittedVotes.Any(x => x.UserId == voteReplayDtos[0].SubmittedBy))
+            throw new AlreadyVotedException($"User with id {voteReplayDtos[0].SubmittedBy} has already submitted a vote!");
+    }
+
+    private async Task<Poll> AddVoteToPoll(Poll poll, VoteReplayDto voteReplayDto)
+    {
+        var optionExistsOnPoll = poll.PollOptions.Any(o => o.PollOptionId == voteReplayDto.OptionId);
+        if (optionExistsOnPoll)
+            throw new InvalidOptionForPollException($"Unknown option with id {voteReplayDto.OptionId} for poll {poll.PollId}!");
+
+        await _pollsContext.PollVotes.AddAsync(new SubmittedVote
+        {
+            UserId = voteReplayDto.SubmittedBy,
+            SelectedOptionId = voteReplayDto.OptionId,
+        });
+        await _pollsContext.SaveChangesAsync();
+        
+        $"Added vote for Option with Id {voteReplayDto.OptionId} to poll {poll.PollId}".LogSuccess();
+        return poll;
+    }
+    #endregion
 }
