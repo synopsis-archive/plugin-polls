@@ -1,4 +1,5 @@
 ﻿using CorePlugin.Plugin.Dtos;
+using CorePlugin.Plugin.Exceptions;
 using CorePlugin.PollsDb;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,9 +42,25 @@ public class PollsService : IPollsService
         throw new NotImplementedException();
     }
 
-    public Task<PollResultDto> ClosePollAsync(string code, Guid teacherGuid)
+    /// <summary>
+    /// Method <c>ClosePollAsync</c> closes the poll.
+    /// </summary>
+    /// <param name="pollCode">The code of poll which should be closed</param>
+    /// <param name="teacherGuid">The guid of the current logged in teacher</param>
+    /// <returns>True if the operation succeeds</returns>
+    /// <exception cref="InvalidPollIdException">Is thrown if the poll with id <para>pollId</para> is not present in the database</exception>
+    public async Task<PollResultDto> ClosePollAsync(string pollCode, Guid teacherGuid)
     {
-        throw new NotImplementedException();
+        var poll = await _pollsContext.Polls.SingleOrDefaultAsync(p => p.PollCode == pollCode);
+        if (poll == null)
+            throw new InvalidPollIdException($"Poll with id {pollCode} not found!");
+
+        if (poll.EndTime < DateTime.Now)
+            return new PollResultDto().CopyPropertiesFrom(poll);
+
+        poll.EndTime = DateTime.Now;
+        await _pollsContext.SaveChangesAsync();
+        return new PollResultDto().CopyPropertiesFrom(poll);
     }
 
     public Task<bool> DeletePollAsync(string code, Guid teacherGuid)
