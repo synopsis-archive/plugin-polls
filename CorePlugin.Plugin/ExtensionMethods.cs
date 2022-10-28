@@ -4,10 +4,10 @@
 //   Edited by EinboeckFranz
 //----------------------------------------
 
+using CorePlugin.Plugin.Dtos;
 using CorePlugin.PollsDb;
-using PluginPolls.PollsDb.Dtos;
 
-namespace PluginPolls.PollsDb;
+namespace CorePlugin.Plugin;
 
 public static class ExtensionMethods
 {

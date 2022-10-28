@@ -1,4 +1,4 @@
-using PluginPolls.PollsDb;
+using CorePlugin.Plugin;
 
 var builder = WebApplication.CreateBuilder(args);
 

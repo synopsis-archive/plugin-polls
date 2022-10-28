@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace PluginPolls.PollsDb.Services;
+namespace CorePlugin.Plugin.Services;
 
 public class DatabaseBackgroundService : BackgroundService
 {

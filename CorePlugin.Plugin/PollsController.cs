@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PluginPolls.PollsDb.Services;
+﻿using CorePlugin.Plugin.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace PluginPolls.PollsDb;
+namespace CorePlugin.Plugin;
 
 [ApiController]
 [Route("[controller]")]
