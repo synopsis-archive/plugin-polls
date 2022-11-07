@@ -76,13 +76,10 @@ public class PollsService : IPollsService
     public async Task<PollResultDto> ClosePollAsync(string pollCode, Guid teacherGuid)
     {
         var poll = await _pollsContext.Polls.SingleOrDefaultAsync(p => p.PollCode == pollCode);
-        if (poll == null)
-            throw new InvalidPollIdException($"Poll with id {pollCode} not found!");
+        
+        CheckPoll(pollCode, poll);
 
-        if (poll.EndTime < DateTime.Now)
-            return new PollResultDto().CopyPropertiesFrom(poll);
-
-        poll.EndTime = DateTime.Now;
+        poll!.EndTime = DateTime.Now;
         await _pollsContext.SaveChangesAsync();
         return new PollResultDto().CopyPropertiesFrom(poll);
     }
