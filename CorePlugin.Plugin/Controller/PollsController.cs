@@ -2,7 +2,7 @@
 using CorePlugin.Plugin.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CorePlugin.Plugin;
+namespace CorePlugin.Plugin.Controller;
 
 [ApiController]
 [Route("[controller]")]
