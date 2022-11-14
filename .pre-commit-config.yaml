@@ -1,0 +1,37 @@
+﻿# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+  - repo: local
+    hooks:
+      - id: dotnet-format
+        name: Reformat C# code
+        language: system
+        entry: dotnet format --include
+        types_or: [ "c#" ]
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.23.1
+    hooks:
+      - id: eslint
+        name: Reformat Angular code
+        files: frontend/.*.[jt]sx?$  # *.js, *.jsx, *.ts and *.tsx
+        types: [ file ]
+        additional_dependencies:
+          - "eslint@8.23.1"
+          - "@angular-eslint/eslint-plugin@14.1.1"
+          - "@angular-eslint/eslint-plugin-template@14.1.1"
+          - "@typescript-eslint/parser@5.37.0"
+          - "@typescript-eslint/eslint-plugin@5.37.0"
+  - repo: local
+    hooks:
+        - id: simon-check
+          name: SIMONCHECK
+          entry: python ./.github/checkPw.py
+          language: python
+          pass_filenames: false
