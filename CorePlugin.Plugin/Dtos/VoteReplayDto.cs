@@ -5,7 +5,7 @@ namespace CorePlugin.Plugin.Dtos;
 public class VoteReplayDto
 {
     [Required]
-    public int OptionId { get; set; }
+    public long OptionId { get; set; }
     
     [Required]
     public Guid SubmittedBy { get; set; }

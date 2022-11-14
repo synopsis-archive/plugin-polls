@@ -68,7 +68,7 @@ public static class ExtensionMethods
         
         return poll.PollOptions.ToDictionary(pollOption => new PollOptionDto().CopyPropertiesFrom(pollOption), pollOption =>
         {
-            var votesForOption = poll.SubmittedVotes.Count(x => x.SelectedOptionId == pollOption.PollOptionId);
+            var votesForOption = poll.SubmittedVotes.Count(x => x.SelectedPollOptionId == pollOption.PollOptionId);
             var percentage = (byte)Math.Round((double)votesForOption / submittedVotesCount * 100, 0);
             
             return new ReceivedVotesDto

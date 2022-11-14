@@ -77,8 +77,8 @@ public class PollsController : ControllerBase
         }
     }
     
-    [HttpDelete("DeletePoll/{pollCode}")]
-    public async Task<ActionResult<bool>> DeletePoll(string pollCode, [FromBody] Guid teacherGuid)
+    [HttpDelete("DeletePoll/{teacherGuid}/{pollCode}")]
+    public async Task<ActionResult<bool>> DeletePoll(string pollCode, Guid teacherGuid)
     {
         try
         {
