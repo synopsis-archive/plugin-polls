@@ -27,9 +27,21 @@ public class PollsService : IPollsService
         throw new NotImplementedException();
     }
 
-    public Task<PollDto> GetPollAsync(string code)
+    public async Task<PollDto> GetPollAsync(string code)
     {
-        throw new NotImplementedException();
+        var poll = await _pollsContext.Polls.Include(x => x.PollOptions).FirstOrDefaultAsync(p => p.PollCode == code);
+        CheckPoll(code,poll);
+        return new PollResultDto
+        {
+            PollCode = poll.PollCode,
+            PollName = poll.PollName,
+            PollQuestion = poll.PollQuestion,
+            CreatedBy = poll.CreatedBy,
+            StartTime = poll.StartTime,
+            EndTime = poll.EndTime,
+            IsMultipleChoice = poll.IsMultipleChoice,
+            PollOptions = poll.PollOptions.Select(po => new PollOptionDto().CopyPropertiesFrom(po)).ToList()
+        };
     }
 
     public Task<PollResultDto> GetPollResultAsync(string code)
