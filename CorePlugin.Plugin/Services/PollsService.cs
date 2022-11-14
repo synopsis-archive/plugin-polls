@@ -47,6 +47,7 @@ public class PollsService : IPollsService
             }).ToList(),
         };
         await _pollsContext.Polls.AddAsync(newPoll);
+        await _pollsContext.SaveChangesAsync();
         return new PollDto
         {
             PollName = newPoll.PollName,
@@ -92,7 +93,7 @@ public class PollsService : IPollsService
         var result = new Dictionary<PollOptionDto, ReceivedVotesDto>();
         foreach (var pollVote in poll.SubmittedVotes)
         {
-            var pollOption = options[pollVote.SelectedOptionId];
+            var pollOption = options[pollVote.SelectedPollOptionId];
             if (!result.ContainsKey(pollOption))
             {
                 result[pollOption] = new ReceivedVotesDto { ReceivedVotes = 0 };
@@ -163,10 +164,11 @@ public class PollsService : IPollsService
         var poll = await _pollsContext.Polls.SingleOrDefaultAsync(p => p.PollCode == code);
         CheckPoll(code, poll);
 
-        if (poll!.CreatedBy != teacherGuid) 
+        if (poll!.CreatedBy != teacherGuid)
             return false;
-        
+
         _pollsContext.Polls.Remove(poll!);
+        await _pollsContext.SaveChangesAsync();
         return true;
     }
 
@@ -198,13 +200,13 @@ public class PollsService : IPollsService
     private async Task<Poll> AddVoteToPoll(Poll poll, VoteReplayDto voteReplayDto)
     {
         var optionExistsOnPoll = poll.PollOptions.Any(o => o.PollOptionId == voteReplayDto.OptionId);
-        if (optionExistsOnPoll)
+        if (!optionExistsOnPoll)
             throw new InvalidOptionForPollException($"Unknown option with id {voteReplayDto.OptionId} for poll {poll.PollId}!");
 
         await _pollsContext.PollVotes.AddAsync(new SubmittedVote
         {
             UserId = voteReplayDto.SubmittedBy,
-            SelectedOptionId = voteReplayDto.OptionId,
+            SelectedPollOptionId = voteReplayDto.OptionId,
         });
         await _pollsContext.SaveChangesAsync();
 
