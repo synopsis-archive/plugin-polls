@@ -135,9 +135,16 @@ public class PollsService : IPollsService
         return new PollResultDto().CopyPropertiesFrom(poll);
     }
 
-    public Task<bool> DeletePollAsync(string code, Guid teacherGuid)
+    public async Task<bool> DeletePollAsync(string code, Guid teacherGuid)
     {
-        throw new NotImplementedException();
+        var poll = await _pollsContext.Polls.SingleOrDefaultAsync(p => p.PollCode == code);
+        CheckPoll(code, poll);
+
+        if (poll!.CreatedBy != teacherGuid) 
+            return false;
+        
+        _pollsContext.Polls.Remove(poll!);
+        return true;
     }
 
     #region Private Helper Methods

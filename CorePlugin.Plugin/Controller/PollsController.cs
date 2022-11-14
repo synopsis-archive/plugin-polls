@@ -82,4 +82,21 @@ public class PollsController : ControllerBase
             return BadRequest(exception.Message);
         }
     }
+    
+    [HttpDelete("DeletePoll/{pollCode}")]
+    public async Task<ActionResult<bool>> DeletePoll(string pollCode, [FromBody] Guid teacherGuid)
+    {
+        try
+        {
+            $"Delete Poll {pollCode}".LogSuccess();
+            if(await _pollsService.DeletePollAsync(pollCode, teacherGuid))
+                return Ok();
+            return BadRequest("Cannot delete Poll of other Teacher");
+        }
+        catch (Exception exception)
+        {
+            exception.Message.LogError();
+            return BadRequest(exception.Message);
+        }
+    }
 }
