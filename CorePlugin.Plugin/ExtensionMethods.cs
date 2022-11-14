@@ -1,19 +1,10 @@
-﻿//----------------------------------------
-//   CopyPropertiesFrom - Methods
-//   (C)Robert Grueneis/HTL Grieskirchen
-//   Edited by EinboeckFranz
-//----------------------------------------
-
-using CorePlugin.Plugin.Dtos;
+﻿using CorePlugin.Plugin.Dtos;
 using CorePlugin.PollsDb;
 
 namespace CorePlugin.Plugin;
 
 public static class ExtensionMethods
 {
-    public static T CopyPropertiesFrom<T>(this T target, object source)
-        => CopyPropertiesFrom(target, source, null);
-
     public static PollResultDto ToPollResultDto(this Poll poll)
     {
         return new PollResultDto
@@ -25,7 +16,9 @@ public static class ExtensionMethods
             StartTime = poll.StartTime,
             EndTime = poll.EndTime,
             IsMultipleChoice = poll.IsMultipleChoice,
-            PollOptions = poll.PollOptions.Select(x => new PollOptionDto().CopyPropertiesFrom(x)).ToList(),
+            PollOptions = poll.PollOptions
+                .Select(x => new PollOptionDto { PollOptionId = x.PollOptionId, Description = x.Description})
+                .ToList(),
             ReceivedAnswers = poll.SubmittedVotes.Count,
             Results = ConvertPollToResultDictionary(poll)
         };
@@ -42,43 +35,13 @@ public static class ExtensionMethods
             StartTime = poll.StartTime,
             EndTime = poll.EndTime,
             IsMultipleChoice = poll.IsMultipleChoice,
-            PollOptions = poll.PollOptions.Select(x => new PollOptionDto().CopyPropertiesFrom(x)).ToList(),
+            PollOptions = poll.PollOptions
+                .Select(x => new PollOptionDto { PollOptionId = x.PollOptionId, Description = x.Description})
+                .ToList(),
         };
     }
-
-    public static void LogSuccess(this string message)
-    {
-        Console.BackgroundColor = ConsoleColor.Green;
-        Console.WriteLine($"[{DateTime.Now:dd.MM.yyyy HH:mm:ss}]: {message}");
-        Console.BackgroundColor = ConsoleColor.Black;
-    }
-
-    public static void LogError(this string message)
-    {
-        Console.BackgroundColor = ConsoleColor.Red;
-        Console.WriteLine($"[{DateTime.Now:dd.MM.yyyy HH:mm:ss}]: {message}");
-        Console.BackgroundColor = ConsoleColor.Black;
-    }
-
+    
     #region Private Helper Methods
-    private static T CopyPropertiesFrom<T>(this T target, object source, string[]? ignoreProperties)
-    {
-        if (target == null) return target;
-        ignoreProperties ??= Array.Empty<string>();
-        var propsSource = source.GetType().GetProperties().Where(x => x.CanRead && !ignoreProperties.Contains(x.Name));
-        var propsTarget = target.GetType().GetProperties().Where(x => x.CanWrite);
-
-        propsTarget
-            .Where(prop => propsSource.Any(x => x.Name == prop.Name))
-            .ToList()
-            .ForEach(prop =>
-            {
-                var propSource = propsSource.First(x => x.Name == prop.Name);
-                prop.SetValue(target, propSource.GetValue(source));
-            });
-        return target;
-    }
-
     private static Dictionary<long, ReceivedVotesDto> ConvertPollToResultDictionary(Poll poll)
     {
         var submittedVotesCount = poll.SubmittedVotes.Count;

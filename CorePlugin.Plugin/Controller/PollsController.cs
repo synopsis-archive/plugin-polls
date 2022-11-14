@@ -27,7 +27,6 @@ public class PollsController : ControllerBase
         }
         catch (Exception exception)
         {
-            exception.Message.LogError();
             return BadRequest(exception.Message);
         }
     }
@@ -37,12 +36,10 @@ public class PollsController : ControllerBase
     {
         try
         {
-            $"Closed Poll {pollCode}".LogSuccess();
             return Ok(await _pollsService.ClosePollAsync(pollCode, teacherGuid));
         }
         catch (Exception exception)
         {
-            exception.Message.LogError();
             return BadRequest(exception.Message);
         }
     }
@@ -56,7 +53,6 @@ public class PollsController : ControllerBase
         }
         catch (Exception exception)
         {
-            exception.Message.LogError();
             return BadRequest(exception.Message);
         }
     }
@@ -70,7 +66,6 @@ public class PollsController : ControllerBase
         }
         catch (Exception exception)
         {
-            exception.Message.LogError();
             return BadRequest(exception.Message);
         }
     }
@@ -80,12 +75,10 @@ public class PollsController : ControllerBase
     {
         try
         {
-            $"Get Polls from Teacher {teacherGuid}".LogSuccess();
             return Ok(await _pollsService.GetPollsOfTeacherAsync(teacherGuid));
         }
         catch (Exception exception)
         {
-            exception.Message.LogError();
             return BadRequest(exception.Message);
         }
     }
@@ -95,14 +88,12 @@ public class PollsController : ControllerBase
     {
         try
         {
-            $"Delete Poll {pollCode}".LogSuccess();
             if (await _pollsService.DeletePollAsync(pollCode, teacherGuid))
                 return Ok();
             return BadRequest("Cannot delete Poll of other Teacher");
         }
         catch (Exception exception)
         {
-            exception.Message.LogError();
             return BadRequest(exception.Message);
         }
     }

@@ -15,7 +15,7 @@ public class PollsService : IPollsService
     {
         var newPoll = new Poll
         {
-            PollCode = await GeneratePollCodeAsync(),
+            PollCode = GeneratePollCode(),
             CreatedBy = teacherGuid,
             IsMultipleChoice = poll.IsMultipleChoice,
             StartTime = poll.StartTime,
@@ -99,13 +99,16 @@ public class PollsService : IPollsService
     /// <exception cref="InvalidPollIdException">Is thrown if the poll with id <para>pollId</para> is not present in the database</exception>
     public async Task<PollResultDto> ClosePollAsync(string pollCode, Guid teacherGuid)
     {
-        var poll = await _pollsContext.Polls.SingleOrDefaultAsync(p => p.PollCode == pollCode);
+        var poll = await _pollsContext.Polls
+            .Include(x => x.PollOptions)
+            .Include(x => x.SubmittedVotes)
+            .SingleOrDefaultAsync(p => p.PollCode == pollCode);
 
         CheckPoll(pollCode, poll);
 
         poll!.EndTime = DateTime.Now;
         await _pollsContext.SaveChangesAsync();
-        return new PollResultDto().CopyPropertiesFrom(poll);
+        return poll.ToPollResultDto();
     }
 
     public async Task<bool> DeletePollAsync(string code, Guid teacherGuid)
@@ -160,11 +163,10 @@ public class PollsService : IPollsService
         });
         await _pollsContext.SaveChangesAsync();
 
-        $"Added vote for Option with Id {voteReplayDto.OptionId} to poll {poll.PollId}".LogSuccess();
         return poll;
     }
 
-    private async Task<string> GeneratePollCodeAsync()
+    private string GeneratePollCode()
     {
         var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
         var rnd = new Random();
@@ -172,7 +174,7 @@ public class PollsService : IPollsService
         do
         {
             code = new string("000000".ToCharArray().Select(_ => chars[rnd.NextInt64(chars.Length)]).ToArray());
-        } while (await _pollsContext.Polls.AnyAsync(poll => poll.PollCode == code));
+        } while (_pollsContext.Polls.Any(poll => poll.PollCode == code));
         return code;
     }
     #endregion

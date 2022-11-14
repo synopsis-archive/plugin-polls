@@ -15,7 +15,6 @@ public class Plugin : ICorePlugin
         builder.Services.AddDbContext<PollsContext>(db =>
         {
             var connectionString = builder.Configuration.GetConnectionString("PollsDatabaseConnection");
-            $"Using connection string {connectionString}".LogSuccess();
             db.UseSqlite(connectionString);
         });
         builder.Services.AddScoped<PollsService>();
