@@ -19,7 +19,7 @@ public class PollsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<PollDto>> CreatePoll([FromBody] PollDto poll)
+    public async Task<ActionResult<PollDto>> CreatePoll([FromBody] PollReplayDto poll)
     {
         return Ok(await _pollsService.CreatePollAsync(poll, Guid.NewGuid()));
     }
