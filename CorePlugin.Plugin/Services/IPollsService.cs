@@ -7,7 +7,7 @@ public interface IPollsService
     /*
      * Gets all polls of a teacher without results ("Home - Lehrer" in mockup)
      */
-    Task<PollDto> GetPollsOfTeacherAsync(Guid teacherGuid);
+    Task<List<PollDto>> GetPollsOfTeacherAsync(Guid teacherGuid);
  
     /*
      * Creates a new Poll (Endpoint for "Lehreransicht")
