@@ -34,38 +34,42 @@ public class PollsService : IPollsService
             }).ToListAsync();
     }
 
-    public async Task<PollReplayDto> CreatePollAsync(PollDto poll, Guid teacherGuid)
+    public async Task<PollDto> CreatePollAsync(PollReplayDto poll, Guid teacherGuid)
     {
+        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
+        Random rnd = new Random();
         Poll newPoll = new Poll
         {
+            PollCode = new string("000000".ToCharArray().Select(x => chars[rnd.NextInt64(chars.Length)]).ToArray()),
             CreatedBy = teacherGuid,
             IsMultipleChoice = poll.IsMultipleChoice,
-            PollName = poll.Name,
             StartTime = poll.StartTime,
             EndTime = poll.EndTime,
-            PollQuestion = poll.Name,
+            PollQuestion = poll.PollQuestion,
+            PollName = poll.PollName,
             PollOptions = poll.PollOptions.Select(option => new PollOption
             {
                 Description = option.Description
             }).ToList(),
         };
         await _pollsContext.Polls.AddAsync(newPoll);
-        return new PollReplayDto
+        return new PollDto
         {
+            PollName = newPoll.PollName,
             CreatedBy = newPoll.CreatedBy,
             EndTime = newPoll.EndTime,
+            PollOptions = newPoll.PollOptions.Select(pollOption => new PollOptionDto { Description = pollOption.Description }).ToList(),
+            PollCode = newPoll.PollCode,
             IsMultipleChoice = newPoll.IsMultipleChoice,
-            PollOptions = newPoll.PollOptions.Select(option => new PollOptionReplayDto
-            {
-                Description = option.Description,
-            }).ToList(),
+            PollQuestion = newPoll.PollQuestion,
+            StartTime = newPoll.StartTime,
         };
     }
 
     public async Task<PollDto> GetPollAsync(string code)
     {
         var poll = await _pollsContext.Polls.Include(x => x.PollOptions).FirstOrDefaultAsync(p => p.PollCode == code);
-        CheckPoll(code,poll);
+        CheckPoll(code, poll);
         return new PollResultDto
         {
             PollCode = poll.PollCode,
@@ -105,9 +109,9 @@ public class PollsService : IPollsService
 
         CheckPoll(pollCode, poll);
         CheckVoteDtos(voteReplayDtos, poll);
-        
+
         Poll pollToReturn = null!;
-        foreach (var voteReplayDto in voteReplayDtos) 
+        foreach (var voteReplayDto in voteReplayDtos)
             pollToReturn = await AddVoteToPoll(poll!, voteReplayDto);
 
         return pollToReturn.ToPollResultDto();
@@ -123,7 +127,7 @@ public class PollsService : IPollsService
     public async Task<PollResultDto> ClosePollAsync(string pollCode, Guid teacherGuid)
     {
         var poll = await _pollsContext.Polls.SingleOrDefaultAsync(p => p.PollCode == pollCode);
-        
+
         CheckPoll(pollCode, poll);
 
         poll!.EndTime = DateTime.Now;
@@ -135,7 +139,7 @@ public class PollsService : IPollsService
     {
         throw new NotImplementedException();
     }
-    
+
     #region Private Helper Methods
     private static void CheckPoll(string pollCode, Poll? poll)
     {
@@ -145,7 +149,7 @@ public class PollsService : IPollsService
         if (poll.EndTime < DateTime.Now)
             throw new PollClosedException($"Poll with id {pollCode} is already closed!");
     }
-    
+
     private static void CheckVoteDtos(IReadOnlyList<VoteReplayDto> voteReplayDtos, Poll? poll)
     {
         if (voteReplayDtos.Count == 0)
@@ -173,7 +177,7 @@ public class PollsService : IPollsService
             SelectedOptionId = voteReplayDto.OptionId,
         });
         await _pollsContext.SaveChangesAsync();
-        
+
         $"Added vote for Option with Id {voteReplayDto.OptionId} to poll {poll.PollId}".LogSuccess();
         return poll;
     }
