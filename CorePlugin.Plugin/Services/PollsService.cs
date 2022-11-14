@@ -10,7 +10,7 @@ public class PollsService : IPollsService
     private readonly PollsContext _pollsContext;
 
     public PollsService(PollsContext pollsContext) => _pollsContext = pollsContext;
-    
+
     public async Task<PollDto> CreatePollAsync(PollReplayDto poll, Guid teacherGuid)
     {
         var newPoll = new Poll
@@ -24,7 +24,7 @@ public class PollsService : IPollsService
             PollName = poll.PollName,
             PollOptions = poll.PollOptions.Select(option => new PollOption { Description = option.Description }).ToList(),
         };
-        
+
         await _pollsContext.Polls.AddAsync(newPoll);
         await _pollsContext.SaveChangesAsync();
 
@@ -48,7 +48,7 @@ public class PollsService : IPollsService
             .Include(poll => poll.PollOptions)
             .Include(poll => poll.SubmittedVotes)
             .SingleOrDefaultAsync(poll => poll.PollCode == code);
-        
+
         CheckPoll(code, poll);
         return poll!.ToPollResultDto();
     }
@@ -163,7 +163,7 @@ public class PollsService : IPollsService
         $"Added vote for Option with Id {voteReplayDto.OptionId} to poll {poll.PollId}".LogSuccess();
         return poll;
     }
-    
+
     private async Task<string> GeneratePollCodeAsync()
     {
         var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
@@ -172,7 +172,7 @@ public class PollsService : IPollsService
         do
         {
             code = new string("000000".ToCharArray().Select(_ => chars[rnd.NextInt64(chars.Length)]).ToArray());
-        } while(await _pollsContext.Polls.AnyAsync(poll => poll.PollCode == code));
+        } while (await _pollsContext.Polls.AnyAsync(poll => poll.PollCode == code));
         return code;
     }
     #endregion

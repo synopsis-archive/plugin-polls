@@ -10,6 +10,7 @@ export class SchueleransichtComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log('SchueleransichtComponent.ngOnInit()');
   }
 
 }

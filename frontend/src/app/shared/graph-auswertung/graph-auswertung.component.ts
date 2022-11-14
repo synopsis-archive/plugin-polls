@@ -10,6 +10,7 @@ export class GraphAuswertungComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log('GraphAuswertungComponent.ngOnInit()');
   }
 
 }

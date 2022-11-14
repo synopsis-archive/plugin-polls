@@ -10,6 +10,7 @@ export class ErgebnissAnsichtComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log('ErgebnissAnsichtComponent.ngOnInit()');
   }
 
 }

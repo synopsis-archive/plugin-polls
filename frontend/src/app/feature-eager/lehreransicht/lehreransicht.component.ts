@@ -11,6 +11,7 @@ export class LehreransichtComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log('LehreransichtComponent.ngOnInit()');
   }
 
 }

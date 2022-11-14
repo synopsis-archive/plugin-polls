@@ -1,5 +1,5 @@
 ﻿//----------------------------------------
-//   CopyPropertiesFrom - Methods 
+//   CopyPropertiesFrom - Methods
 //   (C)Robert Grueneis/HTL Grieskirchen
 //   Edited by EinboeckFranz
 //----------------------------------------
@@ -11,7 +11,7 @@ namespace CorePlugin.Plugin;
 
 public static class ExtensionMethods
 {
-    public static T CopyPropertiesFrom<T>(this T target, object source) 
+    public static T CopyPropertiesFrom<T>(this T target, object source)
         => CopyPropertiesFrom(target, source, null);
 
     public static PollResultDto ToPollResultDto(this Poll poll)
@@ -30,7 +30,7 @@ public static class ExtensionMethods
             Results = ConvertPollToResultDictionary(poll)
         };
     }
-    
+
     public static PollDto ToPollDto(this Poll poll)
     {
         return new PollDto
@@ -52,7 +52,7 @@ public static class ExtensionMethods
         Console.WriteLine($"[{DateTime.Now:dd.MM.yyyy HH:mm:ss}]: {message}");
         Console.BackgroundColor = ConsoleColor.Black;
     }
-    
+
     public static void LogError(this string message)
     {
         Console.BackgroundColor = ConsoleColor.Red;
@@ -78,16 +78,16 @@ public static class ExtensionMethods
             });
         return target;
     }
-    
+
     private static Dictionary<long, ReceivedVotesDto> ConvertPollToResultDictionary(Poll poll)
     {
         var submittedVotesCount = poll.SubmittedVotes.Count;
-        
+
         return poll.PollOptions.ToDictionary(pollOption => pollOption.PollOptionId, pollOption =>
         {
             var votesForOption = poll.SubmittedVotes.Count(x => x.SelectedPollOptionId == pollOption.PollOptionId);
             var percentage = (byte)Math.Round((double)votesForOption / submittedVotesCount * 100, 0);
-            
+
             return new ReceivedVotesDto
             {
                 Percentage = percentage,

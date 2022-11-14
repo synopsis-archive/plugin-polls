@@ -17,7 +17,7 @@ public class PollsController : ControllerBase
     {
         return Ok(await _pollsService.CreatePollAsync(poll, Guid.NewGuid()));
     }
-    
+
     [HttpPost("Vote/{pollCode}")]
     public async Task<ActionResult<PollResultDto>> SubmitVote(string pollCode, [FromBody] List<VoteReplayDto> voteReplayDto)
     {
@@ -31,7 +31,7 @@ public class PollsController : ControllerBase
             return BadRequest(exception.Message);
         }
     }
-    
+
     [HttpPut("Close/{pollCode}")]
     public async Task<ActionResult<PollResultDto>> ClosePoll(string pollCode, [FromBody] Guid teacherGuid)
     {
@@ -60,7 +60,7 @@ public class PollsController : ControllerBase
             return BadRequest(exception.Message);
         }
     }
-    
+
     [HttpGet("GetPollResult/{pollCode}")]
     public async Task<ActionResult<PollResultDto>> GetPollResultByCode(string pollCode)
     {
@@ -74,7 +74,7 @@ public class PollsController : ControllerBase
             return BadRequest(exception.Message);
         }
     }
-    
+
     [HttpGet("GetPollsFromTeacher/{teacherGuid}")]
     public async Task<ActionResult<List<PollDto>>> GetPollsFromTeacher(Guid teacherGuid)
     {
@@ -89,14 +89,14 @@ public class PollsController : ControllerBase
             return BadRequest(exception.Message);
         }
     }
-    
+
     [HttpDelete("DeletePoll/{teacherGuid}/{pollCode}")]
     public async Task<ActionResult<bool>> DeletePoll(string pollCode, Guid teacherGuid)
     {
         try
         {
             $"Delete Poll {pollCode}".LogSuccess();
-            if(await _pollsService.DeletePollAsync(pollCode, teacherGuid))
+            if (await _pollsService.DeletePollAsync(pollCode, teacherGuid))
                 return Ok();
             return BadRequest("Cannot delete Poll of other Teacher");
         }
