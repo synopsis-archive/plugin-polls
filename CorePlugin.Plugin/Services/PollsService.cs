@@ -22,9 +22,32 @@ public class PollsService : IPollsService
         throw new NotImplementedException();
     }
 
-    public Task<PollResultDto> CreatePollAsync(PollReplayDto pollDto, Guid teacherGuid)
+    public async Task<PollReplayDto> CreatePollAsync(PollDto poll, Guid teacherGuid)
     {
-        throw new NotImplementedException();
+        Poll newPoll = new Poll
+        {
+            CreatedBy = teacherGuid,
+            IsMultipleChoice = poll.IsMultipleChoice,
+            PollName = poll.Name,
+            StartTime = poll.StartTime,
+            EndTime = poll.EndTime,
+            PollQuestion = poll.Name,
+            PollOptions = poll.PollOptions.Select(option => new PollOption
+            {
+                Description = option.Description
+            }).ToList(),
+        };
+        await _pollsContext.Polls.AddAsync(newPoll);
+        return new PollReplayDto
+        {
+            CreatedBy = newPoll.CreatedBy,
+            EndTime = newPoll.EndTime,
+            IsMultipleChoice = newPoll.IsMultipleChoice,
+            PollOptions = newPoll.PollOptions.Select(option => new PollOptionReplayDto
+            {
+                Description = option.Description,
+            }).ToList(),
+        };
     }
 
     public async Task<PollDto> GetPollAsync(string code)

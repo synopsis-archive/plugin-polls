@@ -12,7 +12,7 @@ public interface IPollsService
     /*
      * Creates a new Poll (Endpoint for "Lehreransicht")
      */
-    Task<PollResultDto> CreatePollAsync(PollReplayDto pollDto, Guid teacherGuid);
+    Task<PollReplayDto> CreatePollAsync(PollDto pollDto, Guid teacherGuid);
     
     /*
      * Gets a poll without any results ("Schüleransicht" in mockup)

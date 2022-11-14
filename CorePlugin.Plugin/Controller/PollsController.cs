@@ -17,6 +17,12 @@ public class PollsController : ControllerBase
     {
         return Ok(await _pollsService.GetTestValue());
     }
+
+    [HttpPost]
+    public async Task<ActionResult<PollDto>> CreatePoll([FromBody] PollDto poll)
+    {
+        return Ok(await _pollsService.CreatePollAsync(poll, Guid.NewGuid()));
+    }
     
     [HttpPost("Vote/{pollCode}")]
     public async Task<ActionResult<PollResultDto>> SubmitVote(string pollCode, [FromBody] List<VoteReplayDto> voteReplayDto)

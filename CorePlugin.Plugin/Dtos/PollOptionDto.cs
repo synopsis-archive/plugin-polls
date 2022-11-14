@@ -4,7 +4,6 @@ namespace CorePlugin.Plugin.Dtos;
 
 public class PollOptionDto
 {
-    [Required]
     public long PollOptionId { get; set; }
     
     [Required]
