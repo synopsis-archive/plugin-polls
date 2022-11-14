@@ -18,7 +18,7 @@ public static class ExtensionMethods
     {
         return new PollResultDto
         {
-            Code = poll.PollCode,
+            PollCode = poll.PollCode,
             CreatedBy = poll.CreatedBy,
             StartTime = poll.StartTime,
             EndTime = poll.EndTime,
