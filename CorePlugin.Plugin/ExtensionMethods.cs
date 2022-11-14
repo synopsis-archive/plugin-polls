@@ -19,6 +19,8 @@ public static class ExtensionMethods
         return new PollResultDto
         {
             PollCode = poll.PollCode,
+            PollName = poll.PollName,
+            PollQuestion = poll.PollQuestion,
             CreatedBy = poll.CreatedBy,
             StartTime = poll.StartTime,
             EndTime = poll.EndTime,
@@ -26,6 +28,21 @@ public static class ExtensionMethods
             PollOptions = poll.PollOptions.Select(x => new PollOptionDto().CopyPropertiesFrom(x)).ToList(),
             ReceivedAnswers = poll.SubmittedVotes.Count,
             Results = ConvertPollToResultDictionary(poll)
+        };
+    }
+    
+    public static PollDto ToPollDto(this Poll poll)
+    {
+        return new PollDto
+        {
+            PollCode = poll.PollCode,
+            PollName = poll.PollName,
+            PollQuestion = poll.PollQuestion,
+            CreatedBy = poll.CreatedBy,
+            StartTime = poll.StartTime,
+            EndTime = poll.EndTime,
+            IsMultipleChoice = poll.IsMultipleChoice,
+            PollOptions = poll.PollOptions.Select(x => new PollOptionDto().CopyPropertiesFrom(x)).ToList(),
         };
     }
 
@@ -62,11 +79,11 @@ public static class ExtensionMethods
         return target;
     }
     
-    private static Dictionary<PollOptionDto, ReceivedVotesDto> ConvertPollToResultDictionary(Poll poll)
+    private static Dictionary<long, ReceivedVotesDto> ConvertPollToResultDictionary(Poll poll)
     {
         var submittedVotesCount = poll.SubmittedVotes.Count;
         
-        return poll.PollOptions.ToDictionary(pollOption => new PollOptionDto().CopyPropertiesFrom(pollOption), pollOption =>
+        return poll.PollOptions.ToDictionary(pollOption => pollOption.PollOptionId, pollOption =>
         {
             var votesForOption = poll.SubmittedVotes.Count(x => x.SelectedPollOptionId == pollOption.PollOptionId);
             var percentage = (byte)Math.Round((double)votesForOption / submittedVotesCount * 100, 0);

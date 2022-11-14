@@ -48,11 +48,10 @@ public class PollsController : ControllerBase
     }
 
     [HttpGet("GetPoll/{pollCode}")]
-    public async Task<ActionResult<PollResultDto>> GetPollByCode(string pollCode)
+    public async Task<ActionResult<PollDto>> GetPollByCode(string pollCode)
     {
         try
         {
-            $"Get Poll {pollCode}".LogSuccess();
             return Ok(await _pollsService.GetPollAsync(pollCode));
         }
         catch (Exception exception)
@@ -61,7 +60,21 @@ public class PollsController : ControllerBase
             return BadRequest(exception.Message);
         }
     }
-
+    
+    [HttpGet("GetPollResult/{pollCode}")]
+    public async Task<ActionResult<PollResultDto>> GetPollResultByCode(string pollCode)
+    {
+        try
+        {
+            return Ok(await _pollsService.GetPollResultAsync(pollCode));
+        }
+        catch (Exception exception)
+        {
+            exception.Message.LogError();
+            return BadRequest(exception.Message);
+        }
+    }
+    
     [HttpGet("GetPollsFromTeacher/{teacherGuid}")]
     public async Task<ActionResult<List<PollDto>>> GetPollsFromTeacher(Guid teacherGuid)
     {
