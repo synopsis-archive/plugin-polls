@@ -46,4 +46,19 @@ public class PollsController : ControllerBase
             return BadRequest(exception.Message);
         }
     }
+
+    [HttpGet("GetPoll/{pollCode}")]
+    public async Task<ActionResult<PollResultDto>> GetPollByCode(string pollCode)
+    {
+        try
+        {
+            $"Get Poll {pollCode}".LogSuccess();
+            return Ok(await _pollsService.GetPollAsync(pollCode));
+        }
+        catch (Exception exception)
+        {
+            exception.Message.LogError();
+            return BadRequest(exception.Message);
+        }
+    }
 }
