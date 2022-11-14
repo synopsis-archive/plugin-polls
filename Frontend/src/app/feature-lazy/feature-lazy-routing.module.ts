@@ -1,7 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SchueleransichtComponent } from './schueleransicht/schueleransicht.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path:'',
+    children:[
+      {path:'',component: SchueleransichtComponent}
+    ]
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
