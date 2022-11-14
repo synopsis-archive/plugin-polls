@@ -12,12 +12,6 @@ public class PollsController : ControllerBase
 
     public PollsController(PollsService pollsService) => _pollsService = pollsService;
 
-    [HttpGet]
-    public async Task<ActionResult<string>> Test()
-    {
-        return Ok(await _pollsService.GetTestValue());
-    }
-
     [HttpPost]
     public async Task<ActionResult<PollDto>> CreatePoll([FromBody] PollReplayDto poll)
     {

@@ -11,12 +11,6 @@ public class PollsService : IPollsService
 
     public PollsService(PollsContext pollsContext) => _pollsContext = pollsContext;
 
-    public async Task<string> GetTestValue()
-    {
-        var poll = await _pollsContext.Polls.FirstOrDefaultAsync();
-        return poll?.PollName ?? "No polls found!";
-    }
-
     public Task<List<PollDto>> GetPollsOfTeacherAsync(Guid teacherGuid)
     {
         return _pollsContext.Polls
