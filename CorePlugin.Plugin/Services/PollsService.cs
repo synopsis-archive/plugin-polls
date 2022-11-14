@@ -17,9 +17,21 @@ public class PollsService : IPollsService
         return poll?.PollName ?? "No polls found!";
     }
 
-    public Task<PollDto> GetPollsOfTeacherAsync(Guid teacherGuid)
+    public Task<List<PollDto>> GetPollsOfTeacherAsync(Guid teacherGuid)
     {
-        throw new NotImplementedException();
+        return _pollsContext.Polls
+            .Where(poll => poll.CreatedBy == teacherGuid)
+            .Select(poll => new PollDto
+            {
+                PollCode = poll.PollCode,
+                PollName = poll.PollName,
+                PollQuestion = poll.PollQuestion,
+                CreatedBy = poll.CreatedBy,
+                StartTime = poll.StartTime,
+                EndTime = poll.EndTime,
+                IsMultipleChoice = poll.IsMultipleChoice,
+                PollOptions = poll.PollOptions.Select(po => new PollOptionDto().CopyPropertiesFrom(po)).ToList()
+            }).ToListAsync();
     }
 
     public async Task<PollReplayDto> CreatePollAsync(PollDto poll, Guid teacherGuid)

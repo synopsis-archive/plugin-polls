@@ -67,4 +67,19 @@ public class PollsController : ControllerBase
             return BadRequest(exception.Message);
         }
     }
+
+    [HttpGet("GetPollsFromTeacher/{teacherGuid}")]
+    public async Task<ActionResult<List<PollDto>>> GetPollsFromTeacher(Guid teacherGuid)
+    {
+        try
+        {
+            $"Get Polls from Teacher {teacherGuid}".LogSuccess();
+            return Ok(await _pollsService.GetPollsOfTeacherAsync(teacherGuid));
+        }
+        catch (Exception exception)
+        {
+            exception.Message.LogError();
+            return BadRequest(exception.Message);
+        }
+    }
 }
