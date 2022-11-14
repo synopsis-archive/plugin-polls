@@ -77,9 +77,38 @@ public class PollsService : IPollsService
         };
     }
 
-    public Task<PollResultDto> GetPollResultAsync(string code)
+    public async Task<PollResultDto> GetPollResultAsync(string code)
     {
-        throw new NotImplementedException();
+        var poll = _pollsContext.Polls.Include(poll => poll.PollOptions).Include(poll => poll.SubmittedVotes).Single(poll => poll.PollCode == code);
+        var options = new Dictionary<long, PollOptionDto>();
+        foreach (var pollOption in poll.PollOptions)
+        {
+            options[pollOption.PollOptionId] = new PollOptionDto
+            {
+                PollOptionId = pollOption.PollOptionId,
+                Description = pollOption.Description,
+            };
+        }
+        var result = new Dictionary<PollOptionDto, ReceivedVotesDto>();
+        foreach (var pollVote in poll.SubmittedVotes)
+        {
+            var pollOption = options[pollVote.SelectedOptionId];
+            if (!result.ContainsKey(pollOption))
+            {
+                result[pollOption] = new ReceivedVotesDto { ReceivedVotes = 0 };
+            }
+            result[pollOption].ReceivedVotes++;
+        }
+        var totalVotes = poll.SubmittedVotes.Count();
+        foreach (var entry in result)
+        {
+            entry.Value.Percentage = ((byte)((double)entry.Value.ReceivedVotes / totalVotes));
+        }
+        var pollDto = await GetPollResultAsync(code);
+        PollResultDto pollResultDto = new PollResultDto().CopyPropertiesFrom(pollDto);
+        pollResultDto.Results = result;
+        pollResultDto.ReceivedAnswers = totalVotes;
+        return pollResultDto;
     }
 
     /// <summary>
