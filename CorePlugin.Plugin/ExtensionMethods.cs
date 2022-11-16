@@ -17,7 +17,7 @@ public static class ExtensionMethods
             EndTime = poll.EndTime,
             IsMultipleChoice = poll.IsMultipleChoice,
             PollOptions = poll.PollOptions
-                .Select(x => new PollOptionDto { PollOptionId = x.PollOptionId, Description = x.Description})
+                .Select(x => new PollOptionDto { PollOptionId = x.PollOptionId, Description = x.Description })
                 .ToList(),
             ReceivedAnswers = poll.SubmittedVotes.Count,
             Results = ConvertPollToResultDictionary(poll)
@@ -36,11 +36,11 @@ public static class ExtensionMethods
             EndTime = poll.EndTime,
             IsMultipleChoice = poll.IsMultipleChoice,
             PollOptions = poll.PollOptions
-                .Select(x => new PollOptionDto { PollOptionId = x.PollOptionId, Description = x.Description})
+                .Select(x => new PollOptionDto { PollOptionId = x.PollOptionId, Description = x.Description })
                 .ToList(),
         };
     }
-    
+
     #region Private Helper Methods
     private static Dictionary<long, ReceivedVotesDto> ConvertPollToResultDictionary(Poll poll)
     {
