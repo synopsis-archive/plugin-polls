@@ -1,6 +1,6 @@
 ﻿namespace CorePlugin.Plugin.Exceptions;
 
-public class InvalidPollIdException : Exception
+public class InvalidPollIdException : PollException
 {
     public InvalidPollIdException(string? message) : base(message) { }
 }

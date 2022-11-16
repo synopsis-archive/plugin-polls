@@ -1,6 +1,6 @@
 ﻿namespace CorePlugin.Plugin.Exceptions;
 
-public class NotMultipleChoiceException : Exception
+public class NotMultipleChoiceException : PollException
 {
     public NotMultipleChoiceException(string? message) : base(message) { }
 }

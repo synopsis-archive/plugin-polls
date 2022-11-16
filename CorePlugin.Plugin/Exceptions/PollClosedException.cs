@@ -1,6 +1,6 @@
 ﻿namespace CorePlugin.Plugin.Exceptions;
 
-public class PollClosedException : Exception
+public class PollClosedException : PollException
 {
     public PollClosedException(string? message) : base(message) { }
 }

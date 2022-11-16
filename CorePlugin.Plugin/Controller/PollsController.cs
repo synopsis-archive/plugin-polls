@@ -1,4 +1,5 @@
 ﻿using CorePlugin.Plugin.Dtos;
+using CorePlugin.Plugin.Exceptions;
 using CorePlugin.Plugin.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +26,7 @@ public class PollsController : ControllerBase
         {
             return Ok(await _pollsService.SubmitVotesAsync(pollCode, voteReplayDto));
         }
-        catch (Exception exception)
+        catch (PollException exception)
         {
             return BadRequest(exception.Message);
         }
@@ -38,7 +39,7 @@ public class PollsController : ControllerBase
         {
             return Ok(await _pollsService.ClosePollAsync(pollCode, teacherGuid));
         }
-        catch (Exception exception)
+        catch (PollException exception)
         {
             return BadRequest(exception.Message);
         }
@@ -51,7 +52,7 @@ public class PollsController : ControllerBase
         {
             return Ok(await _pollsService.GetPollAsync(pollCode));
         }
-        catch (Exception exception)
+        catch (PollException exception)
         {
             return BadRequest(exception.Message);
         }
@@ -64,7 +65,7 @@ public class PollsController : ControllerBase
         {
             return Ok(await _pollsService.GetPollResultAsync(pollCode));
         }
-        catch (Exception exception)
+        catch (PollException exception)
         {
             return BadRequest(exception.Message);
         }
@@ -77,7 +78,7 @@ public class PollsController : ControllerBase
         {
             return Ok(await _pollsService.GetPollsOfTeacherAsync(teacherGuid));
         }
-        catch (Exception exception)
+        catch (PollException exception)
         {
             return BadRequest(exception.Message);
         }
@@ -92,7 +93,7 @@ public class PollsController : ControllerBase
                 return Ok();
             return BadRequest("Cannot delete Poll of other Teacher");
         }
-        catch (Exception exception)
+        catch (PollException exception)
         {
             return BadRequest(exception.Message);
         }
