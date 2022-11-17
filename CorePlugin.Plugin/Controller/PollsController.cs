@@ -41,7 +41,7 @@ public class PollsController : ControllerBase
         }
     }
 
-    [HttpPut("Close/{pollCode}:{teacherGuid:guid}")]
+    [HttpPut("Close/{pollCode}/{teacherGuid:guid}")]
     public async Task<ActionResult<PollResultDto>> ClosePoll(string pollCode, [FromBody] Guid teacherGuid)
     {
         try
@@ -101,7 +101,7 @@ public class PollsController : ControllerBase
         }
     }
 
-    [HttpDelete("DeletePoll/{pollCode}:{teacherGuid:guid}")]
+    [HttpDelete("DeletePoll/{pollCode}/{teacherGuid:guid}")]
     public async Task<ActionResult<bool>> DeletePoll(string pollCode, Guid teacherGuid)
     {
         try
