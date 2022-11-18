@@ -3,6 +3,7 @@ using CorePlugin.Plugin.Services;
 using CorePlugin.PollsDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CorePlugin.Plugin;
@@ -13,8 +14,8 @@ public class Plugin : ICorePlugin
     {
         builder.Services.AddDbContext<PollsContext>(db =>
         {
-            //TBD - get connection string from config
-            db.UseSqlite("Data Source=Polls.sqlite3");
+            var connectionString = builder.Configuration.GetConnectionString("PollsDatabaseConnection");
+            db.UseSqlite(connectionString);
         });
         builder.Services.AddScoped<PollsService>();
         builder.Services.AddHostedService<DatabaseBackgroundService>();
