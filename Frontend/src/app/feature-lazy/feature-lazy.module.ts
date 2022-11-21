@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { FeatureLazyRoutingModule } from './feature-lazy-routing.module';
 import { SchueleransichtComponent } from './schueleransicht/schueleransicht.component';
+import { ErgebnisComponent } from './ergebnis/ergebnis.component';
 
 
 @NgModule({
   declarations: [
-    SchueleransichtComponent
+    SchueleransichtComponent,
+    ErgebnisComponent
   ],
   imports: [
     CommonModule,
