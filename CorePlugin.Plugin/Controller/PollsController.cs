@@ -20,7 +20,7 @@ public class PollsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<PollDto>> CreatePoll([FromBody] PollReplayDto poll)
+    public async Task<ActionResult<PollResultDto>> CreatePoll([FromBody] PollReplayDto poll)
     {
         _logger.LogInformation("Creating poll with args {@Poll}", poll);
         return Ok(await _pollsService.CreatePollAsync(poll, Guid.NewGuid()));
