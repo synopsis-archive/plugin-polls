@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [{
-  path:'Schüleransicht',
+  path:'',
   loadChildren:() => import('./feature-lazy/feature-lazy.module').then(x=>x.FeatureLazyModule)
 }];
 

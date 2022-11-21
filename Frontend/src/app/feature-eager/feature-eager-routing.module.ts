@@ -4,7 +4,7 @@ import { ErgebnissAnsichtComponent } from './ergebniss-ansicht/ergebniss-ansicht
 import { LehreransichtComponent } from './lehreransicht/lehreransicht.component';
 
 const routes: Routes = [{
-  path: 'umfragen',
+  path: '',
   children: [
     { path: 'Lehreransicht', component: LehreransichtComponent },
     {path: 'Ergebnissanischt', component: ErgebnissAnsichtComponent}
