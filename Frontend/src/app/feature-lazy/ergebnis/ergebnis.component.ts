@@ -9,6 +9,8 @@ export class ErgebnisComponent implements OnInit {
 
   umfragenTitel = "Umfrage Wombats";
   umfragenFrage = "Was essen Wombats?";
+  umfragenErsteller = "Florian Nadler";
+  umfragenDatm = "";
 
   constructor() { }
 
