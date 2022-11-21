@@ -10,7 +10,7 @@ export class ErgebnisComponent implements OnInit {
   umfragenTitel = "Umfrage Wombats";
   umfragenFrage = "Was essen Wombats?";
   umfragenErsteller = "Florian Nadler";
-  umfragenDatm = "";
+  umfragenDatum = "21.11.2022";
 
   constructor() { }
 

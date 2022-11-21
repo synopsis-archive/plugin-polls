@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class LehreransichtComponent implements OnInit {
+  title = '';
+  question = '';
+  
 
   constructor() { }
 
