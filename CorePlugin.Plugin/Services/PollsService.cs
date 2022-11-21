@@ -11,7 +11,7 @@ public class PollsService : IPollsService
 
     public PollsService(PollsContext pollsContext) => _pollsContext = pollsContext;
 
-    public async Task<PollDto> CreatePollAsync(PollReplayDto poll, Guid teacherGuid)
+    public async Task<PollResultDto> CreatePollAsync(PollReplayDto poll, Guid teacherGuid)
     {
         var newPoll = new Poll
         {
@@ -28,7 +28,7 @@ public class PollsService : IPollsService
         await _pollsContext.Polls.AddAsync(newPoll);
         await _pollsContext.SaveChangesAsync();
 
-        return newPoll.ToPollDto();
+        return newPoll.ToPollResultDto();
     }
 
     public async Task<PollDto> GetPollAsync(string code)
