@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FeatureEagerRoutingModule } from './feature-eager-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { ErgebnissAnsichtComponent } from './ergebniss-ansicht/ergebniss-ansicht.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ErgebnissAnsichtComponent } from './ergebniss-ansicht/ergebniss-ansicht
   imports: [
     CommonModule,
     FeatureEagerRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class FeatureEagerModule { }

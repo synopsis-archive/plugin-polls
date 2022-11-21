@@ -3,8 +3,8 @@
         <div class="ml-5 mr-5 mb-5">
             <h3 class="text-4xl dark:text-white">Titel Eingeben:</h3>
             <div class="inline-block">
-                <div class="float-left">
-                    <input class="form-control" type="text" placeholder="Umfrage Wombats 5bhif"
+                <div class="mr-10 float-left">
+                    <input [value]="title" class="form-control" type="text" placeholder="Umfrage Wombats 5bhif"
                         class="h-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[400px]">
                 </div>
                 <div class="float-left">
@@ -28,27 +28,27 @@
     </div>
     <div id="body" class="m-5">
         <div class="mt-10">
-            <p class="text-lg">Frage Eingeben:</p>
-            <input type="text" placeholder="Warum leben Wombats in Mülleimern?"
-                class="h-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <p class="text-lg ml-2">Frage Eingeben:</p>
+            <input [value]="question" type="text" placeholder="Warum leben Wombats in Mülleimern?"
+                class="h-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[560px]">
         </div>
         <div class="inline-block">
             <div class="inline-block align-top mr-3">
-                <div class="flex">
+                <div class="ml-2 flex">
                     Antwort 1:
                 </div>
                 <div class="flex">
                     <input type="text"
                         class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
                 </div>
-                <div class="flex">
+                <div class="ml-2 flex">
                     Antwort 2:
                 </div>
                 <div class="flex">
                     <input type="text"
                         class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
                 </div>
-                <div class="flex">
+                <div class="ml-2 flex">
                     Antwort 3:
                 </div>
                 <div class="flex">
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="inline-block">
-                <div class="flex">
+                <div class="ml-2 flex">
                     Von:
                 </div>
                 <div class="flex">
@@ -66,7 +66,7 @@
                     <input type="time"
                         class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
-                <div class="flex">
+                <div class="ml-2 flex">
                     Bis:
                 </div>
                 <div class="flex">
@@ -75,12 +75,12 @@
                     <input type="time"
                         class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
-                <div class="mt-6 flex">
+                <div class="mt-8 ml-2 flex">
                     <p class="flex">Mehrfach-Antworten</p>
                     <label for="default-toggle" class="inline-flex relative items-center cursor-pointer ml-2">
-                        <input type="checkbox" value="" id="default-toggle" class="sr-only peer">
+                        <input [value]="" type="checkbox" value="" id="default-toggle" class="sr-only peer">
                         <div
-                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#004D99]">
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#004D99]">
                         </div>
                     </label>
                 </div>
