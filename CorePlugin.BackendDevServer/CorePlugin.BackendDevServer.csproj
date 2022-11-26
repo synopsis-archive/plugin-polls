@@ -13,6 +13,7 @@
     <ItemGroup>
       <ProjectReference Include="..\CorePlugin.Plugin\CorePlugin.Plugin.csproj" />
       <ProjectReference Include="..\CorePlugin.PollsDb\CorePlugin.PollsDb.csproj" />
+      <ProjectReference Include="..\core\Core.AuthLib\Core.AuthLib.csproj" />
     </ItemGroup>
 
 </Project>
