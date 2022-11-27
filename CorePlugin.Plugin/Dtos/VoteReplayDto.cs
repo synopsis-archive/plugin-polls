@@ -6,7 +6,4 @@ public class VoteReplayDto
 {
     [Required]
     public long OptionId { get; set; }
-
-    [Required]
-    public Guid SubmittedBy { get; set; }
 }

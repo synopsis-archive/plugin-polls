@@ -12,7 +12,7 @@ public interface IPollsService
     /*
      * Creates a new Poll (Endpoint for "Lehreransicht")
      */
-    Task<PollResultDto> CreatePollAsync(PollReplayDto pollDto, Guid teacherGuid);
+    Task<PollResultDto> CreatePollAsync(PollReplayDto pollDto, Guid teacherGuid, string creatorName);
 
     /*
      * Gets a poll without any results ("Schüleransicht" in mockup)
@@ -27,7 +27,7 @@ public interface IPollsService
     /*
      * Submits a vote for a poll ("Schüleransicht" in mockup) and returns the result -> "Ergebnisansicht"
      */
-    Task<PollResultDto> SubmitVotesAsync(string code, List<VoteReplayDto> voteReplayDtos);
+    Task<PollResultDto> SubmitVotesAsync(string code, Guid votedBy, List<VoteReplayDto> voteReplayDtos);
 
     /*
      * Closes a poll earlier than previously entered date

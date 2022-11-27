@@ -1,4 +1,5 @@
-﻿using CorePlugin.Plugin.Dtos;
+﻿using System.Runtime.CompilerServices;
+using CorePlugin.Plugin.Dtos;
 using CorePlugin.PollsDb;
 
 namespace CorePlugin.Plugin;
@@ -12,7 +13,7 @@ public static class ExtensionMethods
             PollCode = poll.PollCode,
             PollName = poll.PollName,
             PollQuestion = poll.PollQuestion,
-            CreatedBy = poll.CreatedBy,
+            CreatorName = poll.CreatorName,
             StartTime = poll.StartTime,
             EndTime = poll.EndTime,
             IsMultipleChoice = poll.IsMultipleChoice,
@@ -31,7 +32,7 @@ public static class ExtensionMethods
             PollCode = poll.PollCode,
             PollName = poll.PollName,
             PollQuestion = poll.PollQuestion,
-            CreatedBy = poll.CreatedBy,
+            CreatorName = poll.CreatorName,
             StartTime = poll.StartTime,
             EndTime = poll.EndTime,
             IsMultipleChoice = poll.IsMultipleChoice,
