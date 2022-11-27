@@ -1,6 +1,8 @@
-﻿using CorePlugin.Plugin.Dtos;
+﻿using Core.AuthLib;
+using CorePlugin.Plugin.Dtos;
 using CorePlugin.Plugin.Exceptions;
 using CorePlugin.Plugin.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -19,20 +21,22 @@ public class PollsController : ControllerBase
         _logger = logger;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<PollResultDto>> CreatePoll([FromBody] PollReplayDto poll)
     {
         _logger.LogInformation("Creating poll with args {@Poll}", poll);
-        return Ok(await _pollsService.CreatePollAsync(poll, Guid.NewGuid()));
+        return Ok(await _pollsService.CreatePollAsync(poll, User.GetUUID(), User.GetUsername()));
     }
 
+    [Authorize]
     [HttpPost("Vote/{pollCode}")]
     public async Task<ActionResult<PollResultDto>> SubmitVote(string pollCode, [FromBody] List<VoteReplayDto> voteReplayDto)
     {
         try
         {
             _logger.LogInformation("Submitting vote with args {@Vote}", voteReplayDto);
-            return Ok(await _pollsService.SubmitVotesAsync(pollCode, voteReplayDto));
+            return Ok(await _pollsService.SubmitVotesAsync(pollCode, User.GetUUID(), voteReplayDto));
         }
         catch (PollException exception)
         {
@@ -41,13 +45,14 @@ public class PollsController : ControllerBase
         }
     }
 
-    [HttpPut("Close/{pollCode}/{teacherGuid:guid}")]
-    public async Task<ActionResult<PollResultDto>> ClosePoll(string pollCode, [FromBody] Guid teacherGuid)
+    [Authorize]
+    [HttpPut("Close/{pollCode}")]
+    public async Task<ActionResult<PollResultDto>> ClosePoll(string pollCode)
     {
         try
         {
             _logger.LogInformation("Closing poll with args {@PollCode}", pollCode);
-            return Ok(await _pollsService.ClosePollAsync(pollCode, teacherGuid));
+            return Ok(await _pollsService.ClosePollAsync(pollCode, User.GetUUID()));
         }
         catch (PollException exception)
         {
@@ -56,6 +61,7 @@ public class PollsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpGet("GetPoll/{pollCode}")]
     public async Task<ActionResult<PollDto>> GetPollByCode(string pollCode)
     {
@@ -71,6 +77,7 @@ public class PollsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpGet("GetPollResult/{pollCode}")]
     public async Task<ActionResult<PollResultDto>> GetPollResultByCode(string pollCode)
     {
@@ -86,13 +93,14 @@ public class PollsController : ControllerBase
         }
     }
 
-    [HttpGet("GetPollsFromTeacher/{teacherGuid:guid}")]
-    public async Task<ActionResult<List<PollDto>>> GetPollsFromTeacher(Guid teacherGuid)
+    [Authorize]
+    [HttpGet("GetPollsFromTeacher")]
+    public async Task<ActionResult<List<PollDto>>> GetPollsFromTeacher()
     {
         try
         {
-            _logger.LogInformation("Getting polls from teacher with guid {@TeacherGuid}", teacherGuid);
-            return Ok(await _pollsService.GetPollsOfTeacherAsync(teacherGuid));
+            _logger.LogInformation("Getting polls from teacher with guid {@TeacherGuid}", User.GetUUID());
+            return Ok(await _pollsService.GetPollsOfTeacherAsync(User.GetUUID()));
         }
         catch (PollException exception)
         {
@@ -101,13 +109,14 @@ public class PollsController : ControllerBase
         }
     }
 
-    [HttpDelete("DeletePoll/{pollCode}/{teacherGuid:guid}")]
-    public async Task<ActionResult<bool>> DeletePoll(string pollCode, Guid teacherGuid)
+    [Authorize]
+    [HttpDelete("DeletePoll/{pollCode}")]
+    public async Task<ActionResult<bool>> DeletePoll(string pollCode)
     {
         try
         {
             _logger.LogInformation("Deleting poll with code {@PollCode}", pollCode);
-            if (await _pollsService.DeletePollAsync(pollCode, teacherGuid))
+            if (await _pollsService.DeletePollAsync(pollCode, User.GetUUID()))
                 return Ok();
             _logger.LogWarning("Poll with code {@PollCode} could not be deleted", pollCode);
             return BadRequest("Cannot delete Poll of other Teacher");

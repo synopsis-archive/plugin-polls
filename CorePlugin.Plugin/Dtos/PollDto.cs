@@ -6,7 +6,7 @@ public class PollDto
 {
     [Required] public string PollCode { get; set; } = null!;
     [Required] public string PollName { get; set; } = null!;
-    [Required] public Guid CreatedBy { get; set; }
+    [Required] public string CreatorName { get; set; } = null!;
     [Required] public DateTime StartTime { get; set; } = DateTime.Now;
     [Required] public DateTime EndTime { get; set; } = DateTime.Now.AddDays(1);
     [Required] public bool IsMultipleChoice { get; set; }

@@ -11,11 +11,12 @@ public class PollsService : IPollsService
 
     public PollsService(PollsContext pollsContext) => _pollsContext = pollsContext;
 
-    public async Task<PollResultDto> CreatePollAsync(PollReplayDto poll, Guid teacherGuid)
+    public async Task<PollResultDto> CreatePollAsync(PollReplayDto poll, Guid teacherGuid, string creatorName)
     {
         var newPoll = new Poll
         {
             PollCode = GeneratePollCode(),
+            CreatorName = creatorName,
             CreatedBy = teacherGuid,
             IsMultipleChoice = poll.IsMultipleChoice,
             StartTime = poll.StartTime,
@@ -65,15 +66,15 @@ public class PollsService : IPollsService
     /// Method <c>SubmitVotes</c> submits all given votes to the database.
     /// </summary>
     /// <param name="pollCode">The code of the poll to which a vote should be added</param>
+    /// <param name="votedBy">The uuid of the user who submitted the vote(s)</param>
     /// <param name="voteReplayDtos">Information regarding the vote</param>
     /// <returns>True if the operation succeeds</returns>
     /// <exception cref="InvalidPollIdException">Is thrown if the poll with id <para>pollId</para> is not present in the database</exception>
     /// <exception cref="PollClosedException">Is thrown if the poll is already closed.</exception>
     /// <exception cref="NotMultipleChoiceException">Is thrown if more than one voteReplay is sent and the poll is not multiple choice.</exception>
     /// <exception cref="NoVoteSubmittedException">Is thrown if <para>voteReplayDtos</para> is empty.</exception>
-    /// <exception cref="InconsistentUserException">Is thrown if <para>voteReplayDtos</para> contains more than one userId.</exception>
     /// <exception cref="AlreadyVotedException">Is thrown if the user already voted for this poll.</exception>
-    public async Task<PollResultDto> SubmitVotesAsync(string pollCode, List<VoteReplayDto> voteReplayDtos)
+    public async Task<PollResultDto> SubmitVotesAsync(string pollCode, Guid votedBy, List<VoteReplayDto> voteReplayDtos)
     {
         var poll = await _pollsContext.Polls
             .Include(x => x.SubmittedVotes)
@@ -81,11 +82,11 @@ public class PollsService : IPollsService
             .SingleOrDefaultAsync(p => p.PollCode == pollCode);
 
         CheckPoll(pollCode, poll);
-        CheckVoteDtos(voteReplayDtos, poll);
+        CheckVoteDtos(voteReplayDtos, votedBy, poll);
 
         Poll pollToReturn = null!;
         foreach (var voteReplayDto in voteReplayDtos)
-            pollToReturn = await AddVoteToPoll(poll!, voteReplayDto);
+            pollToReturn = await AddVoteToPoll(poll!, votedBy, voteReplayDto);
 
         return pollToReturn.ToPollResultDto();
     }
@@ -95,7 +96,7 @@ public class PollsService : IPollsService
     /// </summary>
     /// <param name="pollCode">The code of poll which should be closed</param>
     /// <param name="teacherGuid">The guid of the current logged in teacher</param>
-    /// <returns>True if the operation succeeds</returns>
+    /// <returns>The end result of the poll</returns>
     /// <exception cref="InvalidPollIdException">Is thrown if the poll with id <para>pollId</para> is not present in the database</exception>
     public async Task<PollResultDto> ClosePollAsync(string pollCode, Guid teacherGuid)
     {
@@ -106,7 +107,10 @@ public class PollsService : IPollsService
 
         CheckPoll(pollCode, poll);
 
-        poll!.EndTime = DateTime.Now;
+        if (teacherGuid != poll!.CreatedBy)
+            throw new NotAuthorizedException("You are not authorized to close this poll.");
+
+        poll.EndTime = DateTime.Now;
         await _pollsContext.SaveChangesAsync();
         return poll.ToPollResultDto();
     }
@@ -117,7 +121,7 @@ public class PollsService : IPollsService
         CheckPoll(code, poll);
 
         if (poll!.CreatedBy != teacherGuid)
-            return false;
+            throw new NotAuthorizedException("You are not authorized to delete this poll.");
 
         _pollsContext.Polls.Remove(poll);
         await _pollsContext.SaveChangesAsync();
@@ -134,7 +138,7 @@ public class PollsService : IPollsService
             throw new PollClosedException($"Poll with id {pollCode} is already closed!");
     }
 
-    private static void CheckVoteDtos(IReadOnlyList<VoteReplayDto> voteReplayDtos, Poll? poll)
+    private static void CheckVoteDtos(IReadOnlyList<VoteReplayDto> voteReplayDtos, Guid submittedBy, Poll? poll)
     {
         if (voteReplayDtos.Count == 0)
             throw new NoVoteSubmittedException("No votes given!");
@@ -142,14 +146,11 @@ public class PollsService : IPollsService
         if (voteReplayDtos.Count != 1 && !poll!.IsMultipleChoice)
             throw new NotMultipleChoiceException($"Poll with {poll.PollId} is not a multiple choice poll!");
 
-        if (voteReplayDtos.Any(x => x.SubmittedBy != voteReplayDtos[0].SubmittedBy))
-            throw new InconsistentUserException("All votes must be submitted by the same user!");
-
-        if (poll!.SubmittedVotes.Any(x => x.UserId == voteReplayDtos[0].SubmittedBy))
-            throw new AlreadyVotedException($"User with id {voteReplayDtos[0].SubmittedBy} has already submitted a vote!");
+        if (poll!.SubmittedVotes.Any(x => x.UserId == submittedBy))
+            throw new AlreadyVotedException($"User with Guid {submittedBy} has already submitted a vote!");
     }
 
-    private async Task<Poll> AddVoteToPoll(Poll poll, VoteReplayDto voteReplayDto)
+    private async Task<Poll> AddVoteToPoll(Poll poll, Guid submittedBy, VoteReplayDto voteReplayDto)
     {
         var optionExistsOnPoll = poll.PollOptions.Any(o => o.PollOptionId == voteReplayDto.OptionId);
         if (!optionExistsOnPoll)
@@ -157,7 +158,7 @@ public class PollsService : IPollsService
 
         _ = await _pollsContext.PollVotes.AddAsync(new SubmittedVote
         {
-            UserId = voteReplayDto.SubmittedBy,
+            UserId = submittedBy,
             PollId = poll.PollId,
             SelectedPollOptionId = voteReplayDto.OptionId,
         });
