@@ -1,10 +1,8 @@
 <div id="header" class="bg-[#4D83B8]">
-    <h3 class="text-4xl text-white">Warum leben Wobats in Mülleimern?</h3>
-    <br>
-    <h6 class="text-white">Wählen sie (oder mehrere) Antwort(en):</h6>
-    <div class="flex">
+    <div class="flex float-right mt-7 mr-5">
+        <br>
         <button type="button"
-            class="text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full  text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full  text-sm p-2.5 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -14,16 +12,21 @@
             <span class="sr-only">Icon description</span>
         </button>
     </div>
-</div>
-
-<div *ngFor="let item of antworten">
-    <input  type="checkbox"><label>{{item}}</label>
-</div>
-
-
-<div>
-    <button 
-    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Absenden</button>
+    <h3 class="text-4xl text-white">Warum leben Wobats in Mülleimern?</h3>
     <br>
-    <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ergebniss ansehen</button>
+    
+    <h6 class="text-white">Wählen sie (oder mehrere) Antwort(en):</h6>
+    
+</div>
+<div class="mt-5">
+<div  *ngFor="let item of antworten">
+    <input name="a" type="checkbox"><label>{{item}}</label>
+</div>
+</div>
+
+<div class="mt-20" >
+    <button 
+    class=" text-white py-2 px-20  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Absenden</button>
+    <br>
+    <button class="py-2 px-14 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ergebniss ansehen</button>
 </div>
