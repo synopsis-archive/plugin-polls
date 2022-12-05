@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ErgebnissAnsichtComponent } from './ergebniss-ansicht/ergebniss-ansicht.component';
+import { CodeInputComponent } from './code-input/code-input.component';
 import { LehreransichtComponent } from './lehreransicht/lehreransicht.component';
 
 const routes: Routes = [{
-  path: 'umfragen',
+  path: '',
   children: [
     { path: 'Lehreransicht', component: LehreransichtComponent },
-    {path: 'Ergebnissanischt', component: ErgebnissAnsichtComponent}
+    { path: 'Code', component: CodeInputComponent }
   ]
 }];
 

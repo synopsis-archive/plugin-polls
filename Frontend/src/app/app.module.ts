@@ -7,6 +7,7 @@ import { CoreModule } from './core/core.module';
 import { FeatureEagerModule } from './feature-eager/feature-eager.module';
 import { SharedModule } from './shared/shared.module';
 import {MatButtonModule} from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {MatButtonModule} from '@angular/material/button';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     CoreModule,
     SharedModule,
