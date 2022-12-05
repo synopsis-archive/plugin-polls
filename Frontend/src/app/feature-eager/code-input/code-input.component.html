@@ -4,10 +4,10 @@
       </div>
       
       <div class="h-full grid place-items-center">
-        <div>
+        <div class="flex flex-col items-center">
           <p class="text-4xl font-bold text-[#004D99]">Code eingeben:</p>
           <input [(ngModel)]="code" type="text" (keyup.enter)="enterPressend()"
-                 class="mt-2 text-3xl w-72 h-15 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                 class="text-center mt-2 w-72 text-3xl h-15 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
           <a class="text-red-600" [hidden]="errorHidden">Code muss genau 6 Zeichen lang sein!</a>
       </div>
       </div>
