@@ -4,11 +4,12 @@ import { PageNotFoundComponent } from './feature-lazy/page-not-found/page-not-fo
 
 const routes: Routes = [
   { path: '', redirectTo: '/Code', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent },
   {
     path: '',
     loadChildren: () => import('./feature-lazy/feature-lazy.module').then(x => x.FeatureLazyModule)
-  }];
+  },
+  {path: '**', redirectTo: '/PageNotFound'}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
