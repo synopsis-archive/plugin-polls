@@ -7,7 +7,6 @@ import { ErgebnisComponent } from './ergebnis/ergebnis.component';
 import { NgChartsModule } from 'ng2-charts';
 
 
-
 @NgModule({
   declarations: [
     SchueleransichtComponent,
