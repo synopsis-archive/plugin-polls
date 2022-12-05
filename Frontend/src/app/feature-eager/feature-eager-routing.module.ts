@@ -9,7 +9,8 @@ const routes: Routes = [{
   children: [
     { path: 'Lehreransicht', component: LehreransichtComponent },
     { path: 'Code', component: CodeInputComponent },
-    { path: 'LehreransichtListe', component: LehreransichtListeComponent}
+    { path: 'LehreransichtListe', component: LehreransichtListeComponent },
+    { path: '**', redirectTo: '/PageNotFound' }
   ]
 }];
 

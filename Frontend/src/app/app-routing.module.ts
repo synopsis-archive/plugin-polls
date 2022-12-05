@@ -7,8 +7,7 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./feature-lazy/feature-lazy.module').then(x => x.FeatureLazyModule)
-  },
-  {path: '**', redirectTo: '/PageNotFound'}
+  }
 ];
 
 @NgModule({
