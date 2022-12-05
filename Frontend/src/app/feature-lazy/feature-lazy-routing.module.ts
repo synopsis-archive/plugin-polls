@@ -7,8 +7,8 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: 'schueleransicht', component: SchueleransichtComponent },
-      { path: 'ergebnisansicht', component: ErgebnisComponent }
+      { path: 'Schueleransicht', component: SchueleransichtComponent },
+      { path: 'Ergebnisansicht', component: ErgebnisComponent }
 
     ]
   }
