@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AlreadyVotedComponent implements OnInit {
 
+  umfragenFrage = "Was essen Wombats?";
+
   constructor() { }
 
   ngOnInit(): void {
