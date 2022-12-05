@@ -6,13 +6,15 @@ import { SchueleransichtComponent } from './schueleransicht/schueleransicht.comp
 import { ErgebnisComponent } from './ergebnis/ergebnis.component';
 import { NgChartsModule } from 'ng2-charts';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AlreadyVotedComponent } from './already-voted/already-voted.component';
 
 
 @NgModule({
   declarations: [
     SchueleransichtComponent,
     ErgebnisComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AlreadyVotedComponent
   ],
   imports: [
     CommonModule,
