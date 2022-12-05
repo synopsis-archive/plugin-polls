@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { PollsTmp } from './pollsTmp';
 
 
@@ -26,27 +27,24 @@ export class LehreransichtListeComponent implements OnInit {
     {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4}
   ];
 
-  @Output() detailsOut = new EventEmitter<PollsTmp>();
-  @Output() deleteOut = new EventEmitter<PollsTmp>(); 
-  @Output() newOut = new EventEmitter();
-  constructor() { }
+  constructor(private router : Router) { }
 
   ngOnInit(): void {
   }
 
   detailsClicked(poll : PollsTmp)
   {
-    this.detailsOut.emit(poll);
+    //Details Page
   }
 
   deleteClicked(poll : PollsTmp)
   {
-    this.deleteOut.emit(poll);
+    //Delete
   }
 
   newPollClicked()
   {
-    this.newOut.emit();
+    this.router.navigateByUrl("Lehreransicht");
   }
 
 }
