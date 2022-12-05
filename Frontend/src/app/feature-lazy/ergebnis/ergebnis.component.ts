@@ -30,7 +30,7 @@ export class ErgebnisComponent implements OnInit {
       xAxis: {
         display: false,
         grid: {
-         // removes random border at bottom
+          // removes random border at bottom
         }
       },
       yAxis: {

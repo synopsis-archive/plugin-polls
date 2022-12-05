@@ -34,7 +34,7 @@ export class LehreransichtListeComponent implements OnInit {
 
   detailsClicked(poll : PollsTmp)
   {
-    //Details Page
+    this.router.navigateByUrl("ergebnisansicht");
   }
 
   deleteClicked(poll : PollsTmp)
