@@ -6,6 +6,7 @@ import { SchueleransichtComponent } from './schueleransicht/schueleransicht.comp
 import { ErgebnisComponent } from './ergebnis/ergebnis.component';
 import { NgChartsModule } from 'ng2-charts';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
   imports: [
     CommonModule,
     FeatureLazyRoutingModule,
-    NgChartsModule
+    NgChartsModule,
+    FormsModule
   ]
 })
 export class FeatureLazyModule { }
