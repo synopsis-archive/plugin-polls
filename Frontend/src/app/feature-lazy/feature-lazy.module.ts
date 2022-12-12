@@ -6,12 +6,8 @@ import { SchueleransichtComponent } from './schueleransicht/schueleransicht.comp
 import { ErgebnisComponent } from './ergebnis/ergebnis.component';
 import { NgChartsModule } from 'ng2-charts';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-<<<<<<< HEAD
 import { FormsModule } from '@angular/forms';
-=======
 import { AlreadyVotedComponent } from './already-voted/already-voted.component';
->>>>>>> b94eec8c088773b8b0130e387903bbfeb3869fee
-
 
 @NgModule({
   declarations: [
