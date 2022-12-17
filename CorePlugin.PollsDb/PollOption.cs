@@ -8,7 +8,7 @@ public class PollOption
     public long PollOptionId { get; set; }
 
     public string Description { get; set; } = null!;
-    
+
     public long PollId { get; set; }
     public Poll Poll { get; set; } = null!;
 }
