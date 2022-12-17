@@ -25,7 +25,7 @@ export class CodeInputComponent implements OnInit {
       setTimeout(() => this.hideError(), 3000);
     }
   }
-  
+
   hideError():void{
     this.errorHidden = true;
   }

@@ -11,7 +11,7 @@ import { LehreransichtComponent } from './lehreransicht/lehreransicht.component'
   declarations: [
     CodeInputComponent,
     LehreransichtComponent,
-    LehreransichtListeComponent  
+    LehreransichtListeComponent
   ],
   imports: [
     CommonModule,
