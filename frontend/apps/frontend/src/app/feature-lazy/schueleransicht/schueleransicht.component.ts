@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PollsService,PollDto } from 'src/app/swagger';
+import { PollDto, PollsService } from '../../swagger';
 
 @Component({
   selector: 'app-schueleransicht',
@@ -12,10 +12,9 @@ export class SchueleransichtComponent implements OnInit {
   poll: PollDto|null = null;
   auswahl:string = "";
 
-
   constructor(private poolsService: PollsService)
    {
-      
+
    }
 
   ngOnInit(): void {
@@ -29,8 +28,4 @@ export class SchueleransichtComponent implements OnInit {
   {
     this.poolsService.pollsVotePollCodePost("aaaa",)
   }
-
-
-
-
 }

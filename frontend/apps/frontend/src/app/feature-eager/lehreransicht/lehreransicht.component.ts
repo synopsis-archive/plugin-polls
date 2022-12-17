@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PollReplayDto, PollsService } from 'src/app/swagger';
 
 @Component({
   selector: 'app-lehreransicht',
