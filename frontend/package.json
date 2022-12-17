@@ -7,7 +7,8 @@
     "build": "nx build",
     "watch": "nx build --watch --configuration development",
     "test": "nx test",
-    "postinstall": "node ./decorate-angular-cli.js"
+    "postinstall": "node ./decorate-angular-cli.js",
+    "generator": "openapi-generator-cli generate --generator-key angular"
   },
   "private": true,
   "dependencies": {
