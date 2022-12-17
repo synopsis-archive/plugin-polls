@@ -14,7 +14,7 @@ import { AlreadyVotedComponent } from './already-voted/already-voted.component';
     SchueleransichtComponent,
     ErgebnisComponent,
     PageNotFoundComponent,
-    AlreadyVotedComponent
+    AlreadyVotedComponent,
   ],
   imports: [
     CommonModule,
