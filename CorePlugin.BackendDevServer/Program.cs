@@ -1,17 +1,19 @@
-using CorePlugin.PollsDb;
-using PluginPolls.PollsDb;
+using Core.AuthLib;
+using CorePlugin.Plugin;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(x => x.AddSwaggerGenHeader());
+
+// Add Authentication
+builder.AddHeaderAuth();
 
 /*
- *  ___   ___    _  _  ___ _____   _____ ___  _   _  ___ _  _ 
+ *  ___   ___    _  _  ___ _____   _____ ___  _   _  ___ _  _
  * |   \ / _ \  | \| |/ _ \_   _| |_   _/ _ \| | | |/ __| || |
  * | |) | (_) | | .` | (_) || |     | || (_) | |_| | (__| __ |
  * |___/ \___/  |_|\_|\___/ |_|     |_| \___/ \___/ \___|_||_|
@@ -33,8 +35,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
-app.MapControllers();
 
 plugin.Configure(app);
 

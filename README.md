@@ -10,6 +10,12 @@ To initialize the core submodule, use the following command after cloning this r
 git submodule update --init --recursive
 ```
 
+## Pre-commit hooks
+
+This repository uses [pre-commit](https://pre-commit.com/) to run a set of checks before committing changes.
+
+> For further information on how to run pre-commit and the checks performed refer to the the [core readme](https://github.com/htl-grieskirchen-core/core#pre-commit-hooks).
+
 ## Development
 
 Develop your plugin in the `CorePlugin.Plugin` project. You can then start the `CorePlugin.BackendDevServer` to run your
