@@ -18,7 +18,7 @@ export class CodeInputComponent  {
   enterPressend():void{
     if(this.code.length === 6){
       console.log(this.code);
-      this.router.navigate(['/Schueleransicht']);
+      this.router.navigate(['/Schueleransicht/'+this.code]);
     } else {
       this.errorHidden = false;
       setTimeout(() => this.hideError(), 3000);
