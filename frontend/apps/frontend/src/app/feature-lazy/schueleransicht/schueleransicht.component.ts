@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PollDto, PollsService } from '../../swagger';
 
 @Component({
@@ -11,8 +12,9 @@ export class SchueleransichtComponent implements OnInit {
   antworten:string[] = ["Antwort1","Antwort2","Antwort3"];
   poll: PollDto|null = null;
   auswahl:string = "";
+  check:boolean = false;
 
-  constructor(private poolsService: PollsService)
+  constructor(private poolsService: PollsService,private router:Router)
    {
 
    }
@@ -24,8 +26,14 @@ export class SchueleransichtComponent implements OnInit {
     });
   }
 
+  ergebnissButtonClicked():void
+  {
+    this.router.navigate(['/Ergebnisansicht']);
+  }
+
   sendButtonClicked():void
   {
-    this.poolsService.pollsVotePollCodePost("aaaa",)
+    this.check = true;
+    //this.poolsService.pollsVotePollCodePost("aaaa",)
   }
 }

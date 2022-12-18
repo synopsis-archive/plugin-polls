@@ -18,16 +18,22 @@
     <h6 class="text-white">Wählen sie (oder mehrere) Antwort(en):</h6>
 
 </div>
-<div class="mt-5">
+
+<div [hidden]="check" class="mt-5">
 <div  *ngFor="let item of antworten">
-    //[(ngModel)]="auswahl"
+    [(ngModel)]="auswahl"
     <input name="a" type="checkbox"><label>{{item}}</label>
 </div>
+</div>
+<div [hidden]="!check">
+    <h3 class="text-4xl">Danke für´s abstimmen! Sie können nun das Ergebniss ansehen</h3>
+
 </div>
 
 <div class="mt-20" >
     <button (click)="sendButtonClicked()"
     class=" text-white py-2 px-20  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Absenden</button>
     <br>
-    <button class="py-2 px-14 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ergebniss ansehen</button>
+    <button (click)="ergebnissButtonClicked()"
+    class="py-2 px-14 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ergebniss ansehen</button>
 </div>
