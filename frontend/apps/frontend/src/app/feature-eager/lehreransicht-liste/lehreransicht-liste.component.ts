@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PollDto, PollsService } from '../../polls-backend';
 import { PollsTmp } from './pollsTmp';
 
 
@@ -27,24 +28,32 @@ export class LehreransichtListeComponent implements OnInit {
     {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4}
   ];
 
-  constructor(private router : Router) { }
+  pollsNew : PollDto[] = [];
+
+  constructor(private router : Router, private poolsService: PollsService) { }
 
   ngOnInit(): void {
+    this.poolsService.pollsGetPollsFromTeacherGet().subscribe(x=>{
+      this.pollsNew = x;
+    });
   }
+  
 
   detailsClicked(poll : PollsTmp)
   {
-    this.router.navigateByUrl("ergebnisansicht");
+    this.router.navigateByUrl("Ergebnisansicht");
+    //this.router.navigateByUrl("Ergebnisansicht/"+poll.pollCode);
   }
 
   deleteClicked(poll : PollsTmp)
   {
-    //Delete
+    //this.pollsService.deletePoll(poll.pollCode);
   }
 
   newPollClicked()
   {
     this.router.navigateByUrl("Lehreransicht");
+    //this.router.navigateByUrl("Lehreransicht"+poll.pollCode);
   }
 
 }
