@@ -50,7 +50,6 @@ export class ErgebnisComponent implements OnInit {
 
   constructor(private activatedRoute:ActivatedRoute) { }
 
-  }
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(x => this.umfrageNumberCode = +(x.get('id') ?? '0'));
     this.umfragenCode = this.umfrageNumberCode.toString();
