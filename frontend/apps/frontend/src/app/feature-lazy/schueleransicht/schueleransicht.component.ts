@@ -50,6 +50,6 @@ export class SchueleransichtComponent implements OnInit {
   sendButtonClicked():void
   {
     this.check = true;
-    //this.poolsService.pollsVotePollCodePost("aaaa",)
+    this.poolsService.pollsVotePollCodePost(this.code);
   }
 }
