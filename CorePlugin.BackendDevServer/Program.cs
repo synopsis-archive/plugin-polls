@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen(x => x.AddSwaggerGenHeader());
 // Add Authentication
 builder.AddHeaderAuth();
 
+
 /*
  *  ___   ___    _  _  ___ _____   _____ ___  _   _  ___ _  _
  * |   \ / _ \  | \| |/ _ \_   _| |_   _/ _ \| | | |/ __| || |
@@ -32,7 +33,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseAuthorization();
 

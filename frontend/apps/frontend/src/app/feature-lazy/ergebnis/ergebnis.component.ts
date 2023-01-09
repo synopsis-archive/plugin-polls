@@ -13,8 +13,8 @@ export class ErgebnisComponent implements OnInit {
   umfragenFrage = "Was essen Wombats?";
   umfragenErsteller = "Florian Nadler";
   umfragenDatum = "21.11.2022";
-  umfragenCode = "2LM9X8"
-  code = -1;
+  umfragenCode:string = "";
+  umfrageNumberCode:number = 0;
 
   chartData: ChartDataset[] = [{
     label: '$ in millions',
@@ -48,10 +48,13 @@ export class ErgebnisComponent implements OnInit {
     }
   };
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(private activatedRoute:ActivatedRoute) { }
 
+  }
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(x => this.code = +(x.get('id') ?? '0'));
+    this.activatedRoute.paramMap.subscribe(x => this.umfrageNumberCode = +(x.get('id') ?? '0'));
+    this.umfragenCode = this.umfrageNumberCode.toString();
   }
 
+  
 }
