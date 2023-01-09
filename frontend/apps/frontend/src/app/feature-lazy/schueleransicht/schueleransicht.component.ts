@@ -44,7 +44,8 @@ export class SchueleransichtComponent implements OnInit {
 
   ergebnissButtonClicked():void
   {
-    this.router.navigate(['/Ergebnisansicht']);
+    this.router.navigate(['/Ergebnisansicht'+ this.code]);
+    //this.router.navigate(['/Schueleransicht/' + this.code])
   }
 
   sendButtonClicked():void

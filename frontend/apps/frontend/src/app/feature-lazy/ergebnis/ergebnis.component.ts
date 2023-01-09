@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ChartDataset, ChartOptions } from 'chart.js';
 
 @Component({
@@ -12,7 +13,8 @@ export class ErgebnisComponent implements OnInit {
   umfragenFrage = "Was essen Wombats?";
   umfragenErsteller = "Florian Nadler";
   umfragenDatum = "21.11.2022";
-  umfragenCode = "2LM9X8"
+  umfragenCode:string = "";
+  umfrageNumberCode:number = 0;
 
   chartData: ChartDataset[] = [{
     label: '$ in millions',
@@ -46,9 +48,14 @@ export class ErgebnisComponent implements OnInit {
     }
   };
 
-  constructor() { }
+  constructor(private activatedRoute:ActivatedRoute)
+  { 
 
+  }
   ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe(x=>this.umfrageNumberCode = +(x.get('id')??'0'));
+    this.umfragenCode = this.umfrageNumberCode.toString();
   }
 
+  
 }
