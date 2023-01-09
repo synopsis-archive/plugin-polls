@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { PollsService } from '../../swagger';
 import { catchError } from 'rxjs';
+import { PollsService } from '../../polls-backend';
 
 @Component({
   selector: 'app-code-input',
