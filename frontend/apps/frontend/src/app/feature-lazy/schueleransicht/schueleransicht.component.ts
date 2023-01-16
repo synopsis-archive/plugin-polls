@@ -17,7 +17,7 @@ export class SchueleransichtComponent implements OnInit {
   auswahl:string = "";
   check:boolean = false;
   frage:string = "";
-  mehrAntwortMoeglichkeiten:boolean = false;
+  mehrAntwortMoeglichkeiten:boolean = true;
   mehrAntwortMoeglichk:string = "";
 
   constructor(private activatedRoute:ActivatedRoute ,private poolsService: PollsService,private router:Router)
@@ -37,6 +37,7 @@ export class SchueleransichtComponent implements OnInit {
     if(this.mehrAntwortMoeglichkeiten)
     {
       this.mehrAntwortMoeglichk = "Wählen sie bitte eine (oder mehrere) Antwort(en):";
+
     }else{
       this.mehrAntwortMoeglichk = "Wählen sie bitte nur eine Antwort aus";
     }
@@ -45,7 +46,6 @@ export class SchueleransichtComponent implements OnInit {
   ergebnissButtonClicked():void
   {
     this.router.navigate(['/Ergebnisansicht'+ this.code]);
-    //this.router.navigate(['/Schueleransicht/' + this.code])
   }
 
   sendButtonClicked():void

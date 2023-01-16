@@ -19,8 +19,14 @@
 
 <div [hidden]="check" class="mt-5">
 <div  *ngFor="let item of antworten" >
-    
-    <input class="mt-5 ml-2" name="a" type="checkbox"><label class="text-xl ml-2">{{item}}</label>
+  
+
+    <div *ngIf="mehrAntwortMoeglichkeiten">
+        <input class="mt-5 ml-2"  type="radio"><label class="text-xl ml-2">{{item}}</label>
+    </div>
+    <div *ngIf="!mehrAntwortMoeglichkeiten">
+        <input class="mt-5 ml-2" name="a" type="radio"><label class="text-xl ml-2">{{item}}</label>
+    </div>
 </div>
 </div>
 <div [hidden]="!check">
