@@ -54,11 +54,12 @@ public class PollsService : IPollsService
         return poll!.ToPollResultDto();
     }
 
-    public Task<List<PollDto>> GetPollsOfTeacherAsync(Guid teacherGuid)
+    public Task<List<PollResultDto>> GetPollsOfTeacherAsync(Guid teacherGuid)
     {
         return _pollsContext.Polls
+            .Include(x => x.PollOptions)
             .Where(poll => poll.CreatedBy == teacherGuid)
-            .Select(poll => poll.ToPollDto())
+            .Select(poll => poll.ToPollResultDto())
             .ToListAsync();
     }
 
