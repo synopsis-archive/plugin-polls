@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataset, ChartOptions } from 'chart.js';
+import { PollsService } from '../../polls-backend';
 
 @Component({
   selector: 'app-ergebnis',
@@ -13,14 +14,18 @@ export class ErgebnisComponent implements OnInit {
   umfragenFrage = "Was essen Wombats?";
   umfragenErsteller = "Florian Nadler";
   umfragenDatum = "21.11.2022";
-  umfragenCode:string = "";
-  umfrageNumberCode:number = 0;
+  umfragenCode: string = "";
+  umfrageNumberCode: number = 0;
+  umfragenVotes:number[] = [];
+  umfragenOptions:string[] = [];
+  umfragenTotalVotes:number = 0;
+
 
   chartData: ChartDataset[] = [{
-    label: '$ in millions',
-    data: [3, 4, 2, 6, 8]
+    label: 'votes',
+    data: this.umfragenVotes
   }];
-  chartLabels: string[] = ['Bambus', 'Alex', 'Laub', 'Eukalyptus', 'wos ondas'];
+  chartLabels: string[] = this.umfragenOptions;
   chartOptions: ChartOptions = {
 
     // ⤵️ Fill the wrapper
@@ -48,12 +53,26 @@ export class ErgebnisComponent implements OnInit {
     }
   };
 
-  constructor(private activatedRoute:ActivatedRoute) { }
+  constructor(private activatedRoute: ActivatedRoute, private pollsService: PollsService) { }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(x => this.umfrageNumberCode = +(x.get('id') ?? '0'));
-    this.umfragenCode = this.umfrageNumberCode.toString();
+    this.activatedRoute.paramMap.subscribe(x => { 
+      this.umfrageNumberCode = +(x.get('id') ?? '0');
+      this.umfragenCode = this.umfrageNumberCode.toString();
+      this.pollsService.pollsGetPollResultPollCodeGet(this.umfragenCode).subscribe( x => {
+        this.umfragenTitel = x.pollName;
+        this.umfragenFrage = x.pollQuestion;
+        this.umfragenDatum = x.startTime;
+        this.umfragenTotalVotes = x.receivedAnswers;
+        for(let option of x.pollOptions){
+            this.umfragenOptions.push(option.description);
+        }
+        for(let option of this.umfragenOptions){
+          this.umfragenVotes.push(x.results[option].receivedVotes!)
+        }
+      })
+     });
   }
 
-  
+
 }
