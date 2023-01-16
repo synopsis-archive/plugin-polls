@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {PollOptionReplayDto, PollReplayDto, PollsService} from "../../polls-backend";
+import { PollOptionReplayDto, PollReplayDto, PollsService } from "../../polls-backend";
 
 @Component({
   selector: 'app-lehreransicht',
@@ -10,7 +10,7 @@ import {PollOptionReplayDto, PollReplayDto, PollsService} from "../../polls-back
 export class LehreransichtComponent {
   title = '';
   question = '';
-  options: string[] = [];
+  options: string[] = ["", "","", "","", "","", "","", "","", "","", "","", "","", "","", "","", "",];
   dateFrom = '';
   dateTo = '';
   timeFrom = '';
@@ -23,7 +23,7 @@ export class LehreransichtComponent {
   // }
 
   createPoll(): void {
-    const options: PollOptionReplayDto[] = this.options.map(x => {return {description: x};});
+    const options: PollOptionReplayDto[] = this.options.map(x => { return { description: x }; });
 
     const pollReplayDto: PollReplayDto = {
       pollName: this.title,
