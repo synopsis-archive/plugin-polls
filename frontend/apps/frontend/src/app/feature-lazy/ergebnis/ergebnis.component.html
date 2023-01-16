@@ -1,9 +1,9 @@
 <div class="flex flex-col h-full">
  <div id="header" class="bg-[hsl(210,43%,51%)]">
   <div class="ml-5 mr-5 mb-5 w-10/12">
-   <h3 class="text-3xl font-thin dark:text-white">Ergebnis - {{umfragenTitel}}</h3>
-   <h3 id="frage" class="text-2xl font-bold dark:text-white">{{umfragenFrage}}</h3>
-   <h3 class="text-xl font-light dark:text-white">({{umfragenErsteller}}, {{umfragenDatum}})</h3>
+   <h3 class="text-3xl font-thin dark:text-white">Ergebnis - {{title}}</h3>
+   <h3 id="frage" class="text-2xl font-bold dark:text-white">{{question}}</h3>
+   <h3 class="text-xl font-light dark:text-white">({{creator}}, {{endDate|date:'dd.MM.yyyy HH:mm'}})</h3>
   </div>
   <div class="mt-14 ml-10 w-2/12 items-center justify-center ">
    <button type="button"
@@ -61,7 +61,7 @@
   </div>
 
   <div id="footer" class="h-1/6" >
-   <h2 class="font-bold text-2xl mt-10 text-blue-700">Code: {{umfragenCode}}</h2>
+   <h2 class="font-bold text-2xl mt-10 text-blue-700">Code: {{code}}</h2>
   </div>
 
  </div>

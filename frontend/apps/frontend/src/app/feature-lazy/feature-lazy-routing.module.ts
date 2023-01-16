@@ -8,9 +8,9 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: 'Schueleransicht', component: SchueleransichtComponent },
+      { path: 'Schueleransicht/:id', component: SchueleransichtComponent },
       { path: 'Ergebnisansicht/:id', component: ErgebnisComponent },
-      {path: 'PageNotFound', component: PageNotFoundComponent}
+      { path: 'PageNotFound', component: PageNotFoundComponent }
     ]
   }
 

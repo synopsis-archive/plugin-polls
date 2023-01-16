@@ -1,8 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PollDto, PollsService } from '../../polls-backend';
-import { PollsTmp } from './pollsTmp';
-
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import {PollResultDto, PollsService} from '../../polls-backend';
 
 @Component({
   selector: 'app-lehreransicht-liste',
@@ -10,50 +8,29 @@ import { PollsTmp } from './pollsTmp';
   styleUrls: ['./lehreransicht-liste.component.scss']
 })
 export class LehreransichtListeComponent implements OnInit {
-  polls : PollsTmp[] = [
-    {pollName : "Umfrage Weihnachtsstunde", endTime: new Date(2022, 15, 12), votes : 12},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4}
-  ];
+  pollsOfTeacher: PollResultDto[] = [];
 
-  pollsNew : PollDto[] = [];
-
-  constructor(private router : Router, private poolsService: PollsService) { }
+  constructor(private router: Router, private pollService: PollsService) { }
 
   ngOnInit(): void {
-    this.poolsService.pollsGetPollsFromTeacherGet().subscribe(x=>{
-      this.pollsNew = x;
+    this.pollService.pollsGetPollsFromTeacherGet().subscribe((x: PollResultDto[]) => {
+      this.pollsOfTeacher = x;
     });
   }
-  
 
-  detailsClicked(poll : PollsTmp)
-  {
-    this.router.navigateByUrl("Ergebnisansicht");
-    //this.router.navigateByUrl("Ergebnisansicht/"+poll.pollCode);
+  detailsClicked(poll: PollResultDto): void {
+    this.router.navigateByUrl(`Ergebnisansicht/${poll.pollCode}`).then(_ => {});
   }
 
-  deleteClicked(poll : PollsTmp)
-  {
-    //this.pollsService.deletePoll(poll.pollCode);
+  deleteClicked(poll: PollResultDto): void {
+    this.pollService.pollsDeletePollPollCodeDelete(poll.pollCode).subscribe(_ => {
+      this.pollService.pollsGetPollsFromTeacherGet().subscribe((x: PollResultDto[]) => {
+        this.pollsOfTeacher = x;
+      });
+    });
   }
 
-  newPollClicked()
-  {
-    this.router.navigateByUrl("Lehreransicht");
-    //this.router.navigateByUrl("Lehreransicht"+poll.pollCode);
+  newPollClicked(): void {
+    this.router.navigateByUrl("Lehreransicht").then(_ => {});
   }
-
 }
