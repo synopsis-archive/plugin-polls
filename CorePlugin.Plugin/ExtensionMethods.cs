@@ -16,7 +16,7 @@ public static class ExtensionMethods
             StartTime = poll.StartTime,
             EndTime = poll.EndTime,
             IsMultipleChoice = poll.IsMultipleChoice,
-            PollOptions = poll.PollOptions.Select(x => new PollOptionDto{PollOptionId = x.PollOptionId, Description = x.Description}).ToList(),
+            PollOptions = poll.PollOptions.Select(x => new PollOptionDto { PollOptionId = x.PollOptionId, Description = x.Description }).ToList(),
             ReceivedAnswers = poll.SubmittedVotes.Count,
             Results = ConvertPollToResultDictionary(poll)
         };
