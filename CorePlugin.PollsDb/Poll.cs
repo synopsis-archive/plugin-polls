@@ -17,5 +17,5 @@ public class Poll
     public bool IsMultipleChoice { get; set; }
 
     public virtual List<PollOption> PollOptions { get; set; } = null!;
-    public virtual List<SubmittedVote> SubmittedVotes { get; set; } = null!;
+    public virtual List<SubmittedVote> SubmittedVotes { get; } = new();
 }

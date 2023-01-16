@@ -9,8 +9,9 @@ import { SharedModule } from './shared/shared.module';
 import {MatButtonModule} from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { BASE_PATH } from './polls-backend';
-import { environment } from '../environments/environment';
+import {BASE_PATH, Configuration} from "./polls-backend";
+
+const config = new Configuration();
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { environment } from '../environments/environment';
     AppRoutingModule
   ],
   providers: [
-    {provide: BASE_PATH, useValue: environment.apiRoot}
+    { provide: BASE_PATH, useValue: 'http://localhost:5208' },
+    { provide: Configuration, useValue: config }
   ],
   bootstrap: [AppComponent]
 })

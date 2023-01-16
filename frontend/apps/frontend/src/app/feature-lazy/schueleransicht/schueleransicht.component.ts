@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PollDto, PollsService } from '../../polls-backend';
+import {PollDto, PollsService} from "../../polls-backend";
 
 @Component({
   selector: 'app-schueleransicht',

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PollOptionReplayDto, PollReplayDto, PollsService } from '../../polls-backend';
+import {PollOptionReplayDto, PollReplayDto, PollsService} from "../../polls-backend";
 
 @Component({
   selector: 'app-lehreransicht',
@@ -17,37 +17,24 @@ export class LehreransichtComponent {
   timeTo = '';
   multipleChoice = false;
 
-  constructor(private pollsService: PollsService) { }
+  constructor(private backendService: PollsService) { }
 
   // ngOnInit(): void {
   // }
 
   createPoll(): void {
-    console.log(`${this.title} ${this.question} ${this.options[0]}${this.options[1]}${this.options[2]} ${this.dateFrom} ${this.timeFrom} ${this.dateTo} ${this.timeTo} ${this.multipleChoice}`);
-    const pollOptions: PollOptionReplayDto[] = []
-    this.options.forEach(x => {
-      const option: PollOptionReplayDto = {
-        description: x
-      };
-      pollOptions.push(option);
-    });
+    const options: PollOptionReplayDto[] = this.options.map(x => {return {description: x};});
 
-    const startTime = this.dateFrom + "T" + this.timeFrom + ":00.000Z";
-    const endTime = this.dateTo + "T" + this.timeTo + ":00.000Z";
-
-    console.log(startTime);
-    console.log(endTime);
-
-    const pollDto: PollReplayDto = {
+    const pollReplayDto: PollReplayDto = {
       pollName: this.title,
       pollQuestion: this.question,
-      pollOptions: pollOptions,
-      startTime: this.dateFrom + " " + this.timeFrom,
-      endTime: this.dateTo + " " + this.timeTo,
+      startTime: new Date(this.dateFrom).toISOString(),
+      endTime: new Date(this.dateTo).toISOString(),
       isMultipleChoice: this.multipleChoice,
-      // createdBy: '080912bd-fc81-4f1a-b47f-e7ab8d2add2e'
+      pollOptions: options
     }
-    this.pollsService.pollsPost(pollDto).subscribe(x => {
+
+    this.backendService.pollsPost(pollReplayDto).subscribe(x => {
       console.log(JSON.stringify(x));
     });
   }
