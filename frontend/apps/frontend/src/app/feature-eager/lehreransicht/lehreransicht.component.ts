@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {PollOptionReplayDto, PollReplayDto, PollsService} from "../../polls-backend";
 
 @Component({
   selector: 'app-lehreransicht',
@@ -6,12 +7,35 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lehreransicht.component.scss']
 })
 
-export class LehreransichtComponent implements OnInit {
+export class LehreransichtComponent {
+  title = '';
+  question = '';
+  options: string[] = [];
+  dateFrom = '';
+  dateTo = '';
+  timeFrom = '';
+  timeTo = '';
+  multipleChoice = false;
 
-  constructor() { }
+  constructor(private backendService: PollsService) { }
 
-  ngOnInit(): void {
-    console.log('LehreransichtComponent.ngOnInit()');
+  // ngOnInit(): void {
+  // }
+
+  createPoll(): void {
+    const options: PollOptionReplayDto[] = this.options.map(x => {return {description: x};});
+
+    const pollReplayDto: PollReplayDto = {
+      pollName: this.title,
+      pollQuestion: this.question,
+      startTime: new Date(this.dateFrom).toISOString(),
+      endTime: new Date(this.dateTo).toISOString(),
+      isMultipleChoice: this.multipleChoice,
+      pollOptions: options
+    }
+
+    this.backendService.pollsPost(pollReplayDto).subscribe(x => {
+      console.log(JSON.stringify(x));
+    });
   }
-
 }
