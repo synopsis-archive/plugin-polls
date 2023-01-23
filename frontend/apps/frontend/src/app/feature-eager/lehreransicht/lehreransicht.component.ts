@@ -17,6 +17,8 @@ export class LehreransichtComponent {
   timeTo = '';
   multipleChoice = false;
 
+  errorDateHidden = true;
+
   constructor(private backendService: PollsService) { }
 
   createPoll(): void {
@@ -47,16 +49,50 @@ export class LehreransichtComponent {
   }
 
   private checkAttributes() {
-    if (this.title.trim().length <= 0 || this.question.trim().length <= 0) {
-      alert("Ein Titel bzw. eine Frage wird benötigt.");
+    if(this.CheckDate() && this.CheckTitle() && this.CheckOptionsAmount() && this.CheckOptionsRepeat())
+    {
+      return true;
+    }
+    alert("Denied");
+    return false;
+  }
+
+  CheckDate()
+  {
+    if(new Date(this.dateFrom) > new Date(this.dateTo))
+    {
+      this.errorDateHidden = false;
       return false;
     }
+    this.errorDateHidden = true;
+    return true;
+  }
 
-    if (this.options.length <= 1 || this.options.every(x => x.trim().length <= 0)) {
-      alert("Es müssen mindestens zwei Antwortoption angegeben werden.");
+  CheckTitle()
+  {
+    if(this.title.trim().length <= 0 || this.question.trim().length <= 0) {
+      //alert("Ein Titel bzw. eine Frage wird benötigt.");
       return false;
     }
+    return true;
+  }
 
+  CheckOptionsAmount()
+  {
+    if(this.options.length <= 1 || this.options.every(x => x.trim().length <= 0)) {
+      //alert("Es müssen mindestens zwei Antwortoption angegeben werden.");
+      return false;
+    }
+    return true;
+  }
+
+  CheckOptionsRepeat()
+  {
+    if(!this.options.every((e, i, a) => a.indexOf(e) === i))
+    {
+      //DO Error
+      return false;
+    }
     return true;
   }
 }

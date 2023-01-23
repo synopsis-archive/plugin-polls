@@ -138,11 +138,12 @@
                     Bis:
                 </div>
                 <div class="flex">
-                    <input type="date" [(ngModel)]="dateTo"
+                    <input type="date" [(ngModel)]="dateTo" (ngModelChange)="CheckDate()"
                         class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <input type="time" [(ngModel)]="timeTo"
                         class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
+                <a class="text-red-600" [hidden]="errorDateHidden">Ende vor Anfang!</a>
                 <div class="mt-8 ml-2 flex">
                     <p class="flex">Mehrfach-Antworten</p>
                     <label for="default-toggle" class="inline-flex relative items-center cursor-pointer ml-2">
@@ -157,3 +158,5 @@
         </div>
     </div>
 </div>
+
+{{timeFrom}}
