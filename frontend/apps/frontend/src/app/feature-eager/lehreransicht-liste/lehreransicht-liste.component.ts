@@ -1,8 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PollDto, PollsService } from '../../polls-backend';
-import { PollsTmp } from './pollsTmp';
-
+import { PollDto, PollResultDto, PollsService } from '../../polls-backend';
 
 @Component({
   selector: 'app-lehreransicht-liste',
@@ -10,24 +8,6 @@ import { PollsTmp } from './pollsTmp';
   styleUrls: ['./lehreransicht-liste.component.scss']
 })
 export class LehreransichtListeComponent implements OnInit {
-  polls : PollsTmp[] = [
-    {pollName : "Umfrage Weihnachtsstunde", endTime: new Date(2022, 15, 12), votes : 12},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4},
-    {pollName : "Umfrage Wombats 5BHIF", endTime: new Date(2022, 18, 12), votes : 4}
-  ];
-
   pollsNew : PollDto[] = [];
 
   constructor(private router : Router, private poolsService: PollsService) { }
@@ -38,14 +18,13 @@ export class LehreransichtListeComponent implements OnInit {
     });
   }
   
-
-  detailsClicked(poll : PollsTmp)
+  detailsClicked(poll : PollDto)
   {
     this.router.navigateByUrl("Ergebnisansicht");
     //this.router.navigateByUrl("Ergebnisansicht/"+poll.pollCode);
   }
 
-  deleteClicked(poll : PollsTmp)
+  deleteClicked(poll : PollDto)
   {
     //this.pollsService.deletePoll(poll.pollCode);
   }
@@ -54,6 +33,16 @@ export class LehreransichtListeComponent implements OnInit {
   {
     this.router.navigateByUrl("Lehreransicht");
     //this.router.navigateByUrl("Lehreransicht"+poll.pollCode);
+  }
+
+  getPollAnswersNr(pollCode : string)
+  {
+    let res : PollResultDto;
+
+    this.poolsService.pollsGetPollResultPollCodeGet(pollCode).subscribe(x=>{
+      res = x;
+      return res.receivedAnswers;
+    });
   }
 
 }
