@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {PollDto, PollOptionDto, PollsService} from "../../polls-backend";
+import {PollDto, PollOptionDto, PollsService,VoteReplayDto} from "../../polls-backend";
 
 @Component({
   selector: 'app-schueleransicht',
@@ -16,7 +16,8 @@ export class SchueleransichtComponent implements OnInit {
   pollQuestion: string = "";
   isMultipleChoice: boolean = true;
   chooseAnswerText: string = "";
-
+  listOfSelectedItems:string[] = [];
+  listOfOptionId:number[] = [];
   constructor(private activatedRoute: ActivatedRoute, private poolsService: PollsService,
               private router: Router) {}
 
@@ -43,7 +44,30 @@ export class SchueleransichtComponent implements OnInit {
     this.router.navigateByUrl(`/Ergebnisansicht/${this.code}`).then(r => console.log('Routed to Ergebnisansicht'));
   }
 
-  sendVoteButtonClicked(): void {
-    this.poolsService.pollsVotePollCodePost(this.code);
+  clicked(item:string){
+    this.listOfSelectedItems.push(item);
+    console.log(item + " wurde ausgewählt ");
+
+
   }
+
+  sendVoteButtonClicked(): void {
+    this.possibleAnswers?.forEach(dto=>{
+      this.listOfSelectedItems.forEach(Element =>{
+          if(dto.description === Element){
+              this.listOfOptionId.push(dto.pollOptionId!);
+          }
+      });
+      console.log(this.listOfOptionId);
+    });
+   const optionReplyDto:VoteReplayDto[] = this.listOfOptionId.map(x =>{
+      return {
+        optionId : x
+      }
+    });
+   
+    this.poolsService.pollsVotePollCodePost(this.code,optionReplyDto).subscribe();
+  }
+
+
 }

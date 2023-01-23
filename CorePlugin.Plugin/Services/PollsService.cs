@@ -105,7 +105,7 @@ public class PollsService : IPollsService
             .Include(x => x.PollOptions)
             .Include(x => x.SubmittedVotes)
             .SingleOrDefaultAsync(p => p.PollCode == pollCode);
-
+        
         CheckPoll(pollCode, poll);
 
         if (teacherGuid != poll!.CreatedBy)
@@ -119,7 +119,15 @@ public class PollsService : IPollsService
     public async Task<bool> DeletePollAsync(string code, Guid teacherGuid)
     {
         var poll = await _pollsContext.Polls.SingleOrDefaultAsync(p => p.PollCode == code);
-        CheckPoll(code, poll);
+
+        try
+        {
+            CheckPoll(code, poll);
+        }
+        catch (PollClosedException)
+        {
+            Console.WriteLine("Poll is already closed - will be deleted anyway...");
+        }
 
         if (poll!.CreatedBy != teacherGuid)
             throw new NotAuthorizedException("You are not authorized to delete this poll.");
