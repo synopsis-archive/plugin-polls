@@ -23,7 +23,7 @@
         <input class="mt-5 ml-2"  type="checkbox" (click)="clicked(item.description)"><label class="text-xl ml-2">{{item.description}}</label>
     </div>
     <div *ngIf="!isMultipleChoice">
-        <input class="mt-5 ml-2" name="a" type="radio"><label class="text-xl ml-2">{{item.description}}</label>
+        <input class="mt-5 ml-2" (change)="radioClicked(item.description)"  name="a" type="radio"><label class="text-xl ml-2">{{item.description}}</label>
     </div>
 </div>
 </div>

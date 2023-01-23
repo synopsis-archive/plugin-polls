@@ -60,6 +60,12 @@ export class SchueleransichtComponent implements OnInit {
     console.log(item + " wurde ausgewählt ");
   }
 
+  radioClicked(item:string){
+    this.listOfSelectedItems.push(item);
+
+  }
+  
+
   sendVoteButtonClicked(): void {
     this.possibleAnswers?.forEach(dto=>{
       this.listOfSelectedItems.forEach(Element =>{
