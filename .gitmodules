@@ -1,3 +1,6 @@
 [submodule "core"]
 	path = core
 	url = https://github.com/htl-grieskirchen-core/core
+[submodule "frontend/libs/mainframe-connector"]
+	path = frontend/libs/mainframe-connector
+	url = git@github.com:htl-grieskirchen-core/lib-mainframe-connector.git
