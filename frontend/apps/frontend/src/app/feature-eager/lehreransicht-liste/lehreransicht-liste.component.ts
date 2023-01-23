@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {PollResultDto, PollsService} from '../../polls-backend';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-lehreransicht-liste',
@@ -10,12 +12,16 @@ import {PollResultDto, PollsService} from '../../polls-backend';
 export class LehreransichtListeComponent implements OnInit {
   pollsOfTeacher: PollResultDto[] = [];
 
-  constructor(private router: Router, private pollService: PollsService) { }
+  constructor(private router: Router, private pollService: PollsService,private _location: Location) { }
 
   ngOnInit(): void {
     this.pollService.pollsGetPollsFromTeacherGet().subscribe((x: PollResultDto[]) => {
       this.pollsOfTeacher = x;
     });
+  }
+
+  backButtonClicked():void{
+    this._location.back();
   }
 
   detailsClicked(poll: PollResultDto): void {

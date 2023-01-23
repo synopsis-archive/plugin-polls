@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataset, ChartOptions } from 'chart.js';
 import { PollsService } from '../../polls-backend';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-ergebnis',
@@ -50,7 +51,7 @@ export class ErgebnisComponent implements OnInit {
     }
   };
 
-  constructor(private activatedRoute: ActivatedRoute, private pollsService: PollsService) { }
+  constructor(private activatedRoute: ActivatedRoute, private pollsService: PollsService,private _location: Location) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(x => {
@@ -67,5 +68,10 @@ export class ErgebnisComponent implements OnInit {
         }
       });
      });
+  }
+
+  backButtonClicked():void{
+
+    this._location.back();
   }
 }

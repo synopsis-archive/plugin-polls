@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import {Location} from '@angular/common';
 import {PollDto, PollOptionDto, PollsService,VoteReplayDto} from "../../polls-backend";
 
 @Component({
@@ -19,7 +20,7 @@ export class SchueleransichtComponent implements OnInit {
   listOfSelectedItems:string[] = [];
   listOfOptionId:number[] = [];
   constructor(private activatedRoute: ActivatedRoute, private poolsService: PollsService,
-              private router: Router) {}
+              private router: Router,private _location: Location) {}
 
   ngOnInit(): void {
     this.listOfOptionId = [];
@@ -40,6 +41,10 @@ export class SchueleransichtComponent implements OnInit {
     }else{
       this.chooseAnswerText = "Wählen sie bitte nur eine Antwort aus";
     }
+  }
+
+  returnButtonClicked():void{
+    this._location.back();
   }
 
   resultButtonClicked(): void {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-page-not-found',
   templateUrl: './page-not-found.component.html',
@@ -7,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageNotFoundComponent {
 
-  constructor() { }
+  constructor(private _location: Location) { }
+
+  backButtonClicked():void{
+
+    this._location.back();
+  }
 
 }

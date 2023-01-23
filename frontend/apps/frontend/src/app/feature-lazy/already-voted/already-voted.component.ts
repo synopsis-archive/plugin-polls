@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {PollsService} from "../../polls-backend";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-already-voted',
@@ -10,9 +11,13 @@ export class AlreadyVotedComponent {
 
   umfragenFrage = "Was essen Wombats?";
 
-  constructor(private backendService: PollsService) { }
+  constructor(private backendService: PollsService,private _location: Location) { }
 
   onShowResultClick() {
 
+  }
+
+  backButtonClicked():void{
+    this._location.back();
   }
 }

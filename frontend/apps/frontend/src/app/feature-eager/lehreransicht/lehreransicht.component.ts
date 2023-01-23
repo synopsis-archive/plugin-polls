@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { PollOptionReplayDto, PollReplayDto, PollDto, PollsService } from "../../polls-backend";
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-lehreransicht',
@@ -19,7 +21,7 @@ export class LehreransichtComponent {
 
   errorDateHidden = true;
 
-  constructor(private backendService: PollsService) { }
+  constructor(private backendService: PollsService,private _location: Location) { }
 
   createPoll(): void {
     if (!this.checkAttributes())
@@ -46,6 +48,11 @@ export class LehreransichtComponent {
       console.log(x.pollCode);
       console.log(JSON.stringify(x));
     });
+  }
+
+  backButtonClicked():void{
+    this._location.back();
+
   }
 
   private checkAttributes() {
