@@ -22,6 +22,8 @@ export class SchueleransichtComponent implements OnInit {
               private router: Router) {}
 
   ngOnInit(): void {
+    this.listOfOptionId = [];
+    this.listOfSelectedItems = [];
     this.activatedRoute.paramMap.subscribe(x=> this.codeInput = x.get('id') ?? 'UNKNOWN');
     this.code = this.codeInput.toString();
     this.poolsService.pollsGetPollPollCodeGet(this.code).subscribe(x=>{
