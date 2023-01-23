@@ -1,4 +1,4 @@
 ﻿export const environment = {
   production: true,
-  apiRoot: 'https://localhost:7226'
+  backend: document.location.origin.replace(/\/\w+\.plugin/, '/plugin.backend')
 };

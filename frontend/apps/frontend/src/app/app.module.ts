@@ -30,7 +30,7 @@ const config = new Configuration();
     AppRoutingModule
   ],
   providers: [
-    { provide: BASE_PATH, useValue: environment.apiRoot },
+    { provide: BASE_PATH, useValue: environment.backend },
     { provide: Configuration, useValue: config }
   ],
   bootstrap: [AppComponent]
