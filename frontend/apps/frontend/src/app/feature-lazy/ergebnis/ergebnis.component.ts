@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataset, ChartOptions } from 'chart.js';
 import { PollsService } from '../../polls-backend';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-ergebnis',
@@ -19,6 +19,7 @@ export class ErgebnisComponent implements OnInit {
   options: string[] = [];
   totalVotes: number = 0;
 
+  
   chartData: ChartDataset[] = [{
     label: 'votes',
     data: this.receivedVotes
@@ -51,7 +52,11 @@ export class ErgebnisComponent implements OnInit {
     }
   };
 
-  constructor(private activatedRoute: ActivatedRoute, private pollsService: PollsService,private _location: Location) { }
+  constructor(private activatedRoute: ActivatedRoute, private pollsService: PollsService,private _Location:Location) { }
+
+  backbuttonCLicked():void{
+    this._Location.back();
+  }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(x => {
@@ -63,15 +68,42 @@ export class ErgebnisComponent implements OnInit {
         this.creator = x.creatorName;
         this.totalVotes = x.receivedAnswers;
         this.options = x.pollOptions.map(x => x.description);
-        for(let option of this.options){
+        for (let option of this.options) {
+          console.log(option);
+          console.log(x.results[option].receivedVotes!);
           this.receivedVotes.push(x.results[option].receivedVotes!)
         }
+        this.chartData = [{
+          label: 'votes',
+          data: this.receivedVotes
+        }];
+        this.chartLabels = this.options;
+        this.chartOptions = {
+          // ⤵️ Fill the wrapper
+          responsive: true,
+          maintainAspectRatio: false,
+
+          // ⤵️ Remove the grids
+          scales: {
+            xAxis: {
+              display: false,
+              grid: {
+                // removes random border at bottom
+              }
+            },
+            yAxis: {
+              display: false
+            }
+          },
+
+          // ⤵️ Remove the main legend
+          plugins: {
+            legend: {
+              display: true
+            }
+          }
+        }
       });
-     });
-  }
-
-  backButtonClicked():void{
-
-    this._location.back();
+    });
   }
 }
