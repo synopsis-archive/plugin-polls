@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs';
-import {PollsService} from "../../polls-backend";
+import {catchError, Observable} from 'rxjs';
+import {PollDto, PollsService} from "../../polls-backend";
 
 @Component({
   selector: 'app-code-input',
@@ -9,24 +9,21 @@ import {PollsService} from "../../polls-backend";
   styleUrls: ['./code-input.component.scss']
 })
 export class CodeInputComponent {
-
   code: string = "";
   errorHidden = true;
 
   constructor(private router: Router, private service: PollsService) { }
 
-
-
-  enterPressend(): void {
+  enterPressed(): void {
     if (this.code.length === 6) {
       console.log(this.code);
       this.service.pollsGetPollPollCodeGet(this.code)
-        .pipe(catchError((nadler, x) => {
+        .pipe(catchError((_, x: Observable<PollDto>) => {
           this.errorHidden = false;
           setTimeout(() => this.hideError(), 3000);
-          return nadler;
+          return new Observable((observer) => observer.complete());
         }))
-        .subscribe(poll => this.router.navigate(['/Schueleransicht/' + this.code]));
+        .subscribe(_ => this.router.navigateByUrl(`Schueleransicht/${this.code}`));
     } else {
       this.errorHidden = false;
       setTimeout(() => this.hideError(), 3000);
@@ -36,5 +33,4 @@ export class CodeInputComponent {
   hideError(): void {
     this.errorHidden = true;
   }
-
 }

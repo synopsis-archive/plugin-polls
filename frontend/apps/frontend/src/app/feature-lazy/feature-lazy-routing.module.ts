@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       { path: 'Schueleransicht/:id', component: SchueleransichtComponent },
       { path: 'Ergebnisansicht/:id', component: ErgebnisComponent },
-      {path: 'PageNotFound', component: PageNotFoundComponent}
+      { path: 'PageNotFound', component: PageNotFoundComponent }
     ]
   }
 

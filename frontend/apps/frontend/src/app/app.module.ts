@@ -10,6 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {BASE_PATH, Configuration} from "./polls-backend";
+import {environment} from "../environments/environment";
 
 const config = new Configuration();
 
@@ -29,7 +30,7 @@ const config = new Configuration();
     AppRoutingModule
   ],
   providers: [
-    { provide: BASE_PATH, useValue: 'http://localhost:5208' },
+    { provide: BASE_PATH, useValue: environment.apiRoot },
     { provide: Configuration, useValue: config }
   ],
   bootstrap: [AppComponent]

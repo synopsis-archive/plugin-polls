@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PollDto, PollResultDto, PollsService } from '../../polls-backend';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import {PollResultDto, PollsService} from '../../polls-backend';
 
 @Component({
   selector: 'app-lehreransicht-liste',
@@ -8,41 +8,29 @@ import { PollDto, PollResultDto, PollsService } from '../../polls-backend';
   styleUrls: ['./lehreransicht-liste.component.scss']
 })
 export class LehreransichtListeComponent implements OnInit {
-  pollsNew : PollDto[] = [];
+  pollsOfTeacher: PollResultDto[] = [];
 
-  constructor(private router : Router, private poolsService: PollsService) { }
+  constructor(private router: Router, private pollService: PollsService) { }
 
   ngOnInit(): void {
-    this.poolsService.pollsGetPollsFromTeacherGet().subscribe(x=>{
-      this.pollsNew = x;
-    });
-  }
-  
-  detailsClicked(poll : PollDto)
-  {
-    this.router.navigateByUrl("Ergebnisansicht");
-    //this.router.navigateByUrl("Ergebnisansicht/"+poll.pollCode);
-  }
-
-  deleteClicked(poll : PollDto)
-  {
-    //this.pollsService.deletePoll(poll.pollCode);
-  }
-
-  newPollClicked()
-  {
-    this.router.navigateByUrl("Lehreransicht");
-    //this.router.navigateByUrl("Lehreransicht"+poll.pollCode);
-  }
-
-  getPollAnswersNr(pollCode : string)
-  {
-    let res : PollResultDto;
-
-    this.poolsService.pollsGetPollResultPollCodeGet(pollCode).subscribe(x=>{
-      res = x;
-      return res.receivedAnswers;
+    this.pollService.pollsGetPollsFromTeacherGet().subscribe((x: PollResultDto[]) => {
+      this.pollsOfTeacher = x;
     });
   }
 
+  detailsClicked(poll: PollResultDto): void {
+    this.router.navigateByUrl(`Ergebnisansicht/${poll.pollCode}`).then(_ => {});
+  }
+
+  deleteClicked(poll: PollResultDto): void {
+    this.pollService.pollsDeletePollPollCodeDelete(poll.pollCode).subscribe(_ => {
+      this.pollService.pollsGetPollsFromTeacherGet().subscribe((x: PollResultDto[]) => {
+        this.pollsOfTeacher = x;
+      });
+    });
+  }
+
+  newPollClicked(): void {
+    this.router.navigateByUrl("Lehreransicht").then(_ => {});
+  }
 }
