@@ -30,14 +30,14 @@ export class SchueleransichtComponent implements OnInit {
       this.possibleAnswers = this.poll.pollOptions;
       this.pollQuestion = this.poll.pollQuestion;
       this.isMultipleChoice = this.poll.isMultipleChoice;
-    });
-    if(this.isMultipleChoice)
+
+      if(this.isMultipleChoice)
     {
       this.chooseAnswerText = "Wählen sie bitte eine (oder mehrere) Antwort(en):";
-
     }else{
       this.chooseAnswerText = "Wählen sie bitte nur eine Antwort aus";
     }
+    });
   }
 
   resultButtonClicked(): void {
@@ -45,10 +45,12 @@ export class SchueleransichtComponent implements OnInit {
   }
 
   clicked(item:string){
+    if(!this.isMultipleChoice)
+    {
+      this.listOfSelectedItems = [];
+    }
     this.listOfSelectedItems.push(item);
     console.log(item + " wurde ausgewählt ");
-
-
   }
 
   sendVoteButtonClicked(): void {
