@@ -29,6 +29,7 @@ const config = new Configuration();
     MatButtonModule,
     AppRoutingModule
   ],
+  // use environment.backend as reference to the backend URL
   providers: [
     { provide: BASE_PATH, useValue: environment.backend },
     { provide: Configuration, useValue: config }
