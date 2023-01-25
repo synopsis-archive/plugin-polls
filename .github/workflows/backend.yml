@@ -7,11 +7,11 @@ on:
 
 jobs:
   build:
-    name: Test
+    name: Test & Build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet-version: [ '6.x' ]
+        dotnet-version: [ '6.x', '7.x' ]
 
     steps:
       - uses: actions/checkout@v3
@@ -27,3 +27,12 @@ jobs:
         run: dotnet build --configuration Release --no-restore
       - name: Test
         run: dotnet test --no-restore --verbosity normal
+
+      - name: Publish
+        run: dotnet publish --configuration Release -r linux-x64 --no-build --no-restore --output ./publish
+        working-directory: CorePlugin.Plugin
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Plugin (NET ${{ matrix.dotnet-version }})
+          path: ./CorePlugin.Plugin/publish

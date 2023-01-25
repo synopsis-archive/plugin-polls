@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
 app.UseAuthorization();
 
 plugin.Configure(app);

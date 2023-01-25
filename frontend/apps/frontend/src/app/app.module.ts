@@ -21,6 +21,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatButtonModule,
     AppRoutingModule
   ],
+  // use environment.backend as reference to the backend URL
   providers: [],
   bootstrap: [AppComponent]
 })
