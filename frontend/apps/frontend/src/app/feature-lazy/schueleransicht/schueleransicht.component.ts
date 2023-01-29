@@ -64,7 +64,7 @@ export class SchueleransichtComponent implements OnInit {
     this.listOfSelectedItems.push(item);
 
   }
-  
+
 
   sendVoteButtonClicked(): void {
     this.possibleAnswers?.forEach(dto=>{
@@ -80,7 +80,7 @@ export class SchueleransichtComponent implements OnInit {
         optionId : x
       }
     });
-   
+
     this.poolsService.pollsVotePollCodePost(this.code,optionReplyDto).subscribe();
   }
 
