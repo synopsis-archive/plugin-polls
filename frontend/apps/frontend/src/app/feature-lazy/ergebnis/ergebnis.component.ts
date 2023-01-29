@@ -19,7 +19,7 @@ export class ErgebnisComponent implements OnInit {
   options: string[] = [];
   totalVotes: number = 0;
 
-  
+
   chartData: ChartDataset[] = [{
     label: 'votes',
     data: this.receivedVotes

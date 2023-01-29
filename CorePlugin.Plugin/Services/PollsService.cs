@@ -105,7 +105,7 @@ public class PollsService : IPollsService
             .Include(x => x.PollOptions)
             .Include(x => x.SubmittedVotes)
             .SingleOrDefaultAsync(p => p.PollCode == pollCode);
-        
+
         CheckPoll(pollCode, poll);
 
         if (teacherGuid != poll!.CreatedBy)
