@@ -1,6 +1,7 @@
 ﻿import {Component, OnInit} from '@angular/core';
 import {Configuration} from "./polls-backend";
 import {environment} from "../environments/environment";
+import {JwtDecoderService} from "./core/jwt-decoder.service";
 
 @Component({
   selector: 'app-root',
@@ -8,14 +9,14 @@ import {environment} from "../environments/environment";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'frontend';
 
-  constructor(private config: Configuration) {
+  constructor(private config: Configuration, private jwtDecoder: JwtDecoderService) {
   }
 
   ngOnInit(): void {
-    this.config.credentials['Bearer'] = `Bearer ${environment.devJwtToken}`;
+    this.jwtDecoder.getJwt().then(x => {
+      this.config.credentials['Bearer'] = `Bearer ${x}`;
+    }).catch(_ => this.config.credentials['Bearer'] = `Bearer ${environment.devJwtToken}`);
   }
-
 
 }
