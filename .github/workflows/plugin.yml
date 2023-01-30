@@ -1,0 +1,120 @@
+name: Core
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - name: Restore dependency cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: plugin-frontend
+          path: frontend/dist/apps/frontend
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: CorePlugin.Plugin
+    strategy:
+      matrix:
+        dotnet-version: ['6.x', '7.x']
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Restore dependency cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            CorePlugin.Plugin/obj
+            CorePlugin.Plugin/bin
+          key: ${{ runner.os }}-dotnet-${{ matrix.dotnet-version }}-${{ hashFiles('**/*.csproj') }}
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+      - name: Publish
+        run: dotnet publish --configuration Release -r linux-x64 --no-build --no-restore --output ./publish
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        if: matrix.dotnet-version == '7.x'
+        with:
+          name: plugin-backend
+          path: CorePlugin.Plugin/publish
+  release:
+    name: Release
+    needs: [frontend, backend]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
+    steps:
+      - name: Create release
+        id: create_release
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          publish: true
+      - name: Download frontend artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: plugin-frontend
+          path: frontend/
+      - name: Download backend artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: plugin-backend
+          path: backend/
+      - name: Zip frontend artifact
+        run: zip -r frontend.zip frontend
+      - name: Zip backend artifact
+        run: zip -r backend.zip backend
+      - name: Upload frontend artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./frontend.zip
+          asset_name: frontend.zip
+          asset_content_type: application/zip
+      - name: Upload backend artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./backend.zip
+          asset_name: backend.zip
+          asset_content_type: application/zip
