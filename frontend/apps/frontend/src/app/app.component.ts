@@ -16,7 +16,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.jwtDecoder.getJwt().then(x => {
       this.config.credentials['Bearer'] = `Bearer ${x}`;
-    }).catch(_ => this.config.credentials['Bearer'] = `Bearer ${environment.devJwtToken}`);
+    }).catch(err => {
+      this.config.credentials['Bearer'] = `Bearer ${environment.devJwtToken}`
+      console.error(err);
+    });
   }
 
 }
