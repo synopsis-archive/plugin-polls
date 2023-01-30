@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ErgebnissAnsichtComponent } from './ergebniss-ansicht/ergebniss-ansicht.component';
+import { CodeInputComponent } from './code-input/code-input.component';
+import { LehreransichtListeComponent } from './lehreransicht-liste/lehreransicht-liste.component';
 import { LehreransichtComponent } from './lehreransicht/lehreransicht.component';
-import { SchueleransichtComponent } from './schueleransicht/schueleransicht.component';
 
 const routes: Routes = [{
-  path: 'umfragen',
+  path: '',
   children: [
     { path: 'Lehreransicht', component: LehreransichtComponent },
-    { path: 'Schueleransicht', component: SchueleransichtComponent },
-    {path: 'Ergebnissanischt', component: ErgebnissAnsichtComponent}
+    { path: 'Code', component: CodeInputComponent },
+    { path: 'LehreransichtListe', component: LehreransichtListeComponent },
+    { path: '**', redirectTo: '/PageNotFound' }
   ]
 }];
 

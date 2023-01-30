@@ -95,7 +95,7 @@ public class PollsController : ControllerBase
 
     [Authorize]
     [HttpGet("GetPollsFromTeacher")]
-    public async Task<ActionResult<List<PollDto>>> GetPollsFromTeacher()
+    public async Task<ActionResult<List<PollResultDto>>> GetPollsFromTeacher()
     {
         try
         {

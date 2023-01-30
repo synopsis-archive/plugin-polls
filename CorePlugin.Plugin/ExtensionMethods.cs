@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using CorePlugin.Plugin.Dtos;
+﻿using CorePlugin.Plugin.Dtos;
 using CorePlugin.PollsDb;
 
 namespace CorePlugin.Plugin;
@@ -17,9 +16,7 @@ public static class ExtensionMethods
             StartTime = poll.StartTime,
             EndTime = poll.EndTime,
             IsMultipleChoice = poll.IsMultipleChoice,
-            PollOptions = poll.PollOptions
-                .Select(x => new PollOptionDto { PollOptionId = x.PollOptionId, Description = x.Description })
-                .ToList(),
+            PollOptions = poll.PollOptions.Select(x => new PollOptionDto { PollOptionId = x.PollOptionId, Description = x.Description }).ToList(),
             ReceivedAnswers = poll.SubmittedVotes.Count,
             Results = ConvertPollToResultDictionary(poll)
         };
@@ -43,11 +40,11 @@ public static class ExtensionMethods
     }
 
     #region Private Helper Methods
-    private static Dictionary<long, ReceivedVotesDto> ConvertPollToResultDictionary(Poll poll)
+    private static Dictionary<string, ReceivedVotesDto> ConvertPollToResultDictionary(Poll poll)
     {
         var submittedVotesCount = poll.SubmittedVotes.Count;
 
-        return poll.PollOptions.ToDictionary(pollOption => pollOption.PollOptionId, pollOption =>
+        return poll.PollOptions.ToDictionary(pollOption => pollOption.Description, pollOption =>
         {
             var votesForOption = poll.SubmittedVotes.Count(x => x.SelectedPollOptionId == pollOption.PollOptionId);
             var percentage = (byte)Math.Round((double)votesForOption / submittedVotesCount * 100, 0);

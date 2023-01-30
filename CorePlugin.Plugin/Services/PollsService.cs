@@ -54,11 +54,12 @@ public class PollsService : IPollsService
         return poll!.ToPollResultDto();
     }
 
-    public Task<List<PollDto>> GetPollsOfTeacherAsync(Guid teacherGuid)
+    public Task<List<PollResultDto>> GetPollsOfTeacherAsync(Guid teacherGuid)
     {
         return _pollsContext.Polls
+            .Include(x => x.PollOptions)
             .Where(poll => poll.CreatedBy == teacherGuid)
-            .Select(poll => poll.ToPollDto())
+            .Select(poll => poll.ToPollResultDto())
             .ToListAsync();
     }
 
@@ -118,7 +119,15 @@ public class PollsService : IPollsService
     public async Task<bool> DeletePollAsync(string code, Guid teacherGuid)
     {
         var poll = await _pollsContext.Polls.SingleOrDefaultAsync(p => p.PollCode == code);
-        CheckPoll(code, poll);
+
+        try
+        {
+            CheckPoll(code, poll);
+        }
+        catch (PollClosedException)
+        {
+            Console.WriteLine("Poll is already closed - will be deleted anyway...");
+        }
 
         if (poll!.CreatedBy != teacherGuid)
             throw new NotAuthorizedException("You are not authorized to delete this poll.");

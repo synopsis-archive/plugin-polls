@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen(x => x.AddSwaggerGenHeader());
 // Add Authentication
 builder.AddHeaderAuth();
 
+
 /*
  *  ___   ___    _  _  ___ _____   _____ ___  _   _  ___ _  _
  * |   \ / _ \  | \| |/ _ \_   _| |_   _/ _ \| | | |/ __| || |
@@ -36,6 +37,7 @@ app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 plugin.Configure(app);
