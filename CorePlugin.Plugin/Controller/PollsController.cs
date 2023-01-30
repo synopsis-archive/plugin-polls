@@ -1,9 +1,12 @@
 ﻿using Core.AuthLib;
 using CorePlugin.Plugin.Dtos;
 using CorePlugin.Plugin.Exceptions;
+using CorePlugin.Plugin.Hubs;
 using CorePlugin.Plugin.Services;
+using CorePlugin.PollsDb;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace CorePlugin.Plugin.Controller;
@@ -14,11 +17,14 @@ public class PollsController : ControllerBase
 {
     private readonly PollsService _pollsService;
     private readonly ILogger<PollsController> _logger;
+    private readonly IHubContext<PollsHub, IPollsHub> _hub;
 
-    public PollsController(PollsService pollsService, ILogger<PollsController> logger)
+    public PollsController(PollsService pollsService, ILogger<PollsController> logger,
+        IHubContext<PollsHub, IPollsHub> hub)
     {
         _pollsService = pollsService;
         _logger = logger;
+        _hub = hub;
     }
 
     [Authorize]
@@ -36,7 +42,9 @@ public class PollsController : ControllerBase
         try
         {
             _logger.LogInformation("Submitting vote with args {@Vote}", voteReplayDto);
-            return Ok(await _pollsService.SubmitVotesAsync(pollCode, User.GetUUID(), voteReplayDto));
+            var pollResultDto = await _pollsService.SubmitVotesAsync(pollCode, User.GetUUID(), voteReplayDto);
+            await _hub.Clients.Group(pollCode).NewVoteReceived(pollResultDto);
+            return Ok(pollResultDto);
         }
         catch (PollException exception)
         {
@@ -78,6 +86,7 @@ public class PollsController : ControllerBase
     }
 
     [Authorize]
+    [Obsolete("Connect to NewVoteReceived (provided by the SignalR-Hub) instead")]
     [HttpGet("GetPollResult/{pollCode}")]
     public async Task<ActionResult<PollResultDto>> GetPollResultByCode(string pollCode)
     {
