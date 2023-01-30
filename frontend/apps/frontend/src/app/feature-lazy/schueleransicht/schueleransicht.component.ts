@@ -82,6 +82,7 @@ export class SchueleransichtComponent implements OnInit {
     });
 
     this.poolsService.pollsVotePollCodePost(this.code,optionReplyDto).subscribe();
+    this.resultButtonClicked();
   }
 
 
