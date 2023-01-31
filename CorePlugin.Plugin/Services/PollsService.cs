@@ -35,9 +35,9 @@ public class PollsService : IPollsService
     public async Task<PollDto> GetPollAsync(string code)
     {
         var poll = await _pollsContext.Polls
-            .Include(x => x.SubmittedVotes)
             .Include(x => x.PollOptions)
-            .FirstOrDefaultAsync(p => p.PollCode == code);
+            .Include(x => x.SubmittedVotes)
+            .SingleOrDefaultAsync(p => p.PollCode == code);
 
         CheckPoll(code, poll);
         return poll!.ToPollDto();

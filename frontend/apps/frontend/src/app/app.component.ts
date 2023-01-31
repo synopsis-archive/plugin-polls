@@ -2,6 +2,7 @@
 import {Configuration} from "./polls-backend";
 import {environment} from "../environments/environment";
 import {JwtDecoderService} from "./core/jwt-decoder.service";
+import {LiveResultUpdateService} from "./core/live-result-update.service";
 
 @Component({
   selector: 'app-root',
@@ -10,17 +11,19 @@ import {JwtDecoderService} from "./core/jwt-decoder.service";
 })
 export class AppComponent implements OnInit {
 
-  constructor(private config: Configuration, private jwtDecoder: JwtDecoderService) {
+  constructor(private config: Configuration, private jwtDecoder: JwtDecoderService,
+              private signalRService: LiveResultUpdateService) {
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.jwtDecoder.getJwt().then(x => {
-      console.log(x)
+      if(x === undefined)
+        throw new Error('No JWT token found');
       this.config.credentials['Bearer'] = `Bearer ${x}`;
-    }).catch(err => {
+      this.signalRService.startConnection(x).then(_ => console.log('SignalR connection started'));
+    }).catch(_ => {
       this.config.credentials['Bearer'] = `Bearer ${environment.devJwtToken}`
-      console.error(err);
+      this.signalRService.startConnection(environment.devJwtToken).then(_ => console.log('SignalR connection started'));
     });
   }
-
 }

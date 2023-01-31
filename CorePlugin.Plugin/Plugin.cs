@@ -1,4 +1,6 @@
-﻿using Core.Plugin.Interface;
+﻿using System.Security.Cryptography.Xml;
+using Core.Plugin.Interface;
+using CorePlugin.Plugin.Hubs;
 using CorePlugin.Plugin.Services;
 using CorePlugin.PollsDb;
 using Microsoft.AspNetCore.Builder;
@@ -19,8 +21,13 @@ public class Plugin : ICorePlugin
         });
         builder.Services.AddScoped<PollsService>();
         builder.Services.AddHostedService<DatabaseBackgroundService>();
+        builder.Services.AddSignalR(x => x.EnableDetailedErrors = true);
         builder.Services.AddControllers();
     }
 
-    public void Configure(WebApplication app) => app.MapControllers();
+    public void Configure(WebApplication app)
+    {
+        app.MapHub<PollsHub>("/hubs/polls");
+        app.MapControllers();
+    }
 }
