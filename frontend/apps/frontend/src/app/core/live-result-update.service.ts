@@ -10,7 +10,7 @@ export class LiveResultUpdateService {
   hubConnection: HubConnection = null!;
 
   public async startConnection(jwtToken: string) {
-    if(this.hubConnection == null) {
+    if(this.hubConnection === null) {
       this.hubConnection = new HubConnectionBuilder()
         .withUrl(`${environment.backend}/hubs/polls`,
           { skipNegotiation: true, transport: HttpTransportType.WebSockets, accessTokenFactory: () => jwtToken }
@@ -20,18 +20,18 @@ export class LiveResultUpdateService {
     }
   }
 
-  public registerListener(code: string, callback: (pollResultDto: PollResultDto) => void) {
-    if(this.hubConnection == null) {
+  registerListener(code: string, callback: (pollResultDto: PollResultDto) => void) {
+    if(this.hubConnection === null) {
       throw new Error('Connection not started');
     }
-    this.hubConnection.invoke('ReceiveUpdates', code).then(_ => '');
+    this.hubConnection.invoke('ReceiveUpdates', code).then(_ => console.log(`Registered for updates for poll ${code}`));
     this.hubConnection.on('NewVoteReceived', (poll: PollResultDto) => callback(poll));
   }
 
   unregisterListener(code: string) {
-    if(this.hubConnection == null) {
+    if(this.hubConnection === null) {
       throw new Error('Connection not started');
     }
-    this.hubConnection.invoke('NoFurtherUpdates', code).then(_ => '');
+    this.hubConnection.invoke('NoFurtherUpdates', code).then(_ => console.log(`Unregistered for updates for poll ${code}`));
   }
 }

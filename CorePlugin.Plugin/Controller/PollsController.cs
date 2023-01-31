@@ -86,7 +86,6 @@ public class PollsController : ControllerBase
     }
 
     [Authorize]
-    [Obsolete("Connect to NewVoteReceived (provided by the SignalR-Hub) instead")]
     [HttpGet("GetPollResult/{pollCode}")]
     public async Task<ActionResult<PollResultDto>> GetPollResultByCode(string pollCode)
     {
