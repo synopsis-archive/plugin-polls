@@ -56,12 +56,12 @@ export class ErgebnisComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private pollsService: PollsService, private _Location: Location,
               private pollResultUpdates: LiveResultUpdateService) { }
 
-  async backbuttonCLicked() {
-    await this.pollResultUpdates.unregisterListener(this.code);
+  backbuttonCLicked() {
+    this.pollResultUpdates.unregisterListener(this.code);
     this._Location.back();
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.activatedRoute.paramMap.subscribe(x => {
       this.code = x.get('id') ?? 'ERROR';
       this.pollsService.pollsGetPollResultPollCodeGet(this.code).subscribe(x => {
