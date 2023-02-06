@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^14.0.0",
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
+    "@microsoft/signalr": "^7.0.2",
     "@nrwl/angular": "15.0.13",
     "chart.js": "^3.9.1",
     "jwt-decode": "^3.1.2",
