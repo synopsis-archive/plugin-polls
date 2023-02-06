@@ -26,8 +26,6 @@ export class TeacherGuard implements CanActivate {
 
     if (!isTeacher)
       this.router.navigateByUrl('/Code').then(_ => console.log('Restricted...'));
-    else
-      this.router.navigateByUrl('/LehreransichtListe').then(_ => console.log('Allowed...'));
     return isTeacher;
   }
 }
