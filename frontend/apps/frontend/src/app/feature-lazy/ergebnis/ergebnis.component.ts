@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataset, ChartOptions } from 'chart.js';
 import {PollResultDto, PollsService} from '../../polls-backend';
 import { Location } from '@angular/common';
 import {LiveResultUpdateService} from "../../core/live-result-update.service";
+import {BaseChartDirective} from "ng2-charts";
 
 @Component({
   selector: 'app-ergebnis',
@@ -52,6 +53,8 @@ export class ErgebnisComponent implements OnInit {
       }
     }
   };
+
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   constructor(private activatedRoute: ActivatedRoute, private pollsService: PollsService, private _Location: Location,
               private pollResultUpdates: LiveResultUpdateService) { }
@@ -114,6 +117,7 @@ export class ErgebnisComponent implements OnInit {
         }
       }
     }
+    this.chart?.update();
   }
 
   private newPollResultReceived(pollResult: PollResultDto) {
