@@ -13,6 +13,8 @@ export class TeacherGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
     return await this.tokenService.getJwt().then(x => {
+      if(x === undefined)
+        throw new Error('No JWT token found');
       return this.hasPrivilegeToCreatePoll(x);
     }).catch(_ => {
       return this.hasPrivilegeToCreatePoll(environment.devJwtToken);
@@ -24,8 +26,6 @@ export class TeacherGuard implements CanActivate {
 
     if (!isTeacher)
       this.router.navigateByUrl('/Code').then(_ => console.log('Restricted...'));
-    else
-      this.router.navigateByUrl('/Lehreransicht').then(_ => console.log('Allowed...'));
     return isTeacher;
   }
 }
