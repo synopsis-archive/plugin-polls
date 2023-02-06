@@ -10,7 +10,7 @@ const routes: Routes = [{
   children: [
     { path: 'Lehreransicht', component: LehreransichtComponent, canActivate: [TeacherGuard] },
     { path: 'Code', component: CodeInputComponent },
-    { path: 'Lehreransichtliste', component: LehreransichtListeComponent, canActivate: [TeacherGuard] },
+    { path: 'LehreransichtListe', component: LehreransichtListeComponent, canActivate: [TeacherGuard] },
     { path: '**', redirectTo: '/PageNotFound' }
   ]
 }];
