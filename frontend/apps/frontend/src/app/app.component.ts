@@ -17,6 +17,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.jwtDecoder.getJwt().then(x => {
+      if(x === undefined)
+        throw new Error('No JWT token found');
       this.config.credentials['Bearer'] = `Bearer ${x}`;
       this.signalRService.startConnection(x).then(_ => console.log('SignalR connection started'));
     }).catch(_ => {

@@ -16,8 +16,6 @@ export class JwtDecoderService {
     const promise = new Promise<string>((resolve) => {
       window.addEventListener("message", (event) => {
         if (event.data.method === "getIDToken") {
-          if(event.data.data === undefined)
-            throw new Error('No JWT token found');
           resolve(event.data.data);
         }
       });
