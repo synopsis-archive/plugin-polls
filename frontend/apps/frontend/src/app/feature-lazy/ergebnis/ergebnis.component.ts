@@ -68,13 +68,13 @@ export class ErgebnisComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(x => {
       this.code = x.get('id') ?? 'ERROR';
       this.pollsService.pollsGetPollResultPollCodeGet(this.code).subscribe(x => {
-        this.pollResultUpdates.registerListener(this.code, this.newPollResultReceived);
-        this.updateDisplayedResult(x);
+        this.pollResultUpdates.registerListener(this.code, this);
+        this.setPollResult(x);
       });
     });
   }
 
-  private updateDisplayedResult(x: PollResultDto) {
+  private setPollResult(x: PollResultDto) {
     this.title = x.pollName;
     this.question = x.pollQuestion;
     this.endDate = x.endTime;
@@ -82,9 +82,7 @@ export class ErgebnisComponent implements OnInit {
     this.totalVotes = x.receivedAnswers;
     this.options = x.pollOptions.map(x => x.description);
 
-    for (const option of this.options) {
-      this.receivedVotes.push(x.results[option].receivedVotes!)
-    }
+    this.receivedVotes = this.options.map(y => x.results[y].receivedVotes!);
 
     this.chartData = [{
       label: 'votes',
@@ -92,35 +90,21 @@ export class ErgebnisComponent implements OnInit {
     }];
     this.chartLabels = this.options;
 
-    this.chartOptions = {
-      // ⤵️ Fill the wrapper
-      responsive: true,
-      maintainAspectRatio: false,
+    if(this.chart === undefined)
+      return;
 
-      // ⤵️ Remove the grids
-      scales: {
-        xAxis: {
-          display: false,
-          grid: {
-            // removes random border at bottom
-          }
-        },
-        yAxis: {
-          display: false
-        }
-      },
-
-      // ⤵️ Remove the main legend
-      plugins: {
-        legend: {
-          display: true
-        }
-      }
-    }
     this.chart?.update();
   }
 
-  private newPollResultReceived(pollResult: PollResultDto) {
-    this.updateDisplayedResult(pollResult);
+  updateChart(resultDto: PollResultDto, ergComponent: ErgebnisComponent) {
+    ergComponent.receivedVotes = ergComponent.options.map(y => resultDto.results[y].receivedVotes!);
+
+    ergComponent.chartData = [{
+      label: 'votes',
+      data: ergComponent.receivedVotes
+    }];
+
+    ergComponent.chartLabels = ergComponent.options;
+    ergComponent.chart?.update();
   }
 }
