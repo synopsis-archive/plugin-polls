@@ -96,7 +96,7 @@ export class ErgebnisComponent implements OnInit {
     this.chart?.update();
   }
 
-  updateChart(resultDto: PollResultDto, ergComponent: ErgebnisComponent) {
+  static updateChart(resultDto: PollResultDto, ergComponent: ErgebnisComponent) {
     ergComponent.receivedVotes = ergComponent.options.map(y => resultDto.results[y].receivedVotes!);
 
     ergComponent.chartData = [{

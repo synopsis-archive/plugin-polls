@@ -26,7 +26,7 @@ export class LiveResultUpdateService {
       throw new Error('Connection not started');
     }
     this.hubConnection.invoke('ReceiveUpdates', code).then(_ => console.log(`Registered for updates for poll ${code}`));
-    this.hubConnection.on('NewVoteReceived', (poll: PollResultDto) => ergComponent.updateChart(poll, ergComponent));
+    this.hubConnection.on('NewVoteReceived', (poll: PollResultDto) => ErgebnisComponent.updateChart(poll, ergComponent));
   }
 
   unregisterListener(code: string) {
