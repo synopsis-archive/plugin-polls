@@ -66,7 +66,12 @@ export class SchueleransichtComponent implements OnInit {
   }
 
   radioClicked(item:string){
+    if(!this.isMultipleChoice)
+    {
+      this.listOfSelectedItems = [];
+    }
     this.listOfSelectedItems.push(item);
+    console.log(item + " wurde ausgewählt ");
 
   }
 
@@ -92,6 +97,4 @@ export class SchueleransichtComponent implements OnInit {
     this.poolsService.pollsVotePollCodePost(this.code,optionReplyDto).subscribe();
     this.resultButtonClicked();
   }
-
-
 }

@@ -24,7 +24,7 @@ export class LiveResultUpdateService {
     if(this.hubConnection === null) {
       throw new Error('Connection not started');
     }
-    this.hubConnection.invoke('ReceiveUpdates', code).then(_ => console.log(`Registered for updates for poll ${code}`));
+    this.hubConnection.invoke('ReceiveUpdates', code).then((_: any) => console.log(`Registered for updates for poll ${code}`));
     this.hubConnection.on('NewVoteReceived', (poll: PollResultDto) => callback(poll));
   }
 
@@ -32,6 +32,6 @@ export class LiveResultUpdateService {
     if(this.hubConnection === null) {
       throw new Error('Connection not started');
     }
-    this.hubConnection.invoke('NoFurtherUpdates', code).then(_ => console.log(`Unregistered for updates for poll ${code}`));
+    this.hubConnection.invoke('NoFurtherUpdates', code).then((_: any) => console.log(`Unregistered for updates for poll ${code}`));
   }
 }
