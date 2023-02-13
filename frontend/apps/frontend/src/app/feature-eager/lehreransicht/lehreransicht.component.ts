@@ -80,7 +80,24 @@ export class LehreransichtComponent {
 
   CheckTime()
   {
-    //TODO CHECK TIME
+    let time_from = this.dateFrom.split(":");
+    let time_to = this.dateTo.split(":");
+
+    if(new Date(this.dateFrom) == new Date(this.dateTo))
+    {
+      if(time_from[0] < time_to[0])
+      {
+        return true;
+      } else
+      {
+        if(time_from[1] < time_to[1])
+        {
+          return true;
+        }
+        return false;
+      }
+    }
+
     return true;
   }
 

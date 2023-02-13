@@ -27,7 +27,7 @@ export class LehreransichtListeComponent implements OnInit {
 
   //Go to results of poll
   detailsClicked(poll: PollResultDto): void {
-    this.router.navigateByUrl(`Ergebnisansicht/${poll.pollCode}`).then(_ => {});
+    this.router.navigateByUrl(`Ergebnisansicht/${poll.pollCode}`).then(r => console.log('Routed to Ergebnisansicht'));
   }
 
   //Delete poll
@@ -36,6 +36,10 @@ export class LehreransichtListeComponent implements OnInit {
       this.pollService.pollsGetPollsFromTeacherGet().subscribe((x: PollResultDto[]) => {
         this.pollsOfTeacher = x;
       });
+    });
+
+    this.pollService.pollsGetPollsFromTeacherGet().subscribe((x: PollResultDto[]) => {
+      this.pollsOfTeacher = x;
     });
   }
 

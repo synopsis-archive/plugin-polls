@@ -59,7 +59,7 @@ export class ErgebnisComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private pollsService: PollsService, private _Location: Location,
               private pollResultUpdates: LiveResultUpdateService) { }
 
-  backbuttonCLicked() {
+  backbuttonClicked() {
     this.pollResultUpdates.unregisterListener(this.code);
     this._Location.back();
   }
