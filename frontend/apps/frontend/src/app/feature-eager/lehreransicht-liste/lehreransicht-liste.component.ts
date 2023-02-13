@@ -14,6 +14,7 @@ export class LehreransichtListeComponent implements OnInit {
 
   constructor(private router: Router, private pollService: PollsService,private _location: Location) { }
 
+  //Get polls of teacher
   ngOnInit(): void {
     this.pollService.pollsGetPollsFromTeacherGet().subscribe((x: PollResultDto[]) => {
       this.pollsOfTeacher = x;
@@ -24,10 +25,12 @@ export class LehreransichtListeComponent implements OnInit {
     this._location.back();
   }
 
+  //Go to results of poll
   detailsClicked(poll: PollResultDto): void {
     this.router.navigateByUrl(`Ergebnisansicht/${poll.pollCode}`).then(_ => {});
   }
 
+  //Delete poll
   deleteClicked(poll: PollResultDto): void {
     this.pollService.pollsDeletePollPollCodeDelete(poll.pollCode).subscribe(_ => {
       this.pollService.pollsGetPollsFromTeacherGet().subscribe((x: PollResultDto[]) => {
@@ -36,6 +39,7 @@ export class LehreransichtListeComponent implements OnInit {
     });
   }
 
+  //Make new poll
   newPollClicked(): void {
     this.router.navigateByUrl("Lehreransicht").then(_ => {});
   }

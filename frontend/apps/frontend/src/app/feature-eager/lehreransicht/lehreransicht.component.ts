@@ -23,6 +23,7 @@ export class LehreransichtComponent {
 
   constructor(private backendService: PollsService,private _location: Location) { }
 
+  //If attributes are correct, create a replayDTO of the options, get the set variables and post the replayDTO
   createPoll(): void {
     if (!this.checkAttributes())
       return;
@@ -55,8 +56,9 @@ export class LehreransichtComponent {
 
   }
 
+  //Checks the Date, Time, Title, OptionsAmount and OptionsRepeat. If unsuccessful, alerts the user and returns false, else returns true
   private checkAttributes() {
-    if(this.CheckDate() && this.CheckTitle() && this.CheckOptionsAmount() && this.CheckOptionsRepeat())
+    if(this.CheckDate() && this.CheckTime() && this.CheckTitle() && this.CheckOptionsAmount() && this.CheckOptionsRepeat())
     {
       return true;
     }
@@ -64,6 +66,7 @@ export class LehreransichtComponent {
     return false;
   }
 
+  //Checks if the DateTo is later than the DateFrom
   CheckDate()
   {
     if(new Date(this.dateFrom) > new Date(this.dateTo))
@@ -72,6 +75,12 @@ export class LehreransichtComponent {
       return false;
     }
     this.errorDateHidden = true;
+    return true;
+  }
+
+  CheckTime()
+  {
+    //TODO CHECK TIME
     return true;
   }
 

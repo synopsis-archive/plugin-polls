@@ -13,7 +13,7 @@ export class CodeInputComponent {
   errorHidden = true;
 
   constructor(private router: Router, private service: PollsService) { }
-
+// On enter pressed, attempt to get poll that corresponds to the entered code. If successful, navigate there. If not, show that the code isn't valid.
   enterPressed(): void {
     if (this.code.length === 6) {
       console.log(this.code);

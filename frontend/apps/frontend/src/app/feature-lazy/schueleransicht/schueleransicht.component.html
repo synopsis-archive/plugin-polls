@@ -1,3 +1,4 @@
+<!-- Header Start -->
 <div id="header" class="bg-[#4D83B8]">
     <div class="flex float-right mt-7 mr-5">
         <br>
@@ -16,7 +17,9 @@
     <br>
     <h6 class=" text-white ml-4">{{chooseAnswerText}}</h6>
 </div>
+<!-- Header End -->
 
+<!-- Checkboxes or Radio Buttons, depending. Only visible if user hasn't voted yet. -->
 <div [hidden]="check" class="mt-5">
 <div *ngFor="let item of possibleAnswers" >
     <div *ngIf="isMultipleChoice">
@@ -27,10 +30,13 @@
     </div>
 </div>
 </div>
+
+<!-- Thanks for voting message if user has already voted. -->
 <div [hidden]="!check">
     <h3 class="text-4xl">Danke für´s abstimmen! Sie können nun das Ergebnis ansehen</h3>
 </div>
 
+<!-- Buttons to send a vote and view the results -->
 <div class="mt-10" >
     <button (click)="sendVoteButtonClicked()"
     class=" ml-2 text-white py-2 px-20  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Absenden</button>

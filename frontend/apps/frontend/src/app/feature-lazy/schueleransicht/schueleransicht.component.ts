@@ -25,8 +25,10 @@ export class SchueleransichtComponent implements OnInit {
   ngOnInit(): void {
     this.listOfOptionId = [];
     this.listOfSelectedItems = [];
+    //Get Code from URL, cast it to string
     this.activatedRoute.paramMap.subscribe(x=> this.codeInput = x.get('id') ?? 'UNKNOWN');
     this.code = this.codeInput.toString();
+    //Get poll that corresponds to code, set possible answers, question and multiple choice bool from it
     this.poolsService.pollsGetPollPollCodeGet(this.code).subscribe(x=>{
       this.poll = x;
 
@@ -34,6 +36,7 @@ export class SchueleransichtComponent implements OnInit {
       this.pollQuestion = this.poll.pollQuestion;
       this.isMultipleChoice = this.poll.isMultipleChoice;
 
+      //Depending on if the poll is multiple choice, display different text.
       if(this.isMultipleChoice)
     {
       this.chooseAnswerText = "Wählen sie bitte eine (oder mehrere) Antwort(en):";
@@ -47,10 +50,12 @@ export class SchueleransichtComponent implements OnInit {
     this._location.back();
   }
 
+  //Navigate to results page of the poll with the code
   resultButtonClicked(): void {
     this.router.navigateByUrl(`/Ergebnisansicht/${this.code}`).then(r => console.log('Routed to Ergebnisansicht'));
   }
 
+  //If the poll isn't multiple chocie, empty the list of selected items to ensure only one is in it at any time. Then push the clicked item into the list.
   clicked(item:string){
     if(!this.isMultipleChoice)
     {
@@ -66,6 +71,7 @@ export class SchueleransichtComponent implements OnInit {
   }
 
 
+  //Iterates over the possible answers and selected items, if it finds any matches it pushes the id into a list
   sendVoteButtonClicked(): void {
     this.possibleAnswers?.forEach(dto=>{
       this.listOfSelectedItems.forEach(Element =>{
@@ -75,12 +81,14 @@ export class SchueleransichtComponent implements OnInit {
       });
       console.log(this.listOfOptionId);
     });
+    //Makes a reply DTO and adds all optionIds
    const optionReplyDto:VoteReplayDto[] = this.listOfOptionId.map(x =>{
       return {
         optionId : x
       }
     });
 
+    //Posts the code and option reply DTO to the server, then navigates to results.
     this.poolsService.pollsVotePollCodePost(this.code,optionReplyDto).subscribe();
     this.resultButtonClicked();
   }
