@@ -20,12 +20,15 @@ export class ErgebnisComponent implements OnInit {
   options: string[] = [];
   totalVotes: number = 0;
 
-
+ //Data set with recieved votes as data
   chartData: ChartDataset[] = [{
     label: 'votes',
     data: this.receivedVotes
   }];
+  //Labels = Options
   chartLabels: string[] = this.options;
+
+  //Create options
   chartOptions: ChartOptions = {
 
     // ⤵️ Fill the wrapper
@@ -64,6 +67,7 @@ export class ErgebnisComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(x => {
       this.code = x.get('id') ?? 'ERROR';
+      //Get Poll from code, set variables from it
       this.pollsService.pollsGetPollResultPollCodeGet(this.code).subscribe(x => {
         this.pollResultUpdates.registerListener(this.code, this.newPollResultReceived);
         this.updateDisplayedResult(x);
@@ -72,48 +76,47 @@ export class ErgebnisComponent implements OnInit {
   }
 
   private updateDisplayedResult(x: PollResultDto) {
-    this.title = x.pollName;
-    this.question = x.pollQuestion;
-    this.endDate = x.endTime;
-    this.creator = x.creatorName;
-    this.totalVotes = x.receivedAnswers;
-    this.options = x.pollOptions.map(x => x.description);
-
+        this.title = x.pollName;
+        this.question = x.pollQuestion;
+        this.endDate = x.endTime;
+        this.creator = x.creatorName;
+        this.totalVotes = x.receivedAnswers;
+        this.options = x.pollOptions.map(x => x.description);
+//Push the recieved votes of every option into recievedVotes
     for (const option of this.options) {
-      this.receivedVotes.push(x.results[option].receivedVotes!)
-    }
+          this.receivedVotes.push(x.results[option].receivedVotes!)
+        }
+        //Set the chart data from the recieved votes
+        this.chartData = [{
+          label: 'votes',
+          data: this.receivedVotes
+        }];
+        this.chartLabels = this.options;
+        this.chartOptions = {
+          // ⤵️ Fill the wrapper
+          responsive: true,
+          maintainAspectRatio: false,
 
-    this.chartData = [{
-      label: 'votes',
-      data: this.receivedVotes
-    }];
-    this.chartLabels = this.options;
+          // ⤵️ Remove the grids
+          scales: {
+            xAxis: {
+              display: false,
+              grid: {
+                // removes random border at bottom
+              }
+            },
+            yAxis: {
+              display: false
+            }
+          },
 
-    this.chartOptions = {
-      // ⤵️ Fill the wrapper
-      responsive: true,
-      maintainAspectRatio: false,
-
-      // ⤵️ Remove the grids
-      scales: {
-        xAxis: {
-          display: false,
-          grid: {
-            // removes random border at bottom
+          // ⤵️ Remove the main legend
+          plugins: {
+            legend: {
+              display: true
+            }
           }
-        },
-        yAxis: {
-          display: false
         }
-      },
-
-      // ⤵️ Remove the main legend
-      plugins: {
-        legend: {
-          display: true
-        }
-      }
-    }
   }
 
   private newPollResultReceived(pollResult: PollResultDto) {
