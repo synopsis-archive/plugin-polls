@@ -12,6 +12,8 @@ export class CodeInputComponent {
   code: string = "";
   errorHidden = true;
 
+  isHidden = false;
+
   constructor(private router: Router, private service: PollsService) { }
 // On enter pressed, attempt to get poll that corresponds to the entered code. If successful, navigate there. If not, show that the code isn't valid.
   enterPressed(): void {
@@ -32,5 +34,10 @@ export class CodeInputComponent {
 
   hideError(): void {
     this.errorHidden = true;
+  }
+
+  tmpClick()
+  {
+    this.isHidden = false;
   }
 }

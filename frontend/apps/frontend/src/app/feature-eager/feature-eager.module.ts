@@ -17,7 +17,8 @@ import { LehreransichtComponent } from './lehreransicht/lehreransicht.component'
     CommonModule,
     FeatureEagerRoutingModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ]
 })
 export class FeatureEagerModule { }

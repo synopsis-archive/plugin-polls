@@ -8,6 +8,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FormsModule } from '@angular/forms';
 import { AlreadyVotedComponent } from './already-voted/already-voted.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
