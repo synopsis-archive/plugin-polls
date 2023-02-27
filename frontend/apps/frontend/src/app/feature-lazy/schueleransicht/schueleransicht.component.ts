@@ -14,6 +14,7 @@ export class SchueleransichtComponent implements OnInit {
   codeInput: string = '';
   code: string = "";
   check: boolean = false;
+  checkHidden:boolean = true;
   pollQuestion: string = "";
   isMultipleChoice: boolean = true;
   chooseAnswerText: string = "";
@@ -53,6 +54,7 @@ export class SchueleransichtComponent implements OnInit {
   //Navigate to results page of the poll with the code
   resultButtonClicked(): void {
     this.router.navigateByUrl(`/Ergebnisansicht/${this.code}`).then(r => console.log('Routed to Ergebnisansicht'));
+    this.checkHidden=false;
   }
 
   //If the poll isn't multiple chocie, empty the list of selected items to ensure only one is in it at any time. Then push the clicked item into the list.
