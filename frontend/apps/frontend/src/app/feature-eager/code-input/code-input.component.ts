@@ -18,14 +18,15 @@ export class CodeInputComponent {
 // On enter pressed, attempt to get poll that corresponds to the entered code. If successful, navigate there. If not, show that the code isn't valid.
   enterPressed(): void {
     if (this.code.length === 6) {
-      console.log(this.code);
-      this.service.pollsGetPollPollCodeGet(this.code)
+     var codeUpperCase = this.code.toUpperCase();
+      console.log(codeUpperCase);
+      this.service.pollsGetPollPollCodeGet(codeUpperCase)
         .pipe(catchError((_, x: Observable<PollDto>) => {
           this.errorHidden = false;
           setTimeout(() => this.hideError(), 3000);
           return new Observable((observer) => observer.complete());
         }))
-        .subscribe(_ => this.router.navigateByUrl(`Schueleransicht/${this.code}`));
+        .subscribe(_ => this.router.navigateByUrl(`Schueleransicht/${codeUpperCase}`));
     } else {
       this.errorHidden = false;
       setTimeout(() => this.hideError(), 3000);

@@ -13,7 +13,7 @@ export class SchueleransichtComponent implements OnInit {
   possibleAnswers?: PollOptionDto[] = undefined;
   codeInput: string = '';
   code: string = "";
-  check: boolean = false;
+  check: boolean = true;
   checkHidden:boolean = true;
   pollQuestion: string = "";
   isMultipleChoice: boolean = true;
@@ -80,6 +80,7 @@ export class SchueleransichtComponent implements OnInit {
 
   //Iterates over the possible answers and selected items, if it finds any matches it pushes the id into a list
   sendVoteButtonClicked(): void {
+    this.check = false;
     this.possibleAnswers?.forEach(dto=>{
       this.listOfSelectedItems.forEach(Element =>{
           if(dto.description === Element){
@@ -97,6 +98,7 @@ export class SchueleransichtComponent implements OnInit {
 
     //Posts the code and option reply DTO to the server, then navigates to results.
     this.poolsService.pollsVotePollCodePost(this.code,optionReplyDto).subscribe();
-    this.resultButtonClicked();
+    this.checkHidden=false;
+    //this.resultButtonClicked();
   }
 }
