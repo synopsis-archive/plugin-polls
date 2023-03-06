@@ -140,10 +140,11 @@
                 <div class="flex">
                     <input type="date" [(ngModel)]="dateTo" (ngModelChange)="CheckDate()"
                         class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <input type="time" [(ngModel)]="timeTo"
+                    <input type="time" [(ngModel)]="timeTo" (ngModelChange)="CheckTime()"
                         class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
-                <a class="text-red-600" [hidden]="errorDateHidden">Ende vor Anfang!</a>
+                <a class="text-red-600" [hidden]="errorDateHidden">Ende vor Anfang (Datum)!</a>
+                <a class="text-red-600" [hidden]="errorTimeHidden">Ende vor Anfang (Zeit)!</a>
                 <div class="mt-8 ml-2 flex">
                     <p class="flex">Mehrfach-Antworten</p>
                     <label for="default-toggle" class="inline-flex relative items-center cursor-pointer ml-2">

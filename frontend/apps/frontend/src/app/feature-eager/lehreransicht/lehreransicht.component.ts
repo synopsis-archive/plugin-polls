@@ -20,6 +20,7 @@ export class LehreransichtComponent {
   multipleChoice = false;
 
   errorDateHidden = true;
+  errorTimeHidden = true;
 
   constructor(private backendService: PollsService,private _location: Location) { }
 
@@ -80,20 +81,23 @@ export class LehreransichtComponent {
 
   CheckTime()
   {
-    let time_from = this.dateFrom.split(":");
-    let time_to = this.dateTo.split(":");
+    let time_from = this.timeFrom.split(":");
+    let time_to = this.timeTo.split(":");
 
-    if(new Date(this.dateFrom) == new Date(this.dateTo))
+    if(this.dateFrom === this.dateTo)
     {
-      if(time_from[0] < time_to[0])
+      if(parseInt(time_from[0]) < parseInt(time_to[0]))
       {
+        this.errorTimeHidden = false;
         return true;
       } else
       {
-        if(time_from[1] < time_to[1])
+        if(parseInt(time_from[1]) < parseInt(time_to[1]))
         {
+          this.errorTimeHidden = true;
           return true;
         }
+        this.errorTimeHidden = false;
         return false;
       }
     }
