@@ -98,8 +98,13 @@ export class SchueleransichtComponent implements OnInit {
     });
 
     //Posts the code and option reply DTO to the server, then navigates to results.
-    this.poolsService.pollsVotePollCodePost(this.code,optionReplyDto).subscribe();
-    this.checkHidden=false;
+    this.poolsService
+    .pollsVotePollCodePost(this.code,optionReplyDto)
+    .subscribe({
+      next:()=>{},error: (e) =>{
+        this.router.navigateByUrl(`/error/${this.code}`);
+      }
+    });    this.checkHidden=false;
     //this.resultButtonClicked();
     this.votesService.addVote();
     console.log("Votes:" + this.votesService.getVote());
