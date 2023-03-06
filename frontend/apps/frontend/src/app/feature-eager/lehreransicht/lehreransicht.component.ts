@@ -22,6 +22,8 @@ export class LehreransichtComponent {
   errorDateHidden = true;
   errorTimeHidden = true;
 
+  customAlert = '';
+
   constructor(private backendService: PollsService,private _location: Location) { }
 
   //If attributes are correct, create a replayDTO of the options, get the set variables and post the replayDTO
@@ -59,20 +61,44 @@ export class LehreransichtComponent {
 
   //Checks the Date, Time, Title, OptionsAmount and OptionsRepeat. If unsuccessful, alerts the user and returns false, else returns true
   private checkAttributes() {
-    if(this.CheckDate() && this.CheckTime() && this.CheckTitle() && this.CheckOptionsAmount() && this.CheckOptionsRepeat())
+    this.customAlert = '';
+
+    if(this.CheckAll())
     {
       return true;
     }
-    alert("Denied");
+    alert(this.customAlert);
+    return false;
+  }
+
+  private CheckAll()
+  {
+    let check1 = this.CheckDate();
+    let check2 = this.CheckTime();
+    let check3 = this.CheckTitle();
+    let check4 = this.CheckOptionsAmount();
+    let check5 = this.CheckOptionsRepeat();
+
+    if(check1 && check2 && check3 && check4 && check5)
+    {
+      return true;
+    }
     return false;
   }
 
   //Checks if the DateTo is later than the DateFrom
   CheckDate()
   {
+    console.log(this.dateFrom);
+    if(this.dateFrom === '' || this.dateTo === '')
+    {
+      this.customAlert += "Falsche Datumsangabe(n)\n";
+      return false;
+    }
     if(new Date(this.dateFrom) > new Date(this.dateTo))
     {
       this.errorDateHidden = false;
+      this.customAlert += "Falsche Datumsangabe(n)\n";
       return false;
     }
     this.errorDateHidden = true;
@@ -88,7 +114,7 @@ export class LehreransichtComponent {
     {
       if(parseInt(time_from[0]) < parseInt(time_to[0]))
       {
-        this.errorTimeHidden = false;
+        this.errorTimeHidden = true;
         return true;
       } else
       {
@@ -98,6 +124,7 @@ export class LehreransichtComponent {
           return true;
         }
         this.errorTimeHidden = false;
+        this.customAlert += "Falsche Zeitangabe(n)\n";
         return false;
       }
     }
@@ -109,6 +136,7 @@ export class LehreransichtComponent {
   {
     if(this.title.trim().length <= 0 || this.question.trim().length <= 0) {
       //alert("Ein Titel bzw. eine Frage wird benötigt.");
+      this.customAlert += "Ein Titel bzw. eine Frage wird benötigt\n";
       return false;
     }
     return true;
@@ -118,6 +146,7 @@ export class LehreransichtComponent {
   {
     if(this.options.length <= 1 || this.options.every(x => x.trim().length <= 0)) {
       //alert("Es müssen mindestens zwei Antwortoption angegeben werden.");
+      this.customAlert += "Es müssen mindestens zwei Antwortoption angegeben werden\n";
       return false;
     }
     return true;
@@ -125,11 +154,30 @@ export class LehreransichtComponent {
 
   CheckOptionsRepeat()
   {
-    if(!this.options.every((e, i, a) => a.indexOf(e) === i))
+    /* if(!this.options.every((e, i, a) => a.indexOf(e) === i))
     {
       //DO Error
+      this.customAlert += "Doppelte Antwortmöglichkeiten\n";
       return false;
     }
-    return true;
+    return true; */
+
+    console.log(this.options.length);
+    if(this.options.length === 0)
+    {
+      return true;
+    }
+
+    let repeat = this.options.length === new Set(this.options).size;
+
+    if(!repeat)
+    {
+      this.customAlert += "Doppelte Antwortmöglichkeiten\n";
+      return false;
+    }
+    else
+    {
+      return true;
+    }
   }
 }
