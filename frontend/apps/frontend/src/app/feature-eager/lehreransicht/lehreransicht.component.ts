@@ -12,7 +12,7 @@ import {Location} from '@angular/common';
 export class LehreransichtComponent {
   title: string = '';
   question: string = '';
-  options: string[] = ["", "", ""];
+  options: string[] = ["", ""];
   dateFrom = '';
   dateTo = '';
   timeFrom = '';
@@ -46,6 +46,7 @@ export class LehreransichtComponent {
     }
     console.log(startTime);
     console.log(endTime);
+    console.log(JSON.stringify(pollReplayDto));
     // 2023-01-23T08:44:00.000Z
     this.backendService.pollsPost(pollReplayDto).subscribe((x: PollDto) => {
       //TODO: Do something with this code
@@ -144,7 +145,7 @@ export class LehreransichtComponent {
 
   CheckOptionsAmount()
   {
-    if(this.options.length <= 1 || this.options.every(x => x.trim().length <= 0)) {
+    if(this.options.length < 1 || this.options.every(x => x.trim().length <= 0)) {
       //alert("Es müssen mindestens zwei Antwortoption angegeben werden.");
       this.customAlert += "Es müssen mindestens zwei Antwortoption angegeben werden\n";
       return false;
