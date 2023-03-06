@@ -13,6 +13,7 @@ export class LehreransichtComponent {
   title: string = '';
   question: string = '';
   options: string[] = ["", ""];
+  // optionsIndices:number[]=[0,1];
   dateFrom = '';
   dateTo = '';
   timeFrom = '';
@@ -25,6 +26,15 @@ export class LehreransichtComponent {
   customAlert = '';
 
   constructor(private backendService: PollsService,private _location: Location) { }
+
+  // setOptionsIndices():void{
+  //   this.optionsIndices= [...new Array(this.options.length).keys()];
+  // }
+
+  get optionsIndices():number[]{
+       return [...new Array(this.options.length).keys()];
+  
+  }
 
   //If attributes are correct, create a replayDTO of the options, get the set variables and post the replayDTO
   createPoll(): void {
@@ -46,7 +56,6 @@ export class LehreransichtComponent {
     }
     console.log(startTime);
     console.log(endTime);
-    console.log(JSON.stringify(pollReplayDto));
     // 2023-01-23T08:44:00.000Z
     this.backendService.pollsPost(pollReplayDto).subscribe((x: PollDto) => {
       //TODO: Do something with this code
@@ -69,6 +78,27 @@ export class LehreransichtComponent {
       return true;
     }
     alert(this.customAlert);
+    return false;
+  }
+
+  public addOption()
+  {
+    this.options.push("");
+    // this.setOptionsIndices();
+  }
+
+  public removeOption(id : number)
+  {
+    this.options.splice(id, 1);//remove element from array
+    // this.setOptionsIndices();
+  }
+
+  public isEssentialOption(id : number)
+  {
+    if(id === 0 || id === 1)
+    {
+      return true;
+    }
     return false;
   }
 

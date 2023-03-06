@@ -33,97 +33,26 @@
                 class="h-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[560px]">
         </div>
         <div class="inline-block">
-            <div class="inline-block align-top mr-3">
+            {{options|json}}
+            <!-- <div class="inline-block align-top mr-3" *ngFor="let option of options; let indexOfElement = index"> -->
+                <div class="inline-block align-top mr-3" *ngFor="let indexOfElement of optionsIndices">
+                    {{indexOfElement}}
                 <div class="ml-2 flex">
-                    Antwort 1:
+                    Antwortmöglichkeit:
                 </div>
                 <div class="flex">
-                    <input type="text" [(ngModel)]="options[0]"
+                    <input type="text" [(ngModel)]="options[indexOfElement]"
                         class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
+                        <button type="button" [hidden]="isEssentialOption(indexOfElement)" (click)="removeOption(indexOfElement)"
+                        class="mt-1 text-white bg-[#004D99] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:bg-[#004D99]">-</button>
                 </div>
-                <div class="ml-2 flex">
-                    Antwort 2:
-                </div>
-                <div class="flex">
-                    <input type="text" [(ngModel)]="options[1]"
-                        class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
-                </div>
-                <div class="ml-2 flex">
-                    Antwort 3:
-                </div>
-                <div class="flex">
-                    <input type="text" [(ngModel)]="options[2]"
-                        class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
-                </div>
-                <!-- <div *ngIf="options[0].length && options[1].length && options[2].length">
-                    <div class="ml-2 flex">
-                        Antwort 4:
-                    </div>
-                    <div class="flex">
-                        <input type="text" [(ngModel)]="options[3]"
-                            class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
-                    </div>
-                </div>
-                <div *ngIf="options[0].length && options[1].length && options[2].length && options[3].length">
-                    <div class="ml-2 flex">
-                        Antwort 5:
-                    </div>
-                    <div class="flex">
-                        <input type="text" [(ngModel)]="options[4]"
-                            class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
-                    </div>
-                </div>
-                <div
-                    *ngIf="options[0].length && options[1].length && options[2].length && options[3].length && options[4].length">
-                    <div class="ml-2 flex">
-                        Antwort 6:
-                    </div>
-                    <div class="flex">
-                        <input type="text" [(ngModel)]="options[5]"
-                            class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
-                    </div>
-                </div>
-                <div
-                    *ngIf="options[0].length && options[1].length && options[2].length && options[3].length && options[4].length && options[5].length">
-                    <div class="ml-2 flex">
-                        Antwort 7:
-                    </div>
-                    <div class="flex">
-                        <input type="text" [(ngModel)]="options[6]"
-                            class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
-                    </div>
-                </div>
-                <div
-                    *ngIf="options[0].length && options[1].length && options[2].length && options[3].length && options[4].length && options[5].length && options[6].length">
-                    <div class="ml-2 flex">
-                        Antwort 8:
-                    </div>
-                    <div class="flex">
-                        <input type="text" [(ngModel)]="options[7]"
-                            class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
-                    </div>
-                </div>
-                <div
-                    *ngIf="options[0].length && options[1].length && options[2].length && options[3].length && options[4].length && options[5].length && options[6].length && options[7].length">
-                    <div class="ml-2 flex">
-                        Antwort 9:
-                    </div>
-                    <div class="flex">
-                        <input type="text" [(ngModel)]="options[8]"
-                            class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
-                    </div>
-                </div>
-                <div
-                    *ngIf="options[0].length && options[1].length && options[2].length && options[3].length && options[4].length && options[5].length && options[6].length && options[7].length && options[8].length">
-                    <div class="ml-2 flex">
-                        Antwort 10:
-                    </div>
-                    <div class="flex">
-                        <input type="text" [(ngModel)]="options[9]"
-                            class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
-                    </div>
-                </div> -->
             </div>
+            <div class="inline-block">
+                <div class="inline-block align-top mr-3">
+                    <div class="flex">
+                        <button type="button" (click)="addOption()"
+                        class="mt-1 text-white bg-[#004D99] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:bg-[#004D99]">+</button>
+                    </div>
             <div class="inline-block">
                 <div class="ml-2 flex">
                     Von:
