@@ -66,7 +66,7 @@ export class LehreransichtComponent {
       console.log(x.pollCode);
       console.log(JSON.stringify(x));
 
-      this.successAlert = 'Poll ' + x.pollName + 'erfolgreich erstellt! Um ihn anzusehen, klicken Sie ';
+      this.successAlert = 'Poll ' + x.pollName + ' erfolgreich erstellt! Um ihn anzusehen, klicken Sie ';
       this.successAlertLink = '/Ergebnisansicht/'+x.pollCode;
       this.successAlertHidden=false;
       this.resetFields();
