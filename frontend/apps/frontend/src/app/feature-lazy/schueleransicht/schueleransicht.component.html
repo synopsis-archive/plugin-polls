@@ -1,9 +1,10 @@
+<!-- Header Start -->
 <div id="header" class="bg-[#4D83B8]">
     <div class="flex float-right mt-7 mr-5">
         <br>
         <button (click)="returnButtonClicked()" type="button"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full  text-sm p-2.5 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+        class="mr-5 float-right text-white rotate-180 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-xl p-2.5 text-center inline-flex dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
                     d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
@@ -16,8 +17,10 @@
     <br>
     <h6 class=" text-white ml-4">{{chooseAnswerText}}</h6>
 </div>
+<!-- Header End -->
 
-<div [hidden]="check" class="mt-5">
+<!-- Checkboxes or Radio Buttons, depending. Only visible if user hasn't voted yet. -->
+<div [hidden]="!check" class="mt-5">
 <div *ngFor="let item of possibleAnswers" >
     <div *ngIf="isMultipleChoice">
         <input class="mt-5 ml-2"  type="checkbox" (click)="clicked(item.description)"><label class="text-xl ml-2">{{item.description}}</label>
@@ -27,14 +30,17 @@
     </div>
 </div>
 </div>
-<div [hidden]="!check">
+
+<!-- Thanks for voting message if user has already voted. -->
+<div [hidden]="check">
     <h3 class="text-4xl">Danke für´s abstimmen! Sie können nun das Ergebnis ansehen</h3>
 </div>
 
+<!-- Buttons to send a vote and view the results -->
 <div class="mt-10" >
-    <button (click)="sendVoteButtonClicked()"
+    <button [hidden]="!check" (click)="sendVoteButtonClicked()"
     class=" ml-2 text-white py-2 px-20  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Absenden</button>
     <br>
-    <button (click)="resultButtonClicked()"
-    class=" ml-2 py-2 px-20 text-white border-2 border-indigo-600  hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ergebniss</button>
+    <button [hidden]="checkHidden" (click)="resultButtonClicked()"
+    class=" ml-2 text-white py-2 px-20  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ergebnis ansehen</button>
 </div>
