@@ -23,6 +23,11 @@ export class LehreransichtListeComponent implements OnInit {
     this.totalVotes = this.votesService.getVote();
   }
 
+  showCode(poll: PollResultDto):void{
+    this.router.navigateByUrl(`code/${poll.pollCode}`).then(r => console.log('Routed to Ergebnisansicht'));
+
+  }
+
   backButtonClicked(): void {
     this._location.back();
   }

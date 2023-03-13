@@ -9,6 +9,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { FormsModule } from '@angular/forms';
 import { AlreadyVotedComponent } from './already-voted/already-voted.component';
 import { SharedModule } from '../shared/shared.module';
+import { CodeForStudentComponent } from './code-for-student/code-for-student.component';
 
 @NgModule({
   declarations: [
@@ -16,12 +17,13 @@ import { SharedModule } from '../shared/shared.module';
     ErgebnisComponent,
     PageNotFoundComponent,
     AlreadyVotedComponent,
+    CodeForStudentComponent,
   ],
   imports: [
     CommonModule,
     FeatureLazyRoutingModule,
     NgChartsModule,
-    FormsModule
-  ]
+    FormsModule,
+  ],
 })
-export class FeatureLazyModule { }
+export class FeatureLazyModule {}
