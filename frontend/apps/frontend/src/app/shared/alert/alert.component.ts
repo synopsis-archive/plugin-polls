@@ -16,6 +16,7 @@ export class AlertComponent implements OnInit{
   @Input() hidden : boolean = false;
   @Output() hiddenChange = new EventEmitter<boolean>();
   @Output() linkChange = new EventEmitter<string>();
+  @Output() alertTextChange = new EventEmitter<string>();
 
   constructor() { }
   ngOnInit(): void {

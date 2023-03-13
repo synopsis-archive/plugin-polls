@@ -25,7 +25,7 @@ export class LehreransichtComponent {
 
   customAlert = '';
 
-  successAlert = 'Poll erfolgreich erstellt! Um ihn anzusehen, klicken Sie ';
+  successAlert = '';
   successAlertLink = ''
   successAlertHidden = true;
 
@@ -66,9 +66,29 @@ export class LehreransichtComponent {
       console.log(x.pollCode);
       console.log(JSON.stringify(x));
 
+      this.successAlert = 'Poll ' + x.pollName + 'erfolgreich erstellt! Um ihn anzusehen, klicken Sie ';
       this.successAlertLink = '/Ergebnisansicht/'+x.pollCode;
       this.successAlertHidden=false;
+      this.resetFields();
     });
+  }
+
+  resetFields()
+  {
+    this.title = "";
+    this.question = "";
+    this.options = ["", ""];
+
+  this.dateFrom = '';
+  this.dateTo = '';
+  this.timeFrom = '';
+  this.timeTo = '';
+  this.multipleChoice = false;
+
+  this.errorDateHidden = true;
+  this.errorTimeHidden = true;
+
+  this.customAlert = '';
   }
 
   backButtonClicked():void{
