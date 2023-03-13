@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {environment} from "../../environments/environment";
 import {PollResultDto} from "../polls-backend";
+import {ErgebnisComponent} from "../feature-lazy/ergebnis/ergebnis.component";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class LiveResultUpdateService {
     }
   }
 
-  registerListener(code: string, callback: (pollResultDto: PollResultDto) => void) {
+  registerListener(code: string, ergComponent: ErgebnisComponent) {
     if(this.hubConnection === null) {
       throw new Error('Connection not started');
     }

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataset, ChartOptions } from 'chart.js';
 import {PollResultDto, PollsService} from '../../polls-backend';
 import { Location } from '@angular/common';
 import {LiveResultUpdateService} from "../../core/live-result-update.service";
+import {BaseChartDirective} from "ng2-charts";
 
 @Component({
   selector: 'app-ergebnis',
@@ -56,6 +57,8 @@ export class ErgebnisComponent implements OnInit {
     }
   };
 
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+
   constructor(private activatedRoute: ActivatedRoute, private pollsService: PollsService, private _Location: Location,
               private pollResultUpdates: LiveResultUpdateService) { }
 
@@ -69,8 +72,8 @@ export class ErgebnisComponent implements OnInit {
       this.code = x.get('id') ?? 'ERROR';
       //Get Poll from code, set variables from it
       this.pollsService.pollsGetPollResultPollCodeGet(this.code).subscribe(x => {
-        this.pollResultUpdates.registerListener(this.code, this.newPollResultReceived);
-        this.updateDisplayedResult(x);
+        this.pollResultUpdates.registerListener(this.code, this);
+        this.setPollResult(x);
       });
     });
   }
@@ -117,9 +120,40 @@ export class ErgebnisComponent implements OnInit {
             }
           }
         }
+      }
+        
+  private setPollResult(x: PollResultDto) {
+    this.title = x.pollName;
+    this.question = x.pollQuestion;
+    this.endDate = x.endTime;
+    this.creator = x.creatorName;
+    this.totalVotes = x.receivedAnswers;
+    this.options = x.pollOptions.map(x => x.description);
+
+    this.receivedVotes = this.options.map(y => x.results[y].receivedVotes!);
+
+    this.chartData = [{
+      label: 'votes',
+      data: this.receivedVotes
+    }];
+    this.chartLabels = this.options;
+
+    if(this.chart === undefined)
+      return;
+
+    this.chart?.update();
+
   }
 
-  private newPollResultReceived(pollResult: PollResultDto) {
-    this.updateDisplayedResult(pollResult);
+  static updateChart(resultDto: PollResultDto, ergComponent: ErgebnisComponent) {
+    ergComponent.receivedVotes = ergComponent.options.map(y => resultDto.results[y].receivedVotes!);
+
+    ergComponent.chartData = [{
+      label: 'votes',
+      data: ergComponent.receivedVotes
+    }];
+
+    ergComponent.chartLabels = ergComponent.options;
+    ergComponent.chart?.update();
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import jwtDecode from "jwt-decode";
 
 @Injectable({
@@ -13,15 +13,13 @@ export class JwtDecoderService {
       method: "getIDToken"
     }, "*");
 
-    const promise = new Promise<string>((resolve) => {
+    return new Promise<string>((resolve) => {
       window.addEventListener("message", (event) => {
         if (event.data.method === "getIDToken") {
           resolve(event.data.data);
         }
       });
     });
-
-    return promise;
   }
 
   public decodeJwt(token: string): IDTokenPayload {

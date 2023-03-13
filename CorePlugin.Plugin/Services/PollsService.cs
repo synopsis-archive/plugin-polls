@@ -1,4 +1,5 @@
-﻿using CorePlugin.Plugin.Dtos;
+﻿using Core.AuthLib;
+using CorePlugin.Plugin.Dtos;
 using CorePlugin.Plugin.Exceptions;
 using CorePlugin.PollsDb;
 using Microsoft.EntityFrameworkCore;
@@ -43,14 +44,23 @@ public class PollsService : IPollsService
         return poll!.ToPollDto();
     }
 
-    public async Task<PollResultDto> GetPollResultAsync(string code)
+    public async Task<PollResultDto> GetPollResultAsync(string code, UserRoles role)
     {
         var poll = await _pollsContext.Polls
             .Include(poll => poll.PollOptions)
             .Include(poll => poll.SubmittedVotes)
             .SingleOrDefaultAsync(poll => poll.PollCode == code);
 
-        CheckPoll(code, poll);
+        try
+        {
+            CheckPoll(code, poll);
+        }
+        catch (PollClosedException)
+        {
+            if (role == UserRoles.Schueler)
+                throw;
+        }
+
         return poll!.ToPollResultDto();
     }
 

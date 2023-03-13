@@ -92,7 +92,7 @@ public class PollsController : ControllerBase
         try
         {
             _logger.LogInformation("Getting poll result with code {@PollCode}", pollCode);
-            return Ok(await _pollsService.GetPollResultAsync(pollCode));
+            return Ok(await _pollsService.GetPollResultAsync(pollCode, User.GetRole()));
         }
         catch (PollException exception)
         {
