@@ -9,10 +9,13 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class AlertComponent implements OnInit{
   @Input() alertType : string = null!;
   @Input() alertText : string = null!;
+  @Input() linkText : string = "";
+  @Input() link : string = "";
   classString : string = "";
   buttonClassString : string = "";
   @Input() hidden : boolean = false;
   @Output() hiddenChange = new EventEmitter<boolean>();
+  @Output() linkChange = new EventEmitter<string>();
 
   constructor() { }
   ngOnInit(): void {

@@ -27,18 +27,19 @@
         </div>
     </div>
     <div id="body" class="m-5">
+
+        <app-alert alertType="success" [alertText]="successAlert" [(hidden)]="successAlertHidden" linkText="hier." [(link)]="successAlertLink"></app-alert>
+
         <div class="mt-10">
             <p class="text-lg ml-2">Frage Eingeben:</p>
             <input [(ngModel)]="question" type="text" placeholder="Warum leben Wombats in Mülleimern?"
                 class="h-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[560px]">
         </div>
         <div class="inline-block">
-            {{options|json}}
             <!-- <div class="inline-block align-top mr-3" *ngFor="let option of options; let indexOfElement = index"> -->
                 <div class="inline-block align-top mr-3" *ngFor="let indexOfElement of optionsIndices">
-                    {{indexOfElement}}
                 <div class="ml-2 flex">
-                    Antwortmöglichkeit:
+                    Antwortmöglichkeit {{indexOfElement+1}}:
                 </div>
                 <div class="flex">
                     <input type="text" [(ngModel)]="options[indexOfElement]"

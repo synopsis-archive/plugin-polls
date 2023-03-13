@@ -22,7 +22,7 @@ export class TeacherGuard implements CanActivate {
   }
 
   private hasPrivilegeToCreatePoll(jwtToken: string) {
-    const isTeacher = this.tokenService.decodeJwt(jwtToken).rolle.toLowerCase() !== 'schueler';
+    const isTeacher = this.tokenService.decodeJwt(jwtToken).rolle.toLowerCase() !== 'teacher';
 
     if (!isTeacher)
       this.router.navigateByUrl('/Code').then(_ => console.log('Restricted...'));

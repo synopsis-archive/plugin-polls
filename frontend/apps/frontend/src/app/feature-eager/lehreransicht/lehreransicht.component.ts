@@ -25,6 +25,10 @@ export class LehreransichtComponent {
 
   customAlert = '';
 
+  successAlert = 'Poll erfolgreich erstellt! Um ihn anzusehen, klicken Sie ';
+  successAlertLink = ''
+  successAlertHidden = true;
+
   constructor(private backendService: PollsService,private _location: Location) { }
 
   // setOptionsIndices():void{
@@ -61,6 +65,9 @@ export class LehreransichtComponent {
       //TODO: Do something with this code
       console.log(x.pollCode);
       console.log(JSON.stringify(x));
+
+      this.successAlertLink = '/Ergebnisansicht/'+x.pollCode;
+      this.successAlertHidden=false;
     });
   }
 
