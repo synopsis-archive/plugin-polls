@@ -72,7 +72,7 @@ export class PollsService {
     }
 
     private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
-        if (value == null) {
+        if (value === null) {
             return httpParams;
         }
 
@@ -80,16 +80,16 @@ export class PollsService {
             if (Array.isArray(value)) {
                 (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
             } else if (value instanceof Date) {
-                if (key != null) {
+                if (key !== null) {
                     httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
                 } else {
                    throw Error("key may not be null if value is Date");
                 }
             } else {
                 Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
-                    httpParams, value[k], key != null ? `${key}.${k}` : k));
+                    httpParams, value[k], key !== null ? `${key}.${k}` : k));
             }
-        } else if (key != null) {
+        } else if (key !== null) {
             httpParams = httpParams.append(key, value);
         } else {
             throw Error("key may not be null if value is not object or array");
