@@ -7,11 +7,13 @@ using System.Reflection;
 
 namespace CorePlugin.Polls.Test
 {
-    public class PollsServiceTest: IDisposable
+    [Collection("Sequential")]
+    public class PollsServiceTest : IDisposable
     {
         private readonly PollsService _pollsService;
         private PollsContext _db;
         private string fileTemporaryDb;
+
         public PollsServiceTest()
         {
             InitDatabase();
@@ -22,23 +24,29 @@ namespace CorePlugin.Polls.Test
         {
             _db.Database.CloseConnection();
         }
-        
+
         private void InitDatabase()
         {
             string sourceDb = @"C:\Temp\5Klasse\POS\plugin-polls\CorePlugin.BackendDevServer\Polls.sqlite3";
             string exeDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            fileTemporaryDb = Path.Combine(exeDirectory, "database", "Polls.sqlite3");
-            if (File.Exists(fileTemporaryDb)) File.Delete(fileTemporaryDb);
-            File.Copy(sourceDb, fileTemporaryDb);
-           
+            fileTemporaryDb = Path.Combine(exeDirectory, "TemporaryDbs", "Polls.sqlite3");
+
             string connectionString =
                 $@"Data Source={fileTemporaryDb}";
             var options = new DbContextOptionsBuilder<PollsContext>()
                 .UseSqlite(connectionString)
                 .Options;
             _db = new PollsContext(options);
+            //if (File.Exists(fileTemporaryDb))
+            //{
+            //    File.Delete(fileTemporaryDb);
+            //}
+            _db.Database.EnsureDeleted();
+            File.Copy(sourceDb, fileTemporaryDb);
+
             _db.Database.EnsureCreated();
             _db.Database.OpenConnection();
+
         }
 
         [Fact]
@@ -68,9 +76,11 @@ namespace CorePlugin.Polls.Test
         public async void CheckDelete()
         {
             int countBefore = _db.Polls.Count();
-            List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>();
-            pollReplayDtos.Add(new PollOptionReplayDto { Description = "Ja" });
-            pollReplayDtos.Add(new PollOptionReplayDto { Description = "Na" });
+            List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>
+            {
+                new PollOptionReplayDto { Description = "Ja" },
+                new PollOptionReplayDto { Description = "Na" }
+            };
             var poll = await _pollsService.CreatePollAsync(new PollReplayDto
             {
                 StartTime = DateTime.Now,
@@ -84,5 +94,58 @@ namespace CorePlugin.Polls.Test
             Assert.True(await _pollsService.DeletePollAsync(poll.PollCode, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c")));
         }
 
+        [Fact]
+        public async void CheckSubmit()
+        {
+            List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>
+            {
+                new PollOptionReplayDto { Description = "Ja" },
+                new PollOptionReplayDto { Description = "Na" }
+            };
+            var poll = await _pollsService.CreatePollAsync(new PollReplayDto
+            {
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now.AddDays(2),
+                IsMultipleChoice = true,
+                PollName = "Funktioniert dieser Unit-Test?",
+                PollOptions = pollReplayDtos,
+                PollQuestion = "Funktioniert dieser Unit-Test?"
+            }, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), "Tester");
+            var list = poll.PollOptions.Select(x => x.PollOptionId).ToList();
+            int countserBefore = poll.Results.Count();
+            List<VoteReplayDto> votes = new List<VoteReplayDto>();
+            foreach (int i in list)
+            {
+                votes.Add(new VoteReplayDto { OptionId = i });
+            }
+            var poll2 = await _pollsService.SubmitVotesAsync(poll.PollCode, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), votes);
+
+            if (poll2.Results.Count < countserBefore)
+            {
+                Assert.Fail("Pass nix");
+            }
+        }
+
+        [Fact]
+        public async void CheckClose()
+        {
+            List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>
+            {
+                new PollOptionReplayDto { Description = "Ja" },
+                new PollOptionReplayDto { Description = "Na" }
+            };
+            var poll = await _pollsService.CreatePollAsync(new PollReplayDto
+            {
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now.AddDays(2),
+                IsMultipleChoice = true,
+                PollName = "Funktioniert dieser Unit-Test?",
+                PollOptions = pollReplayDtos,
+                PollQuestion = "Funktioniert dieser Unit-Test?"
+            }, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), "Tester");
+            DateTime datebefore = poll.EndTime;
+            var test = await _pollsService.ClosePollAsync(poll.PollCode, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"));
+            Assert.False(test.EndTime.Equals(poll.EndTime));
+        }
     }
 }
