@@ -30,20 +30,16 @@ public class PollsServiceTest : IDisposable
         //"C:\\Temp\\5Klasse\\POS\\plugin-polls\\CorePlugin.Polls.Test\\bin\\Debug\\net6.0"
         var test = Environment.CurrentDirectory.Split("\\plugin-polls\\");
         var test2 = test[0] + "\\plugin-polls\\CorePlugin.BackendDevServer\\Polls.sqlite3";
-        string sourceDb = test2;
-        string exeDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        var sourceDb = test2;
+        var exeDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         fileTemporaryDb = Path.Combine(exeDirectory, "TemporaryDbs", "Polls.sqlite3");
 
-        string connectionString =
+        var connectionString =
             $@"Data Source={fileTemporaryDb}";
         var options = new DbContextOptionsBuilder<PollsContext>()
             .UseSqlite(connectionString)
             .Options;
         _db = new PollsContext(options);
-        //if (File.Exists(fileTemporaryDb))
-        //{
-        //    File.Delete(fileTemporaryDb);
-        //}
         _db.Database.EnsureDeleted();
         File.Copy(sourceDb, fileTemporaryDb);
 
@@ -55,7 +51,7 @@ public class PollsServiceTest : IDisposable
     [Fact]
     public async Task CheckCreate()
     {
-        int countBefore = _db.Polls.Count();
+        var countBefore = _db.Polls.Count();
         List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>();
         pollReplayDtos.Add(new PollOptionReplayDto { Description = "Ja" });
         pollReplayDtos.Add(new PollOptionReplayDto { Description = "Na" });
@@ -78,7 +74,7 @@ public class PollsServiceTest : IDisposable
     [Fact]
     public async Task CheckDelete()
     {
-        int countBefore = _db.Polls.Count();
+        var countBefore = _db.Polls.Count();
         List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>
         {
             new PollOptionReplayDto { Description = "Ja" },
@@ -115,9 +111,9 @@ public class PollsServiceTest : IDisposable
             PollQuestion = "Funktioniert dieser Unit-Test?"
         }, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), "Tester");
         var list = poll.PollOptions.Select(x => x.PollOptionId).ToList();
-        int countserBefore = poll.Results.Count();
+        var countserBefore = poll.Results.Count();
         List<VoteReplayDto> votes = new List<VoteReplayDto>();
-        foreach (int i in list)
+        foreach (var i in list)
         {
             votes.Add(new VoteReplayDto { OptionId = i });
         }
@@ -132,7 +128,7 @@ public class PollsServiceTest : IDisposable
     [Fact]
     public async Task CheckResult()
     {
-        List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>
+        var pollReplayDtos = new List<PollOptionReplayDto>
         {
             new PollOptionReplayDto { Description = "Ja" },
             new PollOptionReplayDto { Description = "Na" }
@@ -149,10 +145,10 @@ public class PollsServiceTest : IDisposable
         var pollOptionYesId = poll.PollOptions.Where(x => x.Description == "Ja").Select(x => x.PollOptionId).FirstOrDefault();
         var pollOptionNoId = poll.PollOptions.Where(x => x.Description == "Na").Select(x => x.PollOptionId).FirstOrDefault();
         var list = poll.PollOptions.Select(x => x.PollOptionId).ToList();
-        int countserBefore = poll.Results.Count();
-        List<VoteReplayDto> votes = new List<VoteReplayDto>();
-        int yescount = 0;
-        int nocount = 0;
+        var countserBefore = poll.Results.Count();
+        var votes = new List<VoteReplayDto>();
+        var yescount = 0;
+        var nocount = 0;
         while (yescount < 6)
         {
             votes.Add(new VoteReplayDto { OptionId = pollOptionYesId });
@@ -176,7 +172,7 @@ public class PollsServiceTest : IDisposable
     [Fact]
     public async Task CheckClose()
     {
-        List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>
+        var pollReplayDtos = new List<PollOptionReplayDto>
         {
             new PollOptionReplayDto { Description = "Ja" },
             new PollOptionReplayDto { Description = "Na" }

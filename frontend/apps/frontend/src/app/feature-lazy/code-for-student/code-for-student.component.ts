@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class CodeForStudentComponent implements OnInit {
   code:String = "";
 
-  constructor(private activatedRoute: ActivatedRoute, 
+  constructor(private activatedRoute: ActivatedRoute,
     private router: Router) {}
 
   ngOnInit(): void {

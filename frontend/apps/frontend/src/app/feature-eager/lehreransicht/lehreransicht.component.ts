@@ -37,7 +37,7 @@ export class LehreransichtComponent {
 
   get optionsIndices():number[]{
        return [...new Array(this.options.length).keys()];
-  
+
   }
 
   //If attributes are correct, create a replayDTO of the options, get the set variables and post the replayDTO
