@@ -1,11 +1,11 @@
 <!-- Header Start -->
-<nav id="headerStyle" class="bg-white border-gray-200 px-2 sm:px-4 py-2.5  rounded header">
+<nav id="headerStyle" class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
     <div class="container flex flex-wrap items-center justify-between mx-auto">
     <a class="flex items-center">
-        <span class="title self-center whitespace-nowrap">Umfragen</span>
+        <span id="headerTextStyle" class="self-center text-xl font-bold whitespace-nowrap dark:text-white color">Umfragen</span>
     </a>
     <div class="flex md:order-2">
-        <button (click)="newPollClicked()" class="button">Neu</button>
+        <button id="buttonStyle" (click)="newPollClicked()" class=" font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0">Neu</button>
     </div>
     </div>
   </nav>
@@ -13,16 +13,16 @@
 
 <!-- Table of polls -->
 <div class="overflow-x-auto relative">
-    <table class="w-full text-sm text-left text-black  table-auto">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto">
         <tbody class="divide-y divide-slate-200">
             <tr class="bg-white border-b" *ngFor="let poll of pollsOfTeacher">
                 <th scope="row" class="py-4 px-6 font-bold text-lg">{{poll.pollName}}</th>
                 <td class="py-4 px-6 text-base">Läuft Bis: <br>{{poll.endTime | date:'short'}}</td>
-                <td class="py-4 px-6 text-base">{{totalVotes}} Votes</td>
+                <td class="py-4 px-6 text-base">{{poll.receivedAnswers}} Votes</td>
                 <td>
-                    <button class="link_button text-decoration-line: underline" id="viewBtn" (click)="detailsClicked(poll)">View</button>
-                    <button class="link_button text-decoration-line: underline" id="delBtn" (click)="deleteClicked(poll)">Delete</button>
-                    <button class="link_button text-decoration-line: underline" id="delBtn" (click)="showCode(poll)">Code anzeigen</button>
+                    <button class="font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 text-decoration-line: underline" id="viewBtn" (click)="detailsClicked(poll)">View</button>
+                    <button class="font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 text-decoration-line: underline" id="delBtn" (click)="deleteClicked(poll)">Delete</button>
+                    <button class="font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 text-decoration-line: underline" id="delBtn" (click)="showCode(poll)">Code anzeigen</button>
 
                 </td>
             </tr>
