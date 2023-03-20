@@ -1,15 +1,15 @@
 <div id="data">
-    <div id="header" class="bg-[#4D83B8]">
+    <div id="header" class="header">
         <div class="ml-5 mr-5 mb-5">
-            <h3 class="text-4xl dark:text-white">Titel Eingeben:</h3>
+            <h3 class="title_lehreransicht">Titel Eingeben:</h3>
             <div class="inline-block">
                 <div class="mr-10 float-left">
                     <input [(ngModel)]="title" type="text" placeholder="Umfrage Wombats 5bhif"
-                        class="form-control h-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[400px]">
+                        class="form_input_large">
                 </div>
                 <div class="float-left">
                     <button (click)="backButtonClicked()" type="button"
-                        class="rotate-180 mt-1.5 text-white bg-[#004D99] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:bg-[#004D99]">
+                        class="button rotate-180">
                         <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
@@ -21,7 +21,7 @@
                 </div>
                 <div class="float-left">
                     <button type="button" (click)="createPoll()"
-                        class="mt-1 text-white bg-[#004D99] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:bg-[#004D99]">Fertig</button>
+                        class="button">Fertig</button>
                 </div>
             </div>
         </div>
@@ -31,56 +31,52 @@
         <app-alert alertType="success" [(alertText)]="successAlert" [(hidden)]="successAlertHidden" linkText="hier." [(link)]="successAlertLink"></app-alert>
 
         <div class="mt-10">
-            <p class="text-lg ml-2">Frage Eingeben:</p>
+            <p class="title_xsmall">Frage Eingeben:</p>
             <input [(ngModel)]="question" type="text" placeholder="Warum leben Wombats in Mülleimern?"
-                class="h-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[560px]">
+                class="form_input">
         </div>
         <div class="flex">
             <!-- <div class="inline-block align-top mr-3" *ngFor="let option of options; let indexOfElement = index"> -->
             <div class="flex flex-col">
                 <div class="mr-3" *ngFor="let indexOfElement of optionsIndices">
-                    <div class="ml-2 flex">
+                    <div class="ml-2 flex title_xsmall">
                         Antwortmöglichkeit {{indexOfElement+1}}:
                     </div>
                     <div class="flex">
-                        <input type="text" [(ngModel)]="options[indexOfElement]"
-                            class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[300px]">
+                        <input class="form_input" type="text" [(ngModel)]="options[indexOfElement]">
                         <button type="button" [hidden]="isEssentialOption(indexOfElement)"
                             (click)="removeOption(indexOfElement)"
-                            class="mt-1 text-white bg-[#004D99] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:bg-[#004D99]">-</button>
+                            class="button">-</button>
                     </div>
                 </div>
                 <div class="flex">
                     <button type="button" (click)="addOption()"
-                        class="mt-1 text-white bg-[#004D99] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:bg-[#004D99]">+</button>
+                        class="button">+</button>
                 </div>
             </div>
             <div class="inline-block">
                 <div class="inline-block align-top mr-3">
                    
                     <div class="inline-block">
-                        <div class="ml-2 flex">
+                        <div class="ml-2 flex title_xsmall">
                             Von:
                         </div>
                         <div class="flex">
-                            <input type="date" [ngModel]="dateFrom | date:'yyyy-MM-dd'" (ngModelChange)="dateParseFrom($event)"
-                                class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <input class="form_input" type="date" [ngModel]="dateFrom | date:'yyyy-MM-dd'" (ngModelChange)="dateParseFrom($event)">
                             <input type="time" [ngModel]="timeFrom | date:'hh:mm'" (ngModelChange)="timeParseFrom($event)"
-                                class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                class="form_input">
                         </div>
-                        <div class="ml-2 flex">
+                        <div class="ml-2 flex title_xsmall">
                             Bis:
                         </div>
                         <div class="flex">
                             <input type="date" [ngModel]="dateTo | date:'yyyy-MM-dd'" (ngModelChange)="dateParseTo($event)"
-                                class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <input type="time" [ngModel]="timeTo | date:'hh:mm'" (ngModelChange)="timeParseTo($event)"
-                                class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                               class="form_input">
                         </div>
-                        <a class="text-red-600" [hidden]="errorDateHidden">Ende vor Anfang (Datum)!</a>
-                        <a class="text-red-600" [hidden]="errorTimeHidden">Ende vor Anfang (Zeit)!</a>
+                        <a class="error" [hidden]="errorDateHidden">Ende vor Anfang (Datum)!</a>
+                        <a class="error" [hidden]="errorTimeHidden">Ende vor Anfang (Zeit)!</a>
                         <div class="mt-8 ml-2 flex">
-                            <p class="flex">Mehrfach-Antworten</p>
+                            <p class="flex title_xsmall">Mehrfach-Antworten</p>
                             <label for="default-toggle" class="inline-flex relative items-center cursor-pointer ml-2">
                                 <input [(ngModel)]="multipleChoice" type="checkbox" value="" id="default-toggle"
                                     class="sr-only peer">

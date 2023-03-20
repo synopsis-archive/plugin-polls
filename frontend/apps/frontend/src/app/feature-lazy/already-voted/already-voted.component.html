@@ -1,15 +1,15 @@
 <!-- Header Start -->
 <div class="flex flex-col h-full">
-  <div class="bg-[#4D83B8] pb-5 pl-5 pt-3">
-    <h3 class="text-5xl font-bold dark:text-white">{{umfragenFrage}}</h3>
+  <div class="header">
+    <h3 class="title">{{umfragenFrage}}</h3>
    
   </div>
 <!-- Header End -->
 
   <div class="h-full grid place-items-center">
     <div class="flex flex-col items-center">
-      <p class="text-4xl">Du hast bereits abgestimmt.</p>
-      <button type="button" class="mt-5 w-48 font-bold text-white bg-[#004D99] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-xl text-lg px-5 py-2.5 mr-2 mb-2 dark:hover:bg-blue-700 focus:outline-none dark:bg-[#004D99]" (click)="onShowResultClick()">Ergebnis ansehen</button>
+      <p class="title_small">Du hast bereits abgestimmt.</p>
+      <button type="button" class="button" (click)="onShowResultClick()">Ergebnis ansehen</button>
     </div>
   </div>
 </div>

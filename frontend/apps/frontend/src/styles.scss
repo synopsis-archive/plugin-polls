@@ -1,7 +1,12 @@
 ﻿/* You can add global styles to this file, and also import other style files */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+$darkblue: #004d99; //Searchbar etc.
+$white: #fbfbfb; //Hintergrund, Schrift
+$green: #009933; //Highlights
 
 html{
   width: 100%;
@@ -11,4 +16,79 @@ html{
 body{
   width: 100%;
   height: 100%;
+}
+
+@layer base
+{
+  .title
+  {
+    @apply text-5xl font-bold;
+    color: $green;
+  }
+
+  .title_small
+  {
+    @apply text-4xl font-bold;
+    color: $darkblue;
+  }
+
+  .title_xsmall
+  {
+    @apply text-lg ml-2 font-bold;
+    color: $darkblue;
+  }
+
+  .title_lehreransicht
+  {
+    @apply text-4xl;
+    font-weight: bold;
+    color: $green;
+  }
+
+  .error
+  {
+    @apply text-red-600;
+  }
+
+  .link_button
+  {
+    @apply font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0;
+
+    color: $green;
+  }
+
+
+}
+
+@layer components
+{
+  .header
+  {
+    @apply pb-5 pl-5 pt-3;
+    background-color: $darkblue;
+  }
+
+  .button
+  {
+    @apply  mt-1.5 text-white bg-[#004D99] hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center mr-2;
+    background-color: $green;
+  }
+
+  .code_input
+  {
+    @apply text-center mt-2 w-72 text-3xl bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-800 focus:border-blue-500 block p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500;
+  }
+
+
+
+
+  .form_input_large
+  {
+    @apply h-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-800 focus:border-blue-500 block w-full p-2.5 w-[400px];
+  }
+
+  .form_input
+  {
+    @apply h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-800 focus:border-blue-500 block p-2.5 w-[100%];
+  }
 }
