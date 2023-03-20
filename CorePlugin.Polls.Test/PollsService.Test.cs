@@ -27,7 +27,10 @@ namespace CorePlugin.Polls.Test
 
         private void InitDatabase()
         {
-            string sourceDb = @"C:\Temp\5Klasse\POS\plugin-polls\CorePlugin.BackendDevServer\Polls.sqlite3";
+            //"C:\\Temp\\5Klasse\\POS\\plugin-polls\\CorePlugin.Polls.Test\\bin\\Debug\\net6.0"
+            var test = Environment.CurrentDirectory.Split("\\plugin-polls\\");
+            var test2 = test[0] + "\\plugin-polls\\CorePlugin.BackendDevServer\\Polls.sqlite3";
+            string sourceDb = test2;
             string exeDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             fileTemporaryDb = Path.Combine(exeDirectory, "TemporaryDbs", "Polls.sqlite3");
 
