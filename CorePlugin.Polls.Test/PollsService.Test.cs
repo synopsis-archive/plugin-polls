@@ -127,6 +127,50 @@ namespace CorePlugin.Polls.Test
         }
 
         [Fact]
+        public async void CheckResult()
+        {
+            List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>
+            {
+                new PollOptionReplayDto { Description = "Ja" },
+                new PollOptionReplayDto { Description = "Na" }
+            };
+            var poll = await _pollsService.CreatePollAsync(new PollReplayDto
+            {
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now.AddDays(2),
+                IsMultipleChoice = true,
+                PollName = "Funktioniert dieser Unit-Test?",
+                PollOptions = pollReplayDtos,
+                PollQuestion = "Funktioniert dieser Unit-Test?"
+            }, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), "Tester");
+            var pollOptionYesId = poll.PollOptions.Where(x => x.Description == "Ja").Select(x => x.PollOptionId).FirstOrDefault();
+            var pollOptionNoId = poll.PollOptions.Where(x => x.Description == "Na").Select(x => x.PollOptionId).FirstOrDefault();
+            var list = poll.PollOptions.Select(x => x.PollOptionId).ToList();
+            int countserBefore = poll.Results.Count();
+            List<VoteReplayDto> votes = new List<VoteReplayDto>();
+            int yescount = 0;
+            int nocount = 0;
+            while (yescount < 6)
+            {
+                votes.Add(new VoteReplayDto { OptionId = pollOptionYesId });
+                yescount++;
+            }
+            while (nocount < 4)
+            {
+                votes.Add(new VoteReplayDto { OptionId = pollOptionNoId });
+                nocount++;
+            }
+            var poll2 = await _pollsService.SubmitVotesAsync(poll.PollCode, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), votes);
+
+            if (poll2.Results.Values.Select(x => Convert.ToInt32(x.Percentage)).First() > 60)
+            {
+                Assert.Fail("Pass nix");
+            }
+        }
+
+
+
+        [Fact]
         public async void CheckClose()
         {
             List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>
@@ -143,7 +187,6 @@ namespace CorePlugin.Polls.Test
                 PollOptions = pollReplayDtos,
                 PollQuestion = "Funktioniert dieser Unit-Test?"
             }, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), "Tester");
-            DateTime datebefore = poll.EndTime;
             var test = await _pollsService.ClosePollAsync(poll.PollCode, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"));
             Assert.False(test.EndTime.Equals(poll.EndTime));
         }
