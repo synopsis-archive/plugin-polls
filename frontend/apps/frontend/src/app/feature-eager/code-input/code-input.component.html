@@ -6,7 +6,7 @@
   <div class="h-full grid place-items-center">
     <div class="flex flex-col items-center">
       <p class="title_small">Code eingeben:</p>
-      <input [(ngModel)]="code" type="text" (keyup.enter)="enterPressed()" class="txt_input">
+      <input [(ngModel)]="code" type="text" (keyup.enter)="enterPressed()" class="code_input">
       <a class="error" [hidden]="errorHidden">Poll mit Code {{ code }} existiert nicht!</a>
     </div>
   </div>
