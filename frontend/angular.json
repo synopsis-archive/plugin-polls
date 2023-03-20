@@ -2,8 +2,5 @@
   "version": 2,
   "projects": {
     "frontend": "apps/frontend"
-  },
-  "cli": {
-    "analytics": "b2dcfa36-ec36-4aea-8278-5462868b0fa1"
   }
 }

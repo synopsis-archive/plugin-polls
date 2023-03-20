@@ -38,6 +38,18 @@ public class PollsContext : DbContext
                 IsMultipleChoice = false,
                 PollName = "Mathe",
                 PollCode = "45DDF4"
+            },
+            new Poll
+            {
+                PollId = 3,
+                CreatedBy = new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"),
+                CreatorName = "SYSTEM",
+                PollQuestion = "In welchen Fächern maturiert ihr?",
+                EndTime = DateTime.Now.AddYears(1),
+                StartTime = DateTime.Now,
+                IsMultipleChoice = true,
+                PollName = "Matura",
+                PollCode = "45DDF5"
             }
         );
         modelBuilder.Entity<PollOption>().HasData(
@@ -76,6 +88,24 @@ public class PollsContext : DbContext
                 PollOptionId = 6,
                 Description = "15",
                 PollId = 2,
+            },
+            new PollOption
+            {
+                PollOptionId = 8,
+                Description = "SYP",
+                PollId = 3,
+            },
+            new PollOption
+            {
+                PollOptionId = 9,
+                Description = "NAWI",
+                PollId = 3,
+            },
+            new PollOption
+            {
+                PollOptionId = 10,
+                Description = "Geo",
+                PollId = 3,
             }
         );
         modelBuilder.Entity<SubmittedVote>().HasData(

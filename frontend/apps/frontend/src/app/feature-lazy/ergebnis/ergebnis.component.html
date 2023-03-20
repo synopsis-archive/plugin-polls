@@ -1,3 +1,4 @@
+<!-- Header Start -->
 <div class="flex flex-col h-full">
   <div id="header" class="bg-[hsl(210,43%,51%)]">
     <div class="ml-5 mr-5 mb-5 w-10/12">
@@ -6,7 +7,7 @@
       <h3 class="text-xl font-light dark:text-white">({{creator}}, {{endDate|date:'dd.MM.yyyy HH:mm'}})</h3>
     </div>
     <div class="mt-14 ml-10 w-2/12 items-center justify-center ">
-      <button (click)="backbuttonCLicked()" type="button"
+      <button (click)="backbuttonClicked()" type="button"
         class="mr-5 float-right text-white rotate-180 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-xl p-2.5 text-center inline-flex dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
         <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg">
@@ -18,9 +19,9 @@
       </button>
     </div>
   </div>
+<!-- Header End -->
 
-
-
+<!-- Add Chart -->
   <div class="flex-1">
     <div id="body" class="flex h-5/6">
 
@@ -33,6 +34,7 @@
 
     </div>
 
+    <!-- Footer -->
     <div id="footer" class="h-1/6">
       <h2 class="font-bold text-2xl mt-10 text-blue-700">Code: {{code}}</h2>
     </div>

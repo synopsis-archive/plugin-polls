@@ -1,4 +1,5 @@
-﻿using CorePlugin.Plugin.Dtos;
+﻿using Core.AuthLib;
+using CorePlugin.Plugin.Dtos;
 
 namespace CorePlugin.Plugin.Services;
 
@@ -22,7 +23,7 @@ public interface IPollsService
     /*
      * Gets the result of an existing poll ("Ergebnisansicht" in mockup) or on button "Ergebnis ansehen" click
      */
-    Task<PollResultDto> GetPollResultAsync(string code);
+    Task<PollResultDto> GetPollResultAsync(string code, UserRoles role);
 
     /*
      * Submits a vote for a poll ("Schüleransicht" in mockup) and returns the result -> "Ergebnisansicht"
