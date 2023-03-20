@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject, LOCALE_ID } from '@angular/core';
 import { PollOptionReplayDto, PollReplayDto, PollDto, PollsService } from "../../polls-backend";
-import {Location} from '@angular/common';
+import {DatePipe, formatDate, Location} from '@angular/common';
 
 
 @Component({
@@ -14,10 +14,10 @@ export class LehreransichtComponent {
   question: string = '';
   options: string[] = ["", ""];
   // optionsIndices:number[]=[0,1];
-  dateFrom = '';
-  dateTo = '';
-  timeFrom = '';
-  timeTo = '';
+  dateFrom = new Date();
+  dateTo = new Date();
+  timeFrom = new Date();
+  timeTo = new Date();
   multipleChoice = false;
 
   errorDateHidden = true;
@@ -29,7 +29,18 @@ export class LehreransichtComponent {
   successAlertLink = ''
   successAlertHidden = true;
 
-  constructor(private backendService: PollsService,private _location: Location) { }
+  constructor(private backendService: PollsService,private _location: Location, @Inject(LOCALE_ID) private locale: string) {
+    this.dateFrom = new Date();
+    this.dateTo = new Date();
+
+    //this.timeFrom = new Date().getUTCHours()+":"+new Date().getUTCMinutes();
+    this.timeFrom = new Date();
+
+    let tmp = new Date();
+    tmp.setHours(tmp.getHours()+1);
+
+    this.timeTo = tmp;
+   }
 
   // setOptionsIndices():void{
   //   this.optionsIndices= [...new Array(this.options.length).keys()];
@@ -48,8 +59,11 @@ export class LehreransichtComponent {
     const options: PollOptionReplayDto[] = this.options.map(x => { return { description: x }; });
     // 2023-01-23T07:39:24.126Z
     // 2023-01-23 09:42
-    const startTime = `${this.dateFrom}T${this.timeFrom}:00.000Z`;
-    const endTime = `${this.dateTo}T${this.timeTo}:00.000Z`;
+
+    var datePipe = new DatePipe(this.locale);
+
+    const startTime = `${formatDate(this.dateFrom,'yyyy-MM-dd', this.locale)}T${datePipe.transform(this.timeFrom, 'hh:mm')}:00.000Z`;
+    const endTime = `${formatDate(this.dateTo,'yyyy-MM-dd', this.locale)}T${datePipe.transform(this.timeTo, 'hh:mm')}:00.000Z`;
     const pollReplayDto: PollReplayDto = {
       pollName: this.title,
       pollQuestion: this.question,
@@ -67,11 +81,52 @@ export class LehreransichtComponent {
       console.log(JSON.stringify(x));
 
       this.successAlert = 'Poll ' + x.pollName + ' erfolgreich erstellt! Um ihn anzusehen, klicken Sie ';
-      this.successAlertLink = '/Ergebnisansicht/'+x.pollCode;
+      this.successAlertLink = `Ergebnisansicht/${x.pollCode}`;
       this.successAlertHidden=false;
       this.resetFields();
     });
   }
+
+  timeParseTo(date : string)
+  {
+    
+    let split = date.split(":");
+
+    let dateTmp = new Date();
+    dateTmp.setHours(parseInt(split[0]));
+    dateTmp.setMinutes(parseInt(split[1]));
+
+    this.timeTo = dateTmp;
+    console.log(dateTmp);
+    this.CheckTime();
+  }
+
+  timeParseFrom(date : string)
+  {
+    
+    let split = date.split(":");
+
+    let dateTmp = new Date();
+    dateTmp.setHours(parseInt(split[0]));
+    dateTmp.setMinutes(parseInt(split[1]));
+
+    this.timeFrom = dateTmp;
+    console.log(dateTmp);
+    this.CheckTime();
+  }
+
+  dateParseFrom(date : Date)
+  {
+    this.dateFrom = date;
+    this.CheckDate();
+  }
+
+  dateParseTo(date : Date)
+  {
+    this.dateTo = date;
+    this.CheckDate();
+  }
+
 
   resetFields()
   {
@@ -79,10 +134,16 @@ export class LehreransichtComponent {
     this.question = "";
     this.options = ["", ""];
 
-  this.dateFrom = '';
-  this.dateTo = '';
-  this.timeFrom = '';
-  this.timeTo = '';
+  this.dateFrom = new Date();
+  this.dateTo = new Date();
+
+  this.timeFrom = new Date();
+
+    let tmp = new Date();
+    tmp.setHours(tmp.getHours()+1);
+
+    this.timeTo = tmp;
+
   this.multipleChoice = false;
 
   this.errorDateHidden = true;
@@ -144,16 +205,38 @@ export class LehreransichtComponent {
     return false;
   }
 
+  removeTimeFromDate(date : Date)
+  {
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+
+    return date;
+  }
+
   //Checks if the DateTo is later than the DateFrom
   CheckDate()
   {
-    console.log(this.dateFrom);
-    if(this.dateFrom === '' || this.dateTo === '')
+    let dateTmp = this.removeTimeFromDate(new Date());
+    
+    if(this.removeTimeFromDate(this.dateFrom) < dateTmp || this.removeTimeFromDate(this.dateTo) < dateTmp)
     {
-      this.customAlert += "Falsche Datumsangabe(n)\n";
+      this.customAlert += "Anfangs- oder Enddatum vor dem heutigen Datum\n";
       return false;
     }
-    if(new Date(this.dateFrom) > new Date(this.dateTo))
+
+
+    if(this.dateFrom === null || this.dateTo === null)
+    {
+this.customAlert += "Falsche Datumsangabe(n)\n";
+      return false;
+}
+    if(this.dateFrom > this.dateTo)
     {
       this.errorDateHidden = false;
       this.customAlert += "Falsche Datumsangabe(n)\n";
@@ -165,30 +248,20 @@ export class LehreransichtComponent {
 
   CheckTime()
   {
-    let time_from = this.timeFrom.split(":");
-    let time_to = this.timeTo.split(":");
-
     if(this.dateFrom === this.dateTo)
     {
-      if(parseInt(time_from[0]) < parseInt(time_to[0]))
+      if(this.timeFrom.getTime() > this.timeTo.getTime())
       {
-        this.errorTimeHidden = true;
-        return true;
-      } else
-      {
-        if(parseInt(time_from[1]) < parseInt(time_to[1]))
-        {
-          this.errorTimeHidden = true;
-          return true;
-        }
         this.errorTimeHidden = false;
         this.customAlert += "Falsche Zeitangabe(n)\n";
         return false;
       }
+      }
+
+      this.errorTimeHidden = true;
+      return true;
     }
 
-    return true;
-  }
 
   CheckTitle()
   {
