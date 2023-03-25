@@ -25,5 +25,5 @@
   <ItemGroup>
     <ProjectReference Include="..\CorePlugin.Plugin\CorePlugin.Plugin.csproj" />
   </ItemGroup>
-  
+
 </Project>
