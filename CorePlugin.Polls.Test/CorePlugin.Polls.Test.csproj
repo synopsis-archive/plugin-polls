@@ -25,11 +25,5 @@
   <ItemGroup>
     <ProjectReference Include="..\CorePlugin.Plugin\CorePlugin.Plugin.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="TemporaryDbs\dummy.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
+  
 </Project>
