@@ -48,7 +48,7 @@ export class LehreransichtComponent {
 
   get optionsIndices():number[]{
        return [...new Array(this.options.length).keys()];
-  
+
   }
 
   //If attributes are correct, create a replayDTO of the options, get the set variables and post the replayDTO
@@ -89,7 +89,7 @@ export class LehreransichtComponent {
 
   timeParseTo(date : string)
   {
-    
+
     let split = date.split(":");
 
     let dateTmp = new Date();
@@ -103,7 +103,7 @@ export class LehreransichtComponent {
 
   timeParseFrom(date : string)
   {
-    
+
     let split = date.split(":");
 
     let dateTmp = new Date();
@@ -223,7 +223,7 @@ export class LehreransichtComponent {
   CheckDate()
   {
     let dateTmp = this.removeTimeFromDate(new Date());
-    
+
     if(this.removeTimeFromDate(this.dateFrom) < dateTmp || this.removeTimeFromDate(this.dateTo) < dateTmp)
     {
       this.customAlert += "Anfangs- oder Enddatum vor dem heutigen Datum\n";
