@@ -581,6 +581,7 @@ modules.xml
 
 ### VisualStudioCode ###
 !.vscode/*.code-snippets
+.vscode/
 
 # Local History for Visual Studio Code
 

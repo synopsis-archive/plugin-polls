@@ -2,17 +2,13 @@ using CorePlugin.Plugin.Dtos;
 using CorePlugin.Plugin.Services;
 using CorePlugin.PollsDb;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
-using System.Reflection;
 
 namespace CorePlugin.Polls.Test;
 
-[Collection("Sequential")]
 public class PollsServiceTest : IDisposable
 {
     private readonly PollsService _pollsService;
     private PollsContext _db;
-    private string fileTemporaryDb;
 
     public PollsServiceTest()
     {
@@ -20,39 +16,21 @@ public class PollsServiceTest : IDisposable
         _pollsService = new PollsService(_db);
     }
 
-    public void Dispose()
-    {
-        _db.Database.CloseConnection();
-    }
+    public void Dispose() => _db.Database.EnsureDeleted();
 
     private void InitDatabase()
     {
-        //"C:\\Temp\\5Klasse\\POS\\plugin-polls\\CorePlugin.Polls.Test\\bin\\Debug\\net6.0"
-        var test = Environment.CurrentDirectory.Split("\\plugin-polls\\");
-        var test2 = test[0] + "\\plugin-polls\\CorePlugin.BackendDevServer\\Polls.sqlite3";
-        var sourceDb = test2;
-        var exeDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-        fileTemporaryDb = Path.Combine(exeDirectory, "TemporaryDbs", "Polls.sqlite3");
-
-        var connectionString =
-            $@"Data Source={fileTemporaryDb}";
         var options = new DbContextOptionsBuilder<PollsContext>()
-            .UseSqlite(connectionString)
+            .UseInMemoryDatabase("PollsDb")
             .Options;
         _db = new PollsContext(options);
-        _db.Database.EnsureDeleted();
-        File.Copy(sourceDb, fileTemporaryDb);
-
         _db.Database.EnsureCreated();
-        _db.Database.OpenConnection();
-
     }
 
     [Fact]
     public async Task CheckCreate()
     {
-        var countBefore = _db.Polls.Count();
-        List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>();
+        var pollReplayDtos = new List<PollOptionReplayDto>();
         pollReplayDtos.Add(new PollOptionReplayDto { Description = "Ja" });
         pollReplayDtos.Add(new PollOptionReplayDto { Description = "Na" });
         var poll = await _pollsService.CreatePollAsync(new PollReplayDto
@@ -65,20 +43,17 @@ public class PollsServiceTest : IDisposable
             PollQuestion = "Funktioniert dieser Unit-Test?"
         }, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), "Tester");
 
-        if (await _pollsService.GetPollAsync(poll.PollCode) == null)
-        {
+        if ((await _pollsService.GetPollAsync(poll.PollCode)) == null)
             Assert.Fail("Pass nix");
-        }
     }
 
     [Fact]
     public async Task CheckDelete()
     {
-        var countBefore = _db.Polls.Count();
-        List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>
+        var pollReplayDtos = new List<PollOptionReplayDto>
         {
-            new PollOptionReplayDto { Description = "Ja" },
-            new PollOptionReplayDto { Description = "Na" }
+            new() { Description = "Ja" },
+            new() { Description = "Na" }
         };
         var poll = await _pollsService.CreatePollAsync(new PollReplayDto
         {
@@ -90,16 +65,17 @@ public class PollsServiceTest : IDisposable
             PollQuestion = "Funktioniert dieser Unit-Test?"
         }, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), "Tester");
 
-        Assert.True(await _pollsService.DeletePollAsync(poll.PollCode, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c")));
+        Assert.True(
+            await _pollsService.DeletePollAsync(poll.PollCode, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c")));
     }
 
     [Fact]
     public async Task CheckSubmit()
     {
-        List<PollOptionReplayDto> pollReplayDtos = new List<PollOptionReplayDto>
+        var pollReplayDtos = new List<PollOptionReplayDto>
         {
-            new PollOptionReplayDto { Description = "Ja" },
-            new PollOptionReplayDto { Description = "Na" }
+            new() { Description = "Ja" },
+            new() { Description = "Na" }
         };
         var poll = await _pollsService.CreatePollAsync(new PollReplayDto
         {
@@ -111,18 +87,12 @@ public class PollsServiceTest : IDisposable
             PollQuestion = "Funktioniert dieser Unit-Test?"
         }, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), "Tester");
         var list = poll.PollOptions.Select(x => x.PollOptionId).ToList();
-        var countserBefore = poll.Results.Count();
-        List<VoteReplayDto> votes = new List<VoteReplayDto>();
-        foreach (var i in list)
-        {
-            votes.Add(new VoteReplayDto { OptionId = i });
-        }
-        var poll2 = await _pollsService.SubmitVotesAsync(poll.PollCode, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), votes);
+        var countBefore = poll.Results.Count;
+        var votes = list.Select(i => new VoteReplayDto { OptionId = i }).ToList();
+        var poll2 = await _pollsService.SubmitVotesAsync(poll.PollCode,
+            new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), votes);
 
-        if (poll2.Results.Count < countserBefore)
-        {
-            Assert.Fail("Pass nix");
-        }
+        if (poll2.Results.Count < countBefore) Assert.Fail("Pass nix");
     }
 
     [Fact]
@@ -130,8 +100,8 @@ public class PollsServiceTest : IDisposable
     {
         var pollReplayDtos = new List<PollOptionReplayDto>
         {
-            new PollOptionReplayDto { Description = "Ja" },
-            new PollOptionReplayDto { Description = "Na" }
+            new() { Description = "Ja" },
+            new() { Description = "Na" }
         };
         var poll = await _pollsService.CreatePollAsync(new PollReplayDto
         {
@@ -142,31 +112,31 @@ public class PollsServiceTest : IDisposable
             PollOptions = pollReplayDtos,
             PollQuestion = "Funktioniert dieser Unit-Test?"
         }, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), "Tester");
-        var pollOptionYesId = poll.PollOptions.Where(x => x.Description == "Ja").Select(x => x.PollOptionId).FirstOrDefault();
-        var pollOptionNoId = poll.PollOptions.Where(x => x.Description == "Na").Select(x => x.PollOptionId).FirstOrDefault();
-        var list = poll.PollOptions.Select(x => x.PollOptionId).ToList();
-        var countserBefore = poll.Results.Count();
+        var pollOptionYesId = poll.PollOptions.Where(x => x.Description == "Ja").Select(x => x.PollOptionId)
+            .FirstOrDefault();
+        var pollOptionNoId = poll.PollOptions.Where(x => x.Description == "Na").Select(x => x.PollOptionId)
+            .FirstOrDefault();
         var votes = new List<VoteReplayDto>();
-        var yescount = 0;
-        var nocount = 0;
-        while (yescount < 6)
+        var yesCounter = 0;
+        var noCounter = 0;
+
+        while (yesCounter < 6)
         {
             votes.Add(new VoteReplayDto { OptionId = pollOptionYesId });
-            yescount++;
+            yesCounter++;
         }
-        while (nocount < 4)
+
+        while (noCounter < 4)
         {
             votes.Add(new VoteReplayDto { OptionId = pollOptionNoId });
-            nocount++;
+            noCounter++;
         }
-        var poll2 = await _pollsService.SubmitVotesAsync(poll.PollCode, new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), votes);
 
-        if (poll2.Results.Values.Select(x => Convert.ToInt32(x.Percentage)).First() > 60)
-        {
-            Assert.Fail("Pass nix");
-        }
+        var poll2 = await _pollsService.SubmitVotesAsync(poll.PollCode,
+            new Guid("da3cfdfd-5b66-4d00-a5ae-cd50217f117c"), votes);
+
+        if (poll2.Results.Values.Select(x => Convert.ToInt32(x.Percentage)).First() > 60) Assert.Fail("Pass nix");
     }
-
 
 
     [Fact]
@@ -174,8 +144,8 @@ public class PollsServiceTest : IDisposable
     {
         var pollReplayDtos = new List<PollOptionReplayDto>
         {
-            new PollOptionReplayDto { Description = "Ja" },
-            new PollOptionReplayDto { Description = "Na" }
+            new() { Description = "Ja" },
+            new() { Description = "Na" }
         };
         var poll = await _pollsService.CreatePollAsync(new PollReplayDto
         {
