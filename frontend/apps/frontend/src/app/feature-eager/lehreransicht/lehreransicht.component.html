@@ -1,12 +1,7 @@
 <div id="data">
     <div id="header" class="header">
         <div class="ml-5 mr-5 mb-5">
-            <h3 class="title_lehreransicht">Titel Eingeben:</h3>
-            <div class="inline-block">
-                <div class="mr-10 float-left">
-                    <input [(ngModel)]="title" type="text" placeholder="Umfrage Wombats 5bhif"
-                        class="form_input_large">
-                </div>
+            <h3 class="title">Umfragen</h3>
                 <div class="float-left">
                     <button (click)="backButtonClicked()" type="button"
                         class="button rotate-180">
@@ -30,6 +25,12 @@
 
         <app-alert alertType="success" [(alertText)]="successAlert" [(hidden)]="successAlertHidden" linkText="hier." [(link)]="successAlertLink"></app-alert>
 
+        <h3 class="title_small">Titel Eingeben:</h3>
+            <div class="inline-block">
+                <div class="mr-10 float-left">
+                    <input [(ngModel)]="title" type="text" placeholder="Umfrage Wombats 5bhif"
+                        class="form_input_large">
+                </div>
         <div class="mt-10">
             <p class="title_xsmall">Frage Eingeben:</p>
             <input [(ngModel)]="question" type="text" placeholder="Warum leben Wombats in Mülleimern?"
