@@ -121,7 +121,7 @@ export class ErgebnisComponent implements OnInit {
           }
         }
       }
-        
+
   private setPollResult(x: PollResultDto) {
     this.title = x.pollName;
     this.question = x.pollQuestion;

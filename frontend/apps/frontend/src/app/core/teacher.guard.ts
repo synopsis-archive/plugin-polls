@@ -1,28 +1,23 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
-import {JwtDecoderService} from "./jwt-decoder.service";
-import {environment} from "../../environments/environment";
+import {IDTokenPayload} from "./jwt-decoder.service";
+import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherGuard implements CanActivate {
-  constructor(private tokenService: JwtDecoderService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
-    return await this.tokenService.getJwt().then(x => {
-      if(x === undefined)
-        throw new Error('No JWT token found');
-      return this.hasPrivilegeToCreatePoll(x);
-    }).catch(_ => {
-      return this.hasPrivilegeToCreatePoll(environment.devJwtToken);
-    });
+    const token = await this.authService.getJwt();
+    return this.hasPrivilegeToCreatePoll(token)
   }
 
-  private hasPrivilegeToCreatePoll(jwtToken: string) {
-    const isTeacher = this.tokenService.decodeJwt(jwtToken).rolle.toLowerCase() !== 'schueler';
+  private hasPrivilegeToCreatePoll(jwtToken: IDTokenPayload) {
+    const isTeacher = jwtToken.rolle.toLowerCase() !== 'schueler';
 
     if (!isTeacher)
       this.router.navigateByUrl('/Code').then(_ => console.log('Restricted...'));

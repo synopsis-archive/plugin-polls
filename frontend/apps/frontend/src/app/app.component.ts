@@ -4,6 +4,7 @@ import { environment } from "../environments/environment";
 import { JwtDecoderService } from "./core/jwt-decoder.service";
 import { LiveResultUpdateService } from "./core/live-result-update.service";
 import { Router } from '@angular/router';
+import {AuthService} from "./core/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -11,26 +12,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
-  constructor(private config: Configuration, private jwtDecoder: JwtDecoderService,
-    private signalRService: LiveResultUpdateService, private router: Router) {
-  }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
-    this.jwtDecoder.getJwt().then(x => {
-      if (x === undefined)
-        throw new Error('No JWT token found');
-      this.config.credentials['Bearer'] = `Bearer ${x}`;
-      this.signalRService.startConnection(x).then(_ => console.log('SignalR connection started'));
-      if (this.jwtDecoder.decodeJwt(x).rolle.toLowerCase() !== 'schueler'){
-        this.router.navigateByUrl('/LehreransichtListe').then(_ => console.log('Allowed...'));
-      }
-  }).catch(_ => {
-    this.config.credentials['Bearer'] = `Bearer ${environment.devJwtToken}`
-      this.signalRService.startConnection(environment.devJwtToken).then(_ => console.log('SignalR connection started'));
-      if (this.jwtDecoder.decodeJwt(environment.devJwtToken).rolle.toLowerCase() !== 'schueler'){
-        this.router.navigateByUrl('/LehreransichtListe').then(_ => console.log('Allowed...'));
-      }
-    });
+    if (this.authService.getJwt().rolle.toLowerCase() !== 'schueler')
+      this.router.navigateByUrl('/LehreransichtListe').then(_ => console.log('Allowed...'));
   }
 }
