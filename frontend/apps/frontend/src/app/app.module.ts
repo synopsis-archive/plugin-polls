@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {Configuration} from "./polls-backend";
 import {AuthService} from "./core/auth.service";
+import {ConfigService} from "./core/config.service";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,6 @@ import {AuthService} from "./core/auth.service";
   ],
   // use environment.backend as reference to the backend URL
   providers: [
-    { provide: Configuration, useValue: new Configuration() },
     {
       provide: APP_INITIALIZER,
       useFactory: function initAuth(authService: AuthService) {
@@ -37,7 +37,13 @@ import {AuthService} from "./core/auth.service";
       },
       deps: [AuthService],
       multi: true
-    }
+    },
+    {
+      provide: Configuration,
+      useFactory: (configService: ConfigService) => configService.getConfiguration(),
+      deps: [ConfigService],
+      multi: false,
+    },
   ],
   bootstrap: [AppComponent]
 })
