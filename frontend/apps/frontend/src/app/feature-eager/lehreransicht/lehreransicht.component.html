@@ -63,18 +63,18 @@
                             Von:
                         </div>
                         <div class="flex">
-                            <input type="date" [(ngModel)]="dateFrom"
+                            <input type="date" [ngModel]="dateFrom | date:'yyyy-MM-dd'" (ngModelChange)="dateParseFrom($event)"
                                 class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <input type="time" [(ngModel)]="timeFrom"
+                            <input type="time" [ngModel]="timeFrom | date:'hh:mm'" (ngModelChange)="timeParseFrom($event)"
                                 class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                         <div class="ml-2 flex">
                             Bis:
                         </div>
                         <div class="flex">
-                            <input type="date" [(ngModel)]="dateTo" (ngModelChange)="CheckDate()"
+                            <input type="date" [ngModel]="dateTo | date:'yyyy-MM-dd'" (ngModelChange)="dateParseTo($event)"
                                 class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <input type="time" [(ngModel)]="timeTo" (ngModelChange)="CheckTime()"
+                            <input type="time" [ngModel]="timeTo | date:'hh:mm'" (ngModelChange)="timeParseTo($event)"
                                 class="h-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                         <a class="text-red-600" [hidden]="errorDateHidden">Ende vor Anfang (Datum)!</a>
