@@ -1,10 +1,13 @@
-<div id="data">
-    <div id="header" class="header">
-        <div class="ml-5 mr-5 mb-5">
-            <h3 class="title">Umfragen</h3>
-                <div class="float-left">
-                    <button (click)="backButtonClicked()" type="button"
-                        class="button rotate-180">
+  <!-- Header Start -->
+  <nav id="headerStyle" class="bg-gray-900 border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
+    <div class="container flex flex-wrap items-center justify-between mx-auto">
+    <a class="flex items-center">
+        <span id="headerTextStyle" class="self-center text-xl font-bold whitespace-nowrap dark:text-white color text-white color">Umfragen</span>
+    </a>
+    <div class="flex md:order-2">
+        <button id="buttonStyle" (click)="createPoll()" class=" font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0">Fertig</button>
+        <button id="buttonStyle" (click)="backButtonClicked()" type="button"
+                        class="rotate-180 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0">
                         <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
@@ -13,82 +16,85 @@
                         </svg>
                         <span class="sr-only">Icon description</span>
                     </button>
-                </div>
-                <div class="float-left">
-                    <button type="button" (click)="createPoll()"
-                        class="button">Fertig</button>
-                </div>
-            </div>
-        </div>
     </div>
-    <div id="body" class="m-5">
+    </div>
+  </nav>
+<!-- Header End -->
 
-        <app-alert alertType="success" [(alertText)]="successAlert" [(hidden)]="successAlertHidden" linkText="hier." [(link)]="successAlertLink"></app-alert>
 
-        <h3 class="title_small">Titel Eingeben:</h3>
-            <div class="inline-block">
-                <div class="mr-10 float-left">
-                    <input [(ngModel)]="title" type="text" placeholder="Umfrage Wombats 5bhif"
-                        class="form_input_large">
-                </div>
-        <div class="mt-10">
-            <p class="title_xsmall">Frage Eingeben:</p>
-            <input [(ngModel)]="question" type="text" placeholder="Warum leben Wombats in Mülleimern?"
-                class="form_input">
+<app-alert alertType="success" [(alertText)]="successAlert" [(hidden)]="successAlertHidden" linkText="hier." [(link)]="successAlertLink"></app-alert>
+
+        
+
+<div id="body">
+    <h3 class="title_small">Titel Eingeben:</h3>
+    <div class="inline-block">
+        <div class="mr-10 float-left">
+            <input [(ngModel)]="title" type="text" placeholder="Umfrage Wombats 5bhif"
+                class="form_input_large">
+        </div>
+<div class="mt-10">
+    <p class="title_xsmall">Frage Eingeben:</p>
+    <input [(ngModel)]="question" type="text" placeholder="Warum leben Wombats in Mülleimern?"
+        class="form_input">
+</div>
+<div class="flex">
+    <!-- <div class="inline-block align-top mr-3" *ngFor="let option of options; let indexOfElement = index"> -->
+    <div class="flex flex-col">
+        <div class="mr-3" *ngFor="let indexOfElement of optionsIndices">
+            <div class="ml-2 flex title_xsmall">
+                Antwortmöglichkeit {{indexOfElement+1}}:
+            </div>
+            <div class="flex">
+                <input class="form_input" type="text" [(ngModel)]="options[indexOfElement]">
+                <button type="button" [hidden]="isEssentialOption(indexOfElement)"
+                    (click)="removeOption(indexOfElement)"
+                    class="button">-</button>
+            </div>
         </div>
         <div class="flex">
-            <!-- <div class="inline-block align-top mr-3" *ngFor="let option of options; let indexOfElement = index"> -->
-            <div class="flex flex-col">
-                <div class="mr-3" *ngFor="let indexOfElement of optionsIndices">
-                    <div class="ml-2 flex title_xsmall">
-                        Antwortmöglichkeit {{indexOfElement+1}}:
-                    </div>
-                    <div class="flex">
-                        <input class="form_input" type="text" [(ngModel)]="options[indexOfElement]">
-                        <button type="button" [hidden]="isEssentialOption(indexOfElement)"
-                            (click)="removeOption(indexOfElement)"
-                            class="button">-</button>
-                    </div>
+            <button id="buttonStyle" type="button" (click)="addOption()"
+                class="button">+</button>
+        </div>
+    </div>
+    <div class="inline-block">
+        <div class="inline-block align-top mr-3">
+
+            <div class="inline-block">
+                <div class="ml-2 flex title_xsmall">
+                    Von:
                 </div>
                 <div class="flex">
-                    <button type="button" (click)="addOption()"
-                        class="button">+</button>
+                    <input class="form_input" type="date" [ngModel]="dateFrom | date:'yyyy-MM-dd'" (ngModelChange)="dateParseFrom($event)">
+                    <input type="time" [ngModel]="timeFrom | date:'hh:mm'" (ngModelChange)="timeParseFrom($event)"
+                        class="form_input">
                 </div>
-            </div>
-            <div class="inline-block">
-                <div class="inline-block align-top mr-3">
-
-                    <div class="inline-block">
-                        <div class="ml-2 flex title_xsmall">
-                            Von:
+                <div class="ml-2 flex title_xsmall">
+                    Bis:
+                </div>
+                <div class="flex">
+                    <input type="date" [ngModel]="dateTo | date:'yyyy-MM-dd'" (ngModelChange)="dateParseTo($event)"
+                       class="form_input">
+                       <input type="time" [ngModel]="timeTo | date:'hh:mm'" (ngModelChange)="timeParseTo($event)"
+                       class="form_input">
+                </div>
+                <a class="error" [hidden]="errorDateHidden">Ende vor Anfang (Datum)!</a>
+                <a class="error" [hidden]="errorTimeHidden">Ende vor Anfang (Zeit)!</a>
+                <div class="mt-8 ml-2 flex">
+                    <p class="flex title_xsmall">Mehrfach-Antworten</p>
+                    <label for="default-toggle" class="inline-flex relative items-center cursor-pointer ml-2">
+                        <input [(ngModel)]="multipleChoice" type="checkbox" value="" id="default-toggle"
+                            class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#004D99]">
                         </div>
-                        <div class="flex">
-                            <input class="form_input" type="date" [ngModel]="dateFrom | date:'yyyy-MM-dd'" (ngModelChange)="dateParseFrom($event)">
-                            <input type="time" [ngModel]="timeFrom | date:'hh:mm'" (ngModelChange)="timeParseFrom($event)"
-                                class="form_input">
-                        </div>
-                        <div class="ml-2 flex title_xsmall">
-                            Bis:
-                        </div>
-                        <div class="flex">
-                            <input type="date" [ngModel]="dateTo | date:'yyyy-MM-dd'" (ngModelChange)="dateParseTo($event)"
-                               class="form_input">
-                        </div>
-                        <a class="error" [hidden]="errorDateHidden">Ende vor Anfang (Datum)!</a>
-                        <a class="error" [hidden]="errorTimeHidden">Ende vor Anfang (Zeit)!</a>
-                        <div class="mt-8 ml-2 flex">
-                            <p class="flex title_xsmall">Mehrfach-Antworten</p>
-                            <label for="default-toggle" class="inline-flex relative items-center cursor-pointer ml-2">
-                                <input [(ngModel)]="multipleChoice" type="checkbox" value="" id="default-toggle"
-                                    class="sr-only peer">
-                                <div
-                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#004D99]">
-                                </div>
-                            </label>
-                        </div>
-                    </div>
+                    </label>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+
+</div>
+      
