@@ -303,7 +303,7 @@ this.customAlert += "Falsche Datumsangabe(n)\n";
 
     if(!repeat)
     {
-      this.customAlert += "Doppelte Antwortmöglichkeiten\n";
+      this.customAlert += "Mögliche Antworten kommen mehrfach vor\n";
       return false;
     }
     else

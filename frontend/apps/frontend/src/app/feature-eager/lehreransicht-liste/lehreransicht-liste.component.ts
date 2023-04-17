@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PollResultDto, PollsService } from '../../polls-backend';
 import { Location } from '@angular/common';
-import { VotesService } from "../../shared/votesService";
+import { LiveResultUpdateService } from '../../core/live-result-update.service';
 
 @Component({
   selector: 'app-lehreransicht-liste',
@@ -11,24 +11,28 @@ import { VotesService } from "../../shared/votesService";
 })
 export class LehreransichtListeComponent implements OnInit {
   pollsOfTeacher: PollResultDto[] = [];
-  totalVotes = 0;
 
-  constructor(private router: Router, private pollService: PollsService, private _location: Location, private votesService: VotesService) { }
+  constructor(private router: Router, private pollService: PollsService, private _location: Location, private pollResultUpdates: LiveResultUpdateService) { }
 
   //Get polls of teacher
   ngOnInit(): void {
     this.pollService.pollsGetPollsFromTeacherGet().subscribe((x: PollResultDto[]) => {
       this.pollsOfTeacher = x;
+      for (const poll of this.pollsOfTeacher) {
+        this.pollResultUpdates.registerListener2(poll.pollCode, this);
+        this.setPollResult(poll);
+      }
     });
-    this.totalVotes = this.votesService.getVote();
   }
 
-  showCode(poll: PollResultDto):void{
+  showCode(poll: PollResultDto): void {
     this.router.navigateByUrl(`code/${poll.pollCode}`).then(r => console.log('Routed to Ergebnisansicht'));
-
   }
 
   backButtonClicked(): void {
+    for (const poll of this.pollsOfTeacher) {
+      this.pollResultUpdates.unregisterListener(poll.pollCode)
+    }
     this._location.back();
   }
 
@@ -58,5 +62,17 @@ export class LehreransichtListeComponent implements OnInit {
   //Make new poll
   newPollClicked(): void {
     this.router.navigateByUrl("Lehreransicht").then(_ => { });
+  }
+
+  private setPollResult(x: PollResultDto) {
+    for (let poll of this.pollsOfTeacher) {
+      poll = x;
+    }
+  }
+
+  static updateList(resultDto: PollResultDto, lehrlistComponent: LehreransichtListeComponent) {
+    for (let poll of lehrlistComponent.pollsOfTeacher) {
+      poll = resultDto;
+    }
   }
 }

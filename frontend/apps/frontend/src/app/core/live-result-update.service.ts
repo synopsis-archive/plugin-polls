@@ -3,6 +3,7 @@ import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@microsoft
 import {environment} from "../../environments/environment";
 import {PollResultDto} from "../polls-backend";
 import {ErgebnisComponent} from "../feature-lazy/ergebnis/ergebnis.component";
+import { LehreransichtListeComponent } from '../feature-eager/lehreransicht-liste/lehreransicht-liste.component';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,14 @@ export class LiveResultUpdateService {
     }
     this.hubConnection.invoke('ReceiveUpdates', code).then((_: any) => console.log(`Registered for updates for poll ${code}`));
     this.hubConnection.on('NewVoteReceived', (poll: PollResultDto) => ErgebnisComponent.updateChart(poll, ergComponent));
+  }
+
+  registerListener2(code: string, lehrlistComponent: LehreransichtListeComponent) {
+    if(this.hubConnection === null) {
+      throw new Error('Connection not started');
+    }
+    this.hubConnection.invoke('ReceiveUpdates', code).then((_: any) => console.log(`Registered for updates for poll ${code}`));
+    this.hubConnection.on('NewVoteReceived', (poll: PollResultDto) => LehreransichtListeComponent.updateList(poll, lehrlistComponent));
   }
 
   unregisterListener(code: string) {
