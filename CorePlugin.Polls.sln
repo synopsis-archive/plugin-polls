@@ -1,14 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugin.Interface", "core\Core.Plugin.Interface\Core.Plugin.Interface.csproj", "{A73EBDE5-9FC1-47FF-B227-72B8412B0E2A}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugin.Interface", "core\Core.Plugin.Interface\Core.Plugin.Interface.csproj", "{A73EBDE5-9FC1-47FF-B227-72B8412B0E2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorePlugin.BackendDevServer", "CorePlugin.BackendDevServer\CorePlugin.BackendDevServer.csproj", "{413156CE-9184-4AF5-A91B-0780146394AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CorePlugin.BackendDevServer", "CorePlugin.BackendDevServer\CorePlugin.BackendDevServer.csproj", "{413156CE-9184-4AF5-A91B-0780146394AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorePlugin.PollsDb", "CorePlugin.PollsDb\CorePlugin.PollsDb.csproj", "{205FF5FD-88E7-49E3-A65C-B644D17A4816}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CorePlugin.PollsDb", "CorePlugin.PollsDb\CorePlugin.PollsDb.csproj", "{205FF5FD-88E7-49E3-A65C-B644D17A4816}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorePlugin.Plugin", "CorePlugin.Plugin\CorePlugin.Plugin.csproj", "{9683CC9D-C7C5-4C7B-BC38-F564A2C63B19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CorePlugin.Plugin", "CorePlugin.Plugin\CorePlugin.Plugin.csproj", "{9683CC9D-C7C5-4C7B-BC38-F564A2C63B19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.AuthLib", "core\Core.AuthLib\Core.AuthLib.csproj", "{8469F4E6-6944-4B82-BA18-357B969FD80F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.AuthLib", "core\Core.AuthLib\Core.AuthLib.csproj", "{8469F4E6-6944-4B82-BA18-357B969FD80F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorePlugin.Polls.Test", "CorePlugin.Polls.Test\CorePlugin.Polls.Test.csproj", "{B659BFDE-93A0-4550-870C-3695F4822872}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +41,15 @@ Global
 		{8469F4E6-6944-4B82-BA18-357B969FD80F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8469F4E6-6944-4B82-BA18-357B969FD80F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8469F4E6-6944-4B82-BA18-357B969FD80F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B659BFDE-93A0-4550-870C-3695F4822872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B659BFDE-93A0-4550-870C-3695F4822872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B659BFDE-93A0-4550-870C-3695F4822872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B659BFDE-93A0-4550-870C-3695F4822872}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19BDAA0F-3F9D-49B8-A9EC-E152EBB285FB}
 	EndGlobalSection
 EndGlobal
