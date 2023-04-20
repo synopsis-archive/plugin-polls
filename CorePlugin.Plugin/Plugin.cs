@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.Xml;
+using System.Security.Cryptography.Xml;
+using Core.Backend;
 using Core.Plugin.Interface;
 using CorePlugin.Plugin.Hubs;
 using CorePlugin.Plugin.Services;
@@ -18,13 +19,11 @@ public class Plugin : ICorePlugin
         
         builder.Services.AddDbContext<PollsContext>(db =>
         {
-            var connectionString = builder.Configuration.GetConnectionString("PollsDatabaseConnection");
+            var connectionString = builder.Configuration.GetConnectionStringThatAlsoWorksInProduction("PollsDatabaseConnection", builder.Environment.IsDevelopment());
             if (builder.Environment.IsDevelopment())
             {
                 db.UseSqlite(connectionString);
-            }
-            else
-            {
+            } else {
                 db.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             }
         });
