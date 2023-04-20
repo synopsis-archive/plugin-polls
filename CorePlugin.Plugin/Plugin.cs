@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace CorePlugin.Plugin;
 
@@ -14,11 +15,20 @@ public class Plugin : ICorePlugin
 {
     public void ConfigureServices(WebApplicationBuilder builder)
     {
+        
         builder.Services.AddDbContext<PollsContext>(db =>
         {
             var connectionString = builder.Configuration.GetConnectionString("PollsDatabaseConnection");
-            db.UseSqlite(connectionString);
+            if (builder.Environment.IsDevelopment())
+            {
+                db.UseSqlite(connectionString);
+            }
+            else
+            {
+                db.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            }
         });
+
         builder.Services.AddScoped<PollsService>();
         builder.Services.AddHostedService<DatabaseBackgroundService>();
         builder.Services.AddSignalR(x => x.EnableDetailedErrors = true);
