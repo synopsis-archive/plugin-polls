@@ -23,7 +23,9 @@ public class Plugin : ICorePlugin
             if (builder.Environment.IsDevelopment())
             {
                 db.UseSqlite(connectionString);
-            } else {
+            }
+            else
+            {
                 db.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             }
         });
