@@ -16,7 +16,7 @@ public class Plugin : ICorePlugin
 {
     public void ConfigureServices(WebApplicationBuilder builder)
     {
-        
+
         builder.Services.AddDbContext<PollsContext>(db =>
         {
             var connectionString = builder.Configuration.GetConnectionStringThatAlsoWorksInProduction("PollsDatabaseConnection", builder.Environment.IsDevelopment());
